@@ -1,14 +1,11 @@
 @import "normalize.css";
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap");
 
 :root {
   --primary: #456ad4;
   --black: #000;
   --text-color: #456ad4;
 
-  // Default layout
-  --default-layout-header-height: 60px;
-  --default-layout-width: 1150px;
+  --default-layout-header-height: 100px;
 }
 
 * {
@@ -20,9 +17,6 @@
 body {
   font-family: Arial;
   background: #b3afaf;
-  font-size: 1.6rem;
-  line-height: 1.5;
-  text-rendering: optimizespeed;
   color: var(--text-color);
 }
 

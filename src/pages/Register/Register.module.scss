@@ -1,0 +1,28 @@
+.wrapper {
+  text-align: left;
+  font-size: 14px;
+  background: #c4ddfb;
+  border: 2px solid #004679;
+  color: #000;
+  padding: 5px;
+}
+
+.formControl {
+  padding: 4px;
+
+  button {
+    padding: 0 4px;
+    border-radius: 3px;
+  }
+}
+
+.formlabel {
+  text-align: left;
+  min-width: 160px;
+}
+
+.formInput {
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  padding: 2px;
+}

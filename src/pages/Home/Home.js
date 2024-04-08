@@ -13,25 +13,25 @@ const cx = classNames.bind(Style);
 const downloadInfo = [
     {
         title: 'Phiên bản: 244',
-        link: 'https://play.google.com/store/apps/details?id=com.teamobi.army2',
+        link: '../../assets/files/army2local.jar',
         icon1: apk_0,
         icon2: apk_1
     },
     {
         title: 'Phiên bản: 244',
-        link: 'https://play.google.com/store/apps/details?id=com.teamobi.army2',
+        link: '../../assets/files/army2local.jar',
         icon1: apk_0,
         icon2: apk_1
     },
     {
         title: 'Phiên bản: 244',
-        link: 'https://play.google.com/store/apps/details?id=com.teamobi.army2',
+        link: '../../assets/files/army2local.jar',
         icon1: apk_0,
         icon2: apk_1
     },
     {
         title: 'Phiên bản: 244',
-        link: 'https://play.google.com/store/apps/details?id=com.teamobi.army2',
+        link: '../../assets/files/army2local.jar',
         icon1: apk_0,
         icon2: apk_1
     }
@@ -40,14 +40,14 @@ const downloadInfo = [
 function Home() {
     return (
         <main>
-            <div>
+            <div className={cx('slide')}>
                 <img src={background} alt='background' />
             </div>
             <div className={cx('download')}>
-                <div className='container' style={{ width: "92%" }}>
-                    <div className='row g-0'>
+                <div className='container'>
+                    <div className='row'>
                         {downloadInfo.map((item, index) => (
-                            <div className='col-md-3 col-sm-6' key={index}>
+                            <div className='col-lg-3 col-md-6 col-sm-6 col-6' key={index}>
                                 <DownloadItem content={item} />
                             </div>
                         ))}
@@ -114,7 +114,7 @@ function Home() {
                         <span>Trò chơi được phát triển trên mọi nền tảng.</span>
                     }
                     date='Cách đây 2 năm'
-                    isLast={true}
+                    isLast
                 />
             </div>
         </main>
