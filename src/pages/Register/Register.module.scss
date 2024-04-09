@@ -8,12 +8,7 @@
 }
 
 .formControl {
-  padding: 4px;
-
-  button {
-    padding: 0 4px;
-    border-radius: 3px;
-  }
+  padding: 0 4px;
 }
 
 .formlabel {
@@ -25,4 +20,9 @@
   border-radius: 4px;
   border: 1px solid #ccc;
   padding: 2px;
+}
+
+.error {
+  color: red;
+  padding-left: 4px;
 }

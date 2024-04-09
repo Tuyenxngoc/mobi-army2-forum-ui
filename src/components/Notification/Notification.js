@@ -5,7 +5,7 @@ const cx = classNames.bind(Style);
 
 const Notification = ({ title, content, date, isLast = false }) => {
     return (
-        <div className={cx('textContent', isLast && "m-0")}>
+        <div className={cx('box-container', 'textContent', isLast && 'm-0')}>
             {title && (
                 <div className={cx('title')}>
                     <h4>{title}</h4>

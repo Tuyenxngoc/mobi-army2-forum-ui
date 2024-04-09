@@ -4,6 +4,8 @@
   --primary: #456ad4;
   --black: #000;
   --text-color: #456ad4;
+  --link-color: #1757a6;
+  --back-ground: #c4ddfb;
 
   --default-layout-header-height: 100px;
 }
@@ -20,7 +22,29 @@ body {
   color: var(--text-color);
 }
 
+button {
+  padding: 0 4px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+button + button {
+  margin-left: 4px;
+}
+
+a {
+  color: var(--link-color);
+  text-decoration: none;
+}
+
 .custom-width-630 {
   max-width: 630px;
   padding: 0;
+}
+
+.box-container {
+  background: var(--back-ground);
+  border: 2px solid #004679;
+  padding: 5px;
+  color: var(--text-color);
 }
