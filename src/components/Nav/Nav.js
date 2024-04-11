@@ -1,52 +1,41 @@
 import { useEffect, useState } from 'react';
 import Style from './Nav.module.scss';
 import classNames from 'classnames/bind';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 
 const cx = classNames.bind(Style);
 
+const navItems = [
+    { path: '/', text: 'Trang Chủ' },
+    { path: '/info', text: 'Giới Thiệu' },
+    { path: '/forum', text: 'Diễn Đàn' }
+];
+
 function Nav() {
+    const location = useLocation();
     const [activeNavItem, setActiveNavItem] = useState(0);
 
-    const location = useLocation();
-
     useEffect(() => {
-        // Xác định thẻ được kích hoạt dựa trên đường dẫn hiện tại
-        const path = location.pathname;
-        if (path === '/') {
-            setActiveNavItem(0);
-        } else if (path.startsWith('/forum')) {
-            setActiveNavItem(2);
-        } else if (path === '/info') {
-            setActiveNavItem(1);
-        } else {
-            setActiveNavItem(0);
+        const currentPath = location.pathname;
+        let index = -1;
+        for (let i = navItems.length - 1; i >= 0; i--) {
+            if (currentPath.startsWith(navItems[i].path)) {
+                index = i;
+                break;
+            }
         }
+        setActiveNavItem(index !== -1 ? index : 0);
     }, [location.pathname]);
-
-    const handleNavItemClick = (index) => {
-        setActiveNavItem(index);
-    };
 
     return (
         <nav>
-            <div className="row g-0">
-                <div className="col-4">
-                    <div className={cx('navItem', { active: activeNavItem === 0 })} >
-                        <Link className={cx('navLink')} to='/' onClick={() => handleNavItemClick(0)}>Trang chủ</Link>
-                    </div>
-                </div>
-                <div className="col-4">
-                    <div className={cx('navItem', { active: activeNavItem === 1 })} >
-                        <Link className={cx('navLink')} to='/info' onClick={() => handleNavItemClick(1)}>Giới thiệu</Link>
-                    </div>
-                </div>
-                <div className="col-4">
-                    <div className={cx('navItem', 'lastNavItem', { active: activeNavItem === 2 })} >
-                        <Link className={cx('navLink')} to='/forum' onClick={() => handleNavItemClick(2)}>Diễn đàn</Link>
-                    </div>
-                </div>
-            </div>
+            <ul className={cx('navList')}>
+                {navItems.map((item, index) => (
+                    <li key={index} className={cx('navItem', { active: activeNavItem === index })}>
+                        <NavLink className={cx('navLink')} to={item.path} onClick={() => setActiveNavItem(index)}>{item.text}</NavLink>
+                    </li>
+                ))}
+            </ul>
         </nav>
     );
 }

@@ -18,6 +18,7 @@
 
 body {
   font-family: Arial;
+  font-size: 14px;
   background: #b3afaf;
   color: var(--text-color);
 }
@@ -25,7 +26,6 @@ body {
 button {
   padding: 0 4px;
   border-radius: 4px;
-  font-size: 14px;
 }
 
 button + button {
@@ -35,6 +35,12 @@ button + button {
 a {
   color: var(--link-color);
   text-decoration: none;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
 }
 
 .custom-width-630 {

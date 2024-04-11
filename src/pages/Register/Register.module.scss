@@ -1,6 +1,5 @@
 .wrapper {
   text-align: left;
-  font-size: 14px;
   background: #c4ddfb;
   border: 2px solid #004679;
   color: #000;
@@ -20,6 +19,10 @@
   border-radius: 4px;
   border: 1px solid #ccc;
   padding: 2px;
+}
+
+.formInput.error {
+  border: 2px solid red;
 }
 
 .error {

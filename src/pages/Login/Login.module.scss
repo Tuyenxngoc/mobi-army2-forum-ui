@@ -1,6 +1,5 @@
 .wrapper {
   text-align: center;
-  font-size: 14px;
   background: #c4ddfb;
   border: 2px solid #004679;
   color: #000;
@@ -31,4 +30,9 @@
     color: #1757a6;
     text-decoration: none;
   }
+}
+
+.error {
+  color: red;
+  padding-left: 4px;
 }

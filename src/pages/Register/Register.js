@@ -50,93 +50,33 @@ function Register() {
         },
     });
 
+    const renderInput = (name, label, type = 'text') => (
+        <>
+            <div className={cx('formControl')}>
+                <label className={cx('formlabel')} htmlFor={`txt${name}`}>{label}</label>
+                <input
+                    id={`txt${name}`}
+                    name={name}
+                    type={type}
+                    value={formik.values[name]}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className={cx('formInput', { error: formik.touched[name] && Boolean(formik.errors[name]) })}
+                />
+            </div>
+            <small className={cx('error')}>{formik.touched[name] && formik.errors[name]}</small>
+        </>
+    );
+
     return (
         <main className={cx('wrapper')}>
             <form onSubmit={formik.handleSubmit}>
-                <div className={cx('formControl')}>
-                    <label className={cx('formlabel')} htmlFor="txtName">Họ và tên</label>
-                    <input
-                        className={cx('formInput')}
-                        value={formik.values.name}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        name='name'
-                        id="txtName"
-                        type="text"
-                    />
-                </div>
-                <small className={cx('error')}>{formik.touched.name && formik.errors.name}</small>
-
-                <div className={cx('formControl')}>
-                    <label className={cx('formlabel')} htmlFor="txtPhoneNumber">Số điện thoại</label>
-                    <input
-                        className={cx('formInput')}
-                        value={formik.values.phoneNumber}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        name='phoneNumber'
-                        id="txtPhoneNumber"
-                        type="tel"
-                    />
-                </div>
-                <small className={cx('error')}>{formik.touched.phoneNumber && formik.errors.phoneNumber}</small>
-
-                <div className={cx('formControl')}>
-                    <label className={cx('formlabel')} htmlFor="txtEmail">Email</label>
-                    <input
-                        className={cx('formInput')}
-                        value={formik.values.email}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        name='email'
-                        id="txtEmail"
-                        type="email"
-                    />
-                </div>
-                <small className={cx('error')}>{formik.touched.email && formik.errors.email}</small>
-
-                <div className={cx('formControl')}>
-                    <label className={cx('formlabel')} htmlFor="txtUsername">Tên tài khoản</label>
-                    <input
-                        className={cx('formInput')}
-                        value={formik.values.username}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        name='username'
-                        id="txtUsername"
-                        type="text"
-                    />
-                </div>
-                <small className={cx('error')}>{formik.touched.username && formik.errors.username}</small>
-
-                <div className={cx('formControl')}>
-                    <label className={cx('formlabel')} htmlFor="txtPassword">Mật khẩu</label>
-                    <input
-                        className={cx('formInput')}
-                        value={formik.values.password}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        name='password'
-                        id="txtPassword"
-                        type="password"
-                    />
-                </div>
-                <small className={cx('error')}>{formik.touched.password && formik.errors.password}</small>
-
-                <div className={cx('formControl')}>
-                    <label className={cx('formlabel')} htmlFor="txtConfirmPassword">Xác nhận mật khẩu</label>
-                    <input
-                        className={cx('formInput')}
-                        value={formik.values.confirmPassword}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        name='confirmPassword'
-                        id="txtConfirmPassword"
-                        type="password"
-                    />
-                </div>
-                <small className={cx('error')}>{formik.touched.confirmPassword && formik.errors.confirmPassword}</small>
-
+                {renderInput('name', 'Họ và tên')}
+                {renderInput('phoneNumber', 'Số điện thoại', 'tel')}
+                {renderInput('email', 'Email', 'email')}
+                {renderInput('username', 'Tên tài khoản')}
+                {renderInput('password', 'Mật khẩu', 'password', true)}
+                {renderInput('confirmPassword', 'Xác nhận mật khẩu', 'password')}
                 <p>
                     <span>- Bạn có thể đăng ký tại đây, hoặc ngay trong trò chơi</span>
                     <br />
