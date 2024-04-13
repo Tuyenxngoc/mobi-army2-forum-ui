@@ -29,6 +29,9 @@ function Forum() {
                     </a>
                 </div>
             </div>
+            <div className={cx('box_forums')}>
+
+            </div>
         </main>
     );
 }
