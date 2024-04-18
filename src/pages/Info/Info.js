@@ -187,7 +187,7 @@ function Info() {
                             <b>Khi chọn phòng chơi cần quan tâm các thông số sau:</b>
                         </span>
                         <br />
-                        <ul>
+                        <ul style={{ listStyle: "none" }}>
                             <li>Số tiền cược / ván đấu.</li>
                             <li>Số người chơi / 1 phòng.</li>
                             <li>Bản đồ chiến đấu</li>
@@ -196,7 +196,7 @@ function Info() {
                             <b>Trong game có các thông số người chơi cần phải biết:</b>
                         </span>
                         <br />
-                        <ul>
+                        <ul style={{ listStyle: "none" }}>
                             <li>Thanh lực màu vàng: cho biết quãng đường người chơi có thể đi</li>
                             <li>Thanh lực màu cam : hiển thị lực bắn của người chơi.</li>
                             <li>Con số giữa  hai thanh : hiển thị góc bắn của người chơi.</li>
@@ -227,7 +227,7 @@ function Info() {
                                     <th><small>Item</small></th>
                                     <th><small>Chức năng</small></th>
                                 </tr>
-                           </thead>
+                            </thead>
                             <tbody>
                                 {items.map((item, index) => (
                                     <tr key={index}>
@@ -244,7 +244,7 @@ function Info() {
                                         </td>
                                     </tr>
                                 ))}
-                           </tbody>
+                            </tbody>
                         </table>
                     </>}
                 isLast

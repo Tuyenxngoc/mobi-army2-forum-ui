@@ -5,3 +5,30 @@
 .recharge {
   margin: 10px 0;
 }
+
+.box_forums {
+  border-left: 2px solid #004679;
+  border-right: 2px solid #004679;
+}
+
+.forumList {
+  display: flex;
+  align-items: center;
+}
+
+.forumItem {
+  background-color: #4089ba;
+  border: 2px solid #00467a;
+  flex: 1;
+  text-align: center;
+
+  a {
+    color: white;
+    font-size: 12px;
+
+    &:hover {
+      color: #1e5b7e;
+      text-decoration: underline;
+    }
+  }
+}
