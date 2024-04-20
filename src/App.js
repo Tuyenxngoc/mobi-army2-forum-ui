@@ -6,6 +6,7 @@ import Info from './pages/Info/Info';
 import Forum from './pages/Forum/Forum';
 import Register from './pages/Register/Register';
 import NotFound from './pages/NotFound/NotFound';
+import TopicDetail from './pages/TopicDetail/TopicDetail';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="forum" element={<Forum />} />
           <Route path="forum/login" element={<Login />} />
           <Route path="forum/register" element={<Register />} />
+          <Route path="forum/topic/:id" element={<TopicDetail />} />
           <Route path='*' element={<NotFound />} />
         </Route>
       </Routes>

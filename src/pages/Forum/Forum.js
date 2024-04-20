@@ -6,6 +6,7 @@ import Topic from "../../components/Topic";
 
 import imgg from '../../assets/images/pl.gif';
 import Pagination from "../../components/Pagination";
+import { useState } from "react";
 
 const cx = classNames.bind(Style);
 
@@ -69,6 +70,14 @@ const data = [
 function Forum() {
 
     const navigate = useNavigate();
+    const [currentPage, setCurrentPage] = useState(0);
+
+    const handlePageChange = (pageNumber) => {
+        if (pageNumber > 9) {
+            return;
+        }
+        setCurrentPage(pageNumber);
+    };
 
     const handleLoginClick = () => {
         // Navigate to the login page
@@ -110,7 +119,7 @@ function Forum() {
                 <div className="topic-list">
                     {data.map((item, i) => <Topic key={i} data={item} />)}
                 </div>
-                <Pagination />
+                <Pagination totalPages={4} currentPage={currentPage} onPageChange={handlePageChange} />
             </div>
         </main>
     );

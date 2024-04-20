@@ -1,6 +1,31 @@
-.wrapper {
+.topic-wrapper {
   display: flex;
   align-items: center;
   background: var(--back-ground);
   border-bottom: 1px #65a5ac solid;
+}
+
+.avatar-container {
+}
+
+.avatar {
+}
+
+.topic-details {
+}
+
+.topic-title {
+}
+
+.topic-link {
+}
+
+.topic-metadata {
+  color: black;
+  font-size: 12px;
+
+  span {
+    color: #666666;
+    font-style: italic;
+  }
 }
