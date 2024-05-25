@@ -9,10 +9,9 @@ function showCurrentPage(page) {
 }
 
 function Pagination({ totalPages, currentPage, onPageChange }) {
-
     return (
         <div className={cx('wrapper')}>
-            {currentPage > 0 &&
+            {currentPage > 0 && (
                 <>
                     <button className={cx('button')} onClick={() => onPageChange(0)}>
                         &laquo;
@@ -21,30 +20,28 @@ function Pagination({ totalPages, currentPage, onPageChange }) {
                         &lsaquo;
                     </button>
                 </>
-            }
+            )}
 
-            {currentPage - 1 >= 0 &&
+            {currentPage - 1 >= 0 && (
                 <button className={cx('button')} onClick={() => onPageChange(currentPage - 1)}>
                     {showCurrentPage(currentPage - 1)}
                 </button>
-            }
+            )}
 
-            <button className={cx('button', 'active')}>
-                {showCurrentPage(currentPage)}
-            </button>
+            <button className={cx('button', 'active')}>{showCurrentPage(currentPage)}</button>
 
-            {currentPage + 1 < totalPages &&
+            {currentPage + 1 < totalPages && (
                 <button className={cx('button')} onClick={() => onPageChange(currentPage + 1)}>
                     {showCurrentPage(currentPage + 1)}
                 </button>
-            }
-            {currentPage + 2 < totalPages &&
+            )}
+            {currentPage + 2 < totalPages && (
                 <button className={cx('button')} onClick={() => onPageChange(currentPage + 2)}>
                     {showCurrentPage(currentPage + 2)}
                 </button>
-            }
+            )}
 
-            {currentPage + 1 === totalPages ||
+            {currentPage + 1 === totalPages || (
                 <>
                     <button className={cx('button')} onClick={() => onPageChange(currentPage + 1)}>
                         &rsaquo;
@@ -53,7 +50,7 @@ function Pagination({ totalPages, currentPage, onPageChange }) {
                         &raquo;
                     </button>
                 </>
-            }
+            )}
         </div>
     );
 }
@@ -63,6 +60,5 @@ Pagination.propTypes = {
     currentPage: PropTypes.number.isRequired,
     onPageChange: PropTypes.func.isRequired,
 };
-
 
 export default Pagination;

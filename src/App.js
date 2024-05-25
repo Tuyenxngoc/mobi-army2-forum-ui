@@ -9,22 +9,21 @@ import NotFound from './pages/NotFound/NotFound';
 import TopicDetail from './pages/TopicDetail/TopicDetail';
 
 function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<DefaultLayout />}>
-          <Route index element={<Home />} />
-          <Route path="info" element={<Info />} />
-          <Route path="forum" element={<Forum />} />
-          <Route path="forum/login" element={<Login />} />
-          <Route path="forum/register" element={<Register />} />
-          <Route path="forum/topic/:id" element={<TopicDetail />} />
-          <Route path='*' element={<NotFound />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
-
-  );
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<DefaultLayout />}>
+                    <Route index element={<Home />} />
+                    <Route path="info" element={<Info />} />
+                    <Route path="forum" element={<Forum />} />
+                    <Route path="forum/login" element={<Login />} />
+                    <Route path="forum/register" element={<Register />} />
+                    <Route path="forum/topic/:id" element={<TopicDetail />} />
+                    <Route path="*" element={<NotFound />} />
+                </Route>
+            </Routes>
+        </BrowserRouter>
+    );
 }
 
 export default App;

@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import Style from './Nav.module.scss';
 import classNames from 'classnames/bind';
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 
 const cx = classNames.bind(Style);
 
 const navItems = [
     { path: '/', text: 'Trang Chủ' },
     { path: '/info', text: 'Giới Thiệu' },
-    { path: '/forum', text: 'Diễn Đàn' }
+    { path: '/forum', text: 'Diễn Đàn' },
 ];
 
 function Nav() {
@@ -32,7 +32,9 @@ function Nav() {
             <ul className={cx('navList')}>
                 {navItems.map((item, index) => (
                     <li key={index} className={cx('navItem', { active: activeNavItem === index })}>
-                        <NavLink className={cx('navLink')} to={item.path} onClick={() => setActiveNavItem(index)}>{item.text}</NavLink>
+                        <NavLink className={cx('navLink')} to={item.path} onClick={() => setActiveNavItem(index)}>
+                            {item.text}
+                        </NavLink>
                     </li>
                 ))}
             </ul>

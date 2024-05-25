@@ -4,7 +4,6 @@ import classNames from 'classnames/bind';
 
 const cx = classNames.bind(Style);
 function Topic({ data }) {
-
     return (
         <div className={cx('topic-wrapper')}>
             <div className={cx('avatar-container')}>
@@ -12,7 +11,7 @@ function Topic({ data }) {
             </div>
             <div className={cx('topic-details')}>
                 <div className={cx('topic-title')}>
-                    <Link to='topic/1'>{data.title}</Link>
+                    <Link to="topic/1">{data.title}</Link>
                 </div>
                 <div className={cx('topic-metadata')}>
                     bởi

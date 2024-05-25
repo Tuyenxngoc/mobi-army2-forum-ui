@@ -11,12 +11,8 @@ const Notification = ({ title, content, date, isLast = false }) => {
                     <h4>{title}</h4>
                 </div>
             )}
-            <div className={cx('content')}>
-                {content}
-            </div>
-            {date && (
-                <div className={cx('date')}>{date}</div>
-            )}
+            <div className={cx('content')}>{content}</div>
+            {date && <div className={cx('date')}>{date}</div>}
         </div>
     );
 };

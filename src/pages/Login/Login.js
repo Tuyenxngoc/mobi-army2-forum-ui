@@ -1,28 +1,25 @@
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import Style from './Login.module.scss';
-import classNames from "classnames/bind";
+import classNames from 'classnames/bind';
 
 const cx = classNames.bind(Style);
 
 const validationSchema = yup.object({
-    username: yup.string().trim()
-        .required('Vui lòng nhập tên tài khoản'),
+    username: yup.string().trim().required('Vui lòng nhập tên tài khoản'),
 
-    password: yup.string()
-        .required('Vui lòng nhập mật khẩu')
+    password: yup.string().required('Vui lòng nhập mật khẩu'),
 });
 
 const defaultValue = {
     username: '',
     password: '',
-}
+};
 
 function Login() {
-
     const formik = useFormik({
         initialValues: defaultValue,
         validationSchema: validationSchema,
@@ -34,7 +31,9 @@ function Login() {
     const renderInput = (name, label, type = 'text') => (
         <>
             <div className={cx('formControl')}>
-                <label className={cx('formlabel')} htmlFor={`txt${name}`}>{label}</label>
+                <label className={cx('formlabel')} htmlFor={`txt${name}`}>
+                    {label}
+                </label>
                 <input
                     id={`txt${name}`}
                     name={name}
@@ -49,12 +48,9 @@ function Login() {
         </>
     );
 
-
     return (
         <main className={cx('wrapper')}>
-            <div className={cx('title')}>
-                Sử dụng tài khoản Mobi Army 2 để đăng nhập.
-            </div>
+            <div className={cx('title')}>Sử dụng tài khoản Mobi Army 2 để đăng nhập.</div>
 
             <form onSubmit={formik.handleSubmit}>
                 {renderInput('username', 'Tên tài khoản')}
@@ -68,9 +64,14 @@ function Login() {
             <div className={cx('footer')}>
                 <div className={cx('register')}>
                     <span>Nếu bạn chưa có tài khoản, vui lòng đăng ký</span>
-                    <Link className={cx('link')} to={'/forum/register'}> Đăng ký</Link>
+                    <Link className={cx('link')} to={'/forum/register'}>
+                        {' '}
+                        Đăng ký
+                    </Link>
                 </div>
-                <Link className={cx('link')} to={'./forget'}>Quên mật khẩu</Link>
+                <Link className={cx('link')} to={'./forget'}>
+                    Quên mật khẩu
+                </Link>
             </div>
         </main>
     );

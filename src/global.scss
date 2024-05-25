@@ -1,57 +1,57 @@
-@import "normalize.css";
+@import 'normalize.css';
 
 :root {
-  --primary: #456ad4;
-  --black: #000;
-  --text-color: #456ad4;
-  --link-color: #1757a6;
-  --back-ground: #c4ddfb;
+    --primary: #456ad4;
+    --black: #000;
+    --text-color: #456ad4;
+    --link-color: #1757a6;
+    --back-ground: #c4ddfb;
 
-  --default-layout-header-height: 100px;
+    --default-layout-header-height: 100px;
 }
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-  font-family: Arial;
-  font-size: 14px;
-  background: #b3afaf;
-  color: var(--text-color);
+    font-family: Arial;
+    font-size: 14px;
+    background: #b3afaf;
+    color: var(--text-color);
 }
 
 button {
-  padding: 0 4px;
-  border-radius: 4px;
+    padding: 0 4px;
+    border-radius: 4px;
 }
 
 button + button {
-  margin-left: 4px;
+    margin-left: 4px;
 }
 
 a {
-  color: var(--link-color);
-  text-decoration: none;
+    color: var(--link-color);
+    text-decoration: none;
 }
 
 ul,
 ol {
-  margin: 0;
-  padding: 0;
-  list-style: none;
+    margin: 0;
+    padding: 0;
+    list-style: none;
 }
 
 .custom-width-630 {
-  max-width: 630px;
-  padding: 0;
+    max-width: 630px;
+    padding: 0;
 }
 
 .box-container {
-  background: var(--back-ground);
-  border: 2px solid #004679;
-  padding: 5px;
-  color: var(--text-color);
+    background: var(--back-ground);
+    border: 2px solid #004679;
+    padding: 5px;
+    color: var(--text-color);
 }

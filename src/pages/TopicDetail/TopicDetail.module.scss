@@ -1,13 +1,13 @@
 .ads {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-  a {
-    margin: 0 5px;
+    a {
+        margin: 0 5px;
 
-    &:hover {
-      text-decoration: underline;
+        &:hover {
+            text-decoration: underline;
+        }
     }
-  }
 }

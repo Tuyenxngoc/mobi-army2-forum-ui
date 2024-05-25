@@ -1,74 +1,73 @@
-import { Link, useNavigate } from "react-router-dom";
-import napthe from "../../assets/images/army.png";
+import { Link, useNavigate } from 'react-router-dom';
+import napthe from '../../assets/images/army.png';
 import Style from './Forum.module.scss';
-import classNames from "classnames/bind";
-import Topic from "../../components/Topic";
+import classNames from 'classnames/bind';
+import Topic from '../../components/Topic';
 
 import imgg from '../../assets/images/pl.gif';
-import Pagination from "../../components/Pagination";
-import { useState } from "react";
+import Pagination from '../../components/Pagination';
+import { useState } from 'react';
 
 const cx = classNames.bind(Style);
 
 const data = [
     {
         user: {
-            username: "admin",
+            username: 'admin',
             avatar: imgg,
-            id: 1
+            id: 1,
         },
-        title: "Army2 cho ip ios có sever trái đất",
+        title: 'Army2 cho ip ios có sever trái đất',
         comment: 10,
         view: 1023,
         favourite: 1,
     },
     {
         user: {
-            username: "admin",
+            username: 'admin',
             avatar: imgg,
-            id: 1
+            id: 1,
         },
-        title: "Army2 cho ip ios có sever trái đất",
+        title: 'Army2 cho ip ios có sever trái đất',
         comment: 10,
         view: 1023,
         favourite: 1,
     },
     {
         user: {
-            username: "admin",
+            username: 'admin',
             avatar: imgg,
-            id: 1
+            id: 1,
         },
-        title: "Army2 cho ip ios có sever trái đất",
+        title: 'Army2 cho ip ios có sever trái đất',
         comment: 10,
         view: 1023,
         favourite: 1,
     },
     {
         user: {
-            username: "admin",
+            username: 'admin',
             avatar: imgg,
-            id: 1
+            id: 1,
         },
-        title: "Army2 cho ip ios có sever trái đất",
+        title: 'Army2 cho ip ios có sever trái đất',
         comment: 10,
         view: 1023,
         favourite: 1,
     },
     {
         user: {
-            username: "admin",
+            username: 'admin',
             avatar: imgg,
-            id: 1
+            id: 1,
         },
-        title: "Army2 cho ip ios có sever trái đất",
+        title: 'Army2 cho ip ios có sever trái đất',
         comment: 10,
         view: 1023,
         favourite: 1,
     },
 ];
 function Forum() {
-
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(0);
 
@@ -117,7 +116,9 @@ function Forum() {
                     </ul>
                 </div>
                 <div className="topic-list">
-                    {data.map((item, i) => <Topic key={i} data={item} />)}
+                    {data.map((item, i) => (
+                        <Topic key={i} data={item} />
+                    ))}
                 </div>
                 <Pagination totalPages={4} currentPage={currentPage} onPageChange={handlePageChange} />
             </div>

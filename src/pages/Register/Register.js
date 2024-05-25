@@ -4,31 +4,26 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import Style from './Register.module.scss';
-import classNames from "classnames/bind";
+import classNames from 'classnames/bind';
 
 const cx = classNames.bind(Style);
 
 const validationSchema = yup.object({
-    name: yup.string().trim()
-        .required('Họ và tên là bắt buộc'),
+    name: yup.string().trim().required('Họ và tên là bắt buộc'),
 
-    phoneNumber: yup.string().trim()
-        .required('Số điện thoại là bắt buộc'),
+    phoneNumber: yup.string().trim().required('Số điện thoại là bắt buộc'),
 
-    email: yup.string().trim()
-        .email('Email không hợp lệ')
-        .required('Email là bắt buộc'),
+    email: yup.string().trim().email('Email không hợp lệ').required('Email là bắt buộc'),
 
-    username: yup.string().trim()
-        .required('Tên tài khoản là bắt buộc'),
+    username: yup.string().trim().required('Tên tài khoản là bắt buộc'),
 
-    password: yup.string()
-        .min(6, 'Mật khẩu phải có ít nhất 6 ký tự')
-        .required('Mật khẩu là bắt buộc'),
+    password: yup.string().min(6, 'Mật khẩu phải có ít nhất 6 ký tự').required('Mật khẩu là bắt buộc'),
 
-    confirmPassword: yup.string().trim()
+    confirmPassword: yup
+        .string()
+        .trim()
         .oneOf([yup.ref('password'), null], 'Mật khẩu xác nhận phải giống với mật khẩu đã nhập')
-        .required('Xác nhận mật khẩu là bắt buộc')
+        .required('Xác nhận mật khẩu là bắt buộc'),
 });
 
 const defaultValue = {
@@ -37,11 +32,10 @@ const defaultValue = {
     email: '',
     username: '',
     password: '',
-    confirmPassword: ''
-}
+    confirmPassword: '',
+};
 
 function Register() {
-
     const formik = useFormik({
         initialValues: defaultValue,
         validationSchema: validationSchema,
@@ -53,7 +47,9 @@ function Register() {
     const renderInput = (name, label, type = 'text') => (
         <>
             <div className={cx('formControl')}>
-                <label className={cx('formlabel')} htmlFor={`txt${name}`}>{label}</label>
+                <label className={cx('formlabel')} htmlFor={`txt${name}`}>
+                    {label}
+                </label>
                 <input
                     id={`txt${name}`}
                     name={name}
@@ -84,22 +80,26 @@ function Register() {
                     <br />
                     <span>- Số điện thoại / Email của bạn sẽ không hiện ra bất kỳ chỗ nào khác</span>
                     <br />
-                    <span>- Bất kỳ ai giữ số điện thoại hoặc email bạn dùng đăng ký đều có thể lấy lại mật khẩu. Do đó đừng dùng SĐT/Email của người khác</span>
+                    <span>
+                        - Bất kỳ ai giữ số điện thoại hoặc email bạn dùng đăng ký đều có thể lấy lại mật khẩu. Do đó
+                        đừng dùng SĐT/Email của người khác
+                    </span>
                     <br />
-                    <span>- Không cung cấp mật khẩu cho bất kỳ ai. Admin không bao giờ hỏi mật khẩu của bạn. Không nên dùng mật khẩu quá dễ đoán như: 12345, abcde, adgjmp...</span>
+                    <span>
+                        - Không cung cấp mật khẩu cho bất kỳ ai. Admin không bao giờ hỏi mật khẩu của bạn. Không nên
+                        dùng mật khẩu quá dễ đoán như: 12345, abcde, adgjmp...
+                    </span>
                     <br />
                     <span>- Tài khoản đăng ký có thể dùng đăng nhập trong game, và trên diễn đàn Mobi Army 2 này</span>
                     <br />
                 </p>
                 <div className={cx('formControl')}>
-                    <button
-                        type="submit">Đăng ký</button>
+                    <button type="submit">Đăng ký</button>
                 </div>
                 <p>
-                    Bạn đã có tài khoản? <Link to='/forum/login'>Đăng nhập</Link>
+                    Bạn đã có tài khoản? <Link to="/forum/login">Đăng nhập</Link>
                 </p>
             </form>
-
         </main>
     );
 }

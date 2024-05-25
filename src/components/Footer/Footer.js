@@ -9,9 +9,7 @@ function Footer() {
             <h2 className={cx('name')}>Mobi Army 2</h2>
             <div className={cx('des')}>Bản Quyền thuộc về @TeaMobi - 2022</div>
             <div className={cx('link')}>
-                <a href='/'>
-                    Điều Khoản Sử Dụng
-                </a>
+                <a href="/">Điều Khoản Sử Dụng</a>
             </div>
         </footer>
     );

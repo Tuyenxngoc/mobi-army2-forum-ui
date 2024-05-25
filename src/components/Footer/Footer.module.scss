@@ -1,28 +1,28 @@
 .copyright {
-  background-image: url("../../assets/images/bottom.png");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  text-align: center;
-  color: white;
+    background-image: url('../../assets/images/bottom.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    text-align: center;
+    color: white;
 }
 
 .name {
-  font-size: 15px;
-  font-weight: bold;
-  padding-top: 5px;
+    font-size: 15px;
+    font-weight: bold;
+    padding-top: 5px;
 }
 
 .des {
-  font-size: 10px;
-  line-height: 10px;
+    font-size: 10px;
+    line-height: 10px;
 }
 
 .link {
-  a {
-    font-size: 10px;
-    line-height: 10px;
-    text-decoration: none;
-    color: white;
-  }
+    a {
+        font-size: 10px;
+        line-height: 10px;
+        text-decoration: none;
+        color: white;
+    }
 }

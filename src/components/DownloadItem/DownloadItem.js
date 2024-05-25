@@ -17,11 +17,7 @@ function DownloadItem({ content }) {
 
     return (
         <div className={cx('downloadItem')}>
-            <a
-                href={content.link}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-            >
+            <a href={content.link} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} download>
                 <img src={hovered ? content.icon2 : content.icon1} alt="icon" />
             </a>
             <div>{content.title}</div>
@@ -34,8 +30,8 @@ DownloadItem.propTypes = {
         title: PropTypes.string.isRequired,
         link: PropTypes.string.isRequired,
         icon1: PropTypes.string.isRequired,
-        icon2: PropTypes.string.isRequired
-    }).isRequired
+        icon2: PropTypes.string.isRequired,
+    }).isRequired,
 };
 
 export default DownloadItem;
