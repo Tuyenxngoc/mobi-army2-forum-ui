@@ -2,7 +2,7 @@ import { Link, useParams } from 'react-router-dom';
 import Style from './TopicDetail.module.scss';
 import classNames from 'classnames/bind';
 
-import imm from '../../assets/images/new.gif';
+import imm from '~/assets/images/new.gif';
 
 const cx = classNames.bind(Style);
 

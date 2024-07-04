@@ -1,164 +1,134 @@
-import Notification from '../../components/Notification/Notification';
-import Style from './Info.module.scss';
-import classNames from 'classnames/bind';
-
-import i0 from '../../assets/images/item/0.png';
-import i1 from '../../assets/images/item/1.png';
-import i3 from '../../assets/images/item/3.png';
-import i5 from '../../assets/images/item/5.png';
-import i6 from '../../assets/images/item/6.png';
-import i7 from '../../assets/images/item/7.png';
-import i8 from '../../assets/images/item/8.png';
-import i9 from '../../assets/images/item/9.png';
-import i10 from '../../assets/images/item/10.png';
-import i11 from '../../assets/images/item/11.png';
-import i16 from '../../assets/images/item/16.png';
-import i17 from '../../assets/images/item/17.png';
-import i18 from '../../assets/images/item/18.png';
-import i19 from '../../assets/images/item/19.png';
-import i20 from '../../assets/images/item/20.png';
-import i21 from '../../assets/images/item/21.png';
-import i22 from '../../assets/images/item/22.png';
-import i24 from '../../assets/images/item/24.png';
-import i25 from '../../assets/images/item/25.png';
-import i26 from '../../assets/images/item/26.png';
-import i28 from '../../assets/images/item/28.png';
-import i29 from '../../assets/images/item/29.png';
-import i30 from '../../assets/images/item/30.png';
-import i31 from '../../assets/images/item/31.png';
-import i32 from '../../assets/images/item/32.png';
-import i33 from '../../assets/images/item/33.png';
-
-const cx = classNames.bind(Style);
+import { items as aa } from '~/assets';
+import Notification from '~/components/Notification/Notification';
 
 const items = [
     {
-        img: i0,
+        img: aa.item0,
         name: 'Cứu thương',
         des: 'Hồi phục HP, mang theo tối đa 2 gói trong 1 trận đấu',
     },
     {
-        img: i1,
+        img: aa.item0,
         name: 'Dịch chuyển tức thời',
         des: 'Dịch chuyển tức thời đến 1 vị trí khác, mang theo tối đa 2 gói trong 1 trận đấu',
     },
     {
-        img: i3,
+        img: aa.item0,
         name: 'Di chuyển x2',
         des: 'Di chuyển xa x2',
     },
     {
-        img: i5,
+        img: aa.item0,
         name: 'Ngưng gió',
         des: 'Ngưng gió trong 3 lượt bắn',
     },
     {
-        img: i6,
+        img: aa.item0,
         name: 'Bom phá đất',
         des: 'Phá nát mặt đất, gây khó khăn cho đối phương khi di chuyển',
     },
     {
-        img: i7,
+        img: aa.item0,
         name: 'Lựu đạn',
         des: 'Ném vào đối phương, sức hủy diệt cao',
     },
     {
-        img: i8,
+        img: aa.item0,
         name: 'Bom B52',
         des: 'Sức hủy diệt cao trên diện rộng',
     },
     {
-        img: i9,
+        img: aa.item0,
         name: 'Tơ nhện',
         des: 'Dùng để cản đường, làm đối phương bị mắc kẹt',
     },
     {
-        img: i10,
+        img: aa.item0,
         name: 'Cứu thương đồng đội',
         des: 'Dùng để cứu thương cho toàn bộ đồng đội',
     },
     {
-        img: i11,
+        img: aa.item0,
         name: 'Đạn trái phá',
         des: 'Phá nát mặt đất, gây khó khăn cho đối phương khi di chuyển',
     },
     {
-        img: i16,
+        img: aa.item0,
         name: 'Đạn Laze',
         des: 'Rọi tia Laze vào mục tiêu, sức hủy diệt cao',
     },
     {
-        img: i17,
+        img: aa.item0,
         name: 'Đạn vòi rồng',
         des: 'Tạo 1 cơn lốc xoáy làm lệch các đường đạn trong 3 lượt',
     },
     {
-        img: i18,
+        img: aa.item0,
         name: 'Chuột gắn bom',
         des: 'Thả chuột có gắn bom chạy đến mục tiêu rồi phát nổ, sức hủy diệt cao',
     },
     {
-        img: i19,
+        img: aa.item0,
         name: 'Tên lửa x4',
         des: 'Phóng ra 4 tên lửa nhắm vào 1 mục tiêu, sức hủy diệt cao',
     },
     {
-        img: i20,
+        img: aa.item0,
         name: 'Đạn xuyên đất',
         des: 'Đạn xuyên vào trong đất và nổ khi chạm mục tiêu, sức hủy điệt cao',
     },
     {
-        img: i21,
+        img: aa.item0,
         name: 'Mưa sao băng',
         des: 'Tạo một cơn mưa thiên thạch tiêu diệt nhiều mục tiêu trên diện rộng',
     },
     {
-        img: i22,
+        img: aa.item0,
         name: 'Mưa đạn',
         des: 'Tạo một cơn mưa đạn tiêu diệt nhiều mục tiêu trên diện rộng, sức hủy diệt cao',
     },
     {
-        img: i25,
+        img: aa.item0,
         name: 'Bom độc',
         des: 'Bom có chất độc, làm mất máu đối phương sau mỗi lượt',
     },
     {
-        img: i26,
+        img: aa.item0,
         name: 'Chong chóng khoan đất',
         des: 'Chong chóng xuyên vào trong đất, phát nổ khi chạm vào mục tiêu, sức hủy diệt cực cao',
     },
     {
-        img: i28,
+        img: aa.item0,
         name: 'Đóng băng',
         des: 'Đóng băng đối phương, không thể di chuyển',
     },
     {
-        img: i29,
+        img: aa.item0,
         name: 'Khí độc',
         des: 'Thả khói độc làm tiêu hao dần HP đối phương mỗi lượt',
     },
     {
-        img: i30,
+        img: aa.item0,
         name: 'Tơ nhện x3',
         des: 'Dùng để cản đường, làm đối phương bị mắc kẹt, bắn ra 3 lưới',
     },
     {
-        img: i31,
+        img: aa.item0,
         name: 'Bom hẹn giờ',
         des: 'Gài bom hẹn giờ để nổ sau 3 lượt, sức hủy diệt cực cao',
     },
     {
-        img: i32,
+        img: aa.item0,
         name: 'Cứu thương 50% HP',
         des: 'Phục hồi 50% HP',
     },
     {
-        img: i33,
+        img: aa.item0,
         name: 'Cứu thương 100% HP',
         des: 'Phục hồi 100% HP',
     },
     {
-        img: i24,
+        img: aa.item0,
         name: 'Bom tự sát',
         des: 'Cho nổ bom hi sinh kéo theo đối phương, sức hủy diệt cực cao',
     },

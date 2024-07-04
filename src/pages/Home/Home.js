@@ -1,37 +1,37 @@
 import Style from './Home.module.scss';
 import classNames from 'classnames/bind';
 
-import background from '../../assets/images/background.jpg';
-import apk_0 from '../../assets/images/apk_0.png';
-import apk_1 from '../../assets/images/apk_1.png';
+import background from '~/assets/images/background.jpg';
+import apk_0 from '~/assets/images/apk_0.png';
+import apk_1 from '~/assets/images/apk_1.png';
 
-import DownloadItem from '../../components/DownloadItem/DownloadItem';
-import Notification from '../../components/Notification/Notification';
+import DownloadItem from '~/components/DownloadItem/DownloadItem';
+import Notification from '~/components/Notification/Notification';
 
 const cx = classNames.bind(Style);
 
 const downloadInfo = [
     {
         title: 'Phiên bản: 244',
-        link: '../../assets/files/army2local.jar',
+        link: '~/assets/files/army2local.jar',
         icon1: apk_0,
         icon2: apk_1,
     },
     {
         title: 'Phiên bản: 244',
-        link: '../../assets/files/army2local.jar',
+        link: '~/assets/files/army2local.jar',
         icon1: apk_0,
         icon2: apk_1,
     },
     {
         title: 'Phiên bản: 244',
-        link: '../../assets/files/army2local.jar',
+        link: '~/assets/files/army2local.jar',
         icon1: apk_0,
         icon2: apk_1,
     },
     {
         title: 'Phiên bản: 244',
-        link: '../../assets/files/army2local.jar',
+        link: '~/assets/files/army2local.jar',
         icon1: apk_0,
         icon2: apk_1,
     },

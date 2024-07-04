@@ -1,11 +1,10 @@
 import { Link, useNavigate } from 'react-router-dom';
-import napthe from '../../assets/images/army.png';
 import Style from './Forum.module.scss';
 import classNames from 'classnames/bind';
-import Topic from '../../components/Topic';
+import Topic from '~/components/Topic';
 
-import imgg from '../../assets/images/pl.gif';
-import Pagination from '../../components/Pagination';
+import images from '~/assets';
+import Pagination from '~/components/Pagination';
 import { useState } from 'react';
 
 const cx = classNames.bind(Style);
@@ -14,7 +13,7 @@ const data = [
     {
         user: {
             username: 'admin',
-            avatar: imgg,
+            avatar: images.plGif,
             id: 1,
         },
         title: 'Army2 cho ip ios có sever trái đất',
@@ -25,7 +24,7 @@ const data = [
     {
         user: {
             username: 'admin',
-            avatar: imgg,
+            avatar: images.plGif,
             id: 1,
         },
         title: 'Army2 cho ip ios có sever trái đất',
@@ -36,7 +35,7 @@ const data = [
     {
         user: {
             username: 'admin',
-            avatar: imgg,
+            avatar: images.plGif,
             id: 1,
         },
         title: 'Army2 cho ip ios có sever trái đất',
@@ -47,7 +46,7 @@ const data = [
     {
         user: {
             username: 'admin',
-            avatar: imgg,
+            avatar: images.plGif,
             id: 1,
         },
         title: 'Army2 cho ip ios có sever trái đất',
@@ -58,7 +57,7 @@ const data = [
     {
         user: {
             username: 'admin',
-            avatar: imgg,
+            avatar: images.plGif,
             id: 1,
         },
         title: 'Army2 cho ip ios có sever trái đất',
@@ -96,7 +95,7 @@ function Forum() {
                     <button onClick={handleRegisterClick}>Đăng ký</button>
                     <div className={cx('recharge')}>
                         <a href="/">
-                            <img src={napthe} alt="nap the" />
+                            <img src={images.army} alt="nap the" />
                         </a>
                     </div>
                 </div>
