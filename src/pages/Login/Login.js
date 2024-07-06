@@ -5,6 +5,8 @@ import * as yup from 'yup';
 
 import Style from './Login.module.scss';
 import classNames from 'classnames/bind';
+import { useState } from 'react';
+import { login } from '~/services/authService';
 
 const cx = classNames.bind(Style);
 
@@ -20,13 +22,27 @@ const defaultValue = {
 };
 
 function Login() {
+    const [isLoading, setIsLoading] = useState(false);
+
     const formik = useFormik({
         initialValues: defaultValue,
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            alert(JSON.stringify(values, null, 2));
+            handleLogin(values);
         },
     });
+
+    const handleLogin = async (values) => {
+        setIsLoading(true);
+        try {
+            const response = await login(values);
+            if (response.status === 200) {
+            }
+        } catch (error) {
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     const renderInput = (name, label, type = 'text') => (
         <>
@@ -54,7 +70,7 @@ function Login() {
 
             <form onSubmit={formik.handleSubmit}>
                 {renderInput('username', 'Tên tài khoản')}
-                {renderInput('password', 'Mật khẩu', 'password', true)}
+                {renderInput('password', 'Mật khẩu', 'password')}
 
                 <div className={cx('formControl')}>
                     <button type="submit">Đăng nhập</button>
@@ -65,7 +81,6 @@ function Login() {
                 <div className={cx('register')}>
                     <span>Nếu bạn chưa có tài khoản, vui lòng đăng ký</span>
                     <Link className={cx('link')} to={'/forum/register'}>
-                        {' '}
                         Đăng ký
                     </Link>
                 </div>

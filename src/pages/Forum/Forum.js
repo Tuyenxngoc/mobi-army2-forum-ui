@@ -95,7 +95,7 @@ function Forum() {
                     <button onClick={handleRegisterClick}>Đăng ký</button>
                     <div className={cx('recharge')}>
                         <a href="/">
-                            <img src={images.army} alt="nap the" />
+                            <img alt="nap the" />
                         </a>
                     </div>
                 </div>
