@@ -6,6 +6,7 @@ import Topic from '~/components/Topic';
 import images from '~/assets';
 import Pagination from '~/components/Pagination';
 import { useState } from 'react';
+import useAuth from '~/hooks/useAuth';
 
 const cx = classNames.bind(Style);
 
@@ -70,6 +71,8 @@ function Forum() {
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(0);
 
+    const { isAuthenticated, logout } = useAuth();
+
     const handlePageChange = (pageNumber) => {
         if (pageNumber > 9) {
             return;
@@ -79,20 +82,32 @@ function Forum() {
 
     const handleLoginClick = () => {
         // Navigate to the login page
-        navigate('login');
+        navigate('/login');
+    };
+
+    const handleLogoutClick = () => {
+        logout();
     };
 
     const handleRegisterClick = () => {
         // Navigate to the registration page
-        navigate('register');
+        navigate('/register');
     };
 
     return (
         <main>
             <div className="box-container">
                 <div className={cx('authSection')}>
-                    <button onClick={handleLoginClick}>Đăng nhập</button>
-                    <button onClick={handleRegisterClick}>Đăng ký</button>
+                    {isAuthenticated ? (
+                        <>
+                            <button onClick={handleLogoutClick}>Đăng xuất</button>
+                        </>
+                    ) : (
+                        <>
+                            <button onClick={handleLoginClick}>Đăng nhập</button>
+                            <button onClick={handleRegisterClick}>Đăng ký</button>
+                        </>
+                    )}
                     <div className={cx('recharge')}>
                         <a href="/">
                             <img alt="nap the" />

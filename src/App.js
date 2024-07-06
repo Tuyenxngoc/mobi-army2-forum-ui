@@ -7,7 +7,6 @@ import Forum from './pages/Forum/Forum';
 import Register from './pages/Register/Register';
 import NotFound from './pages/NotFound/NotFound';
 import TopicDetail from './pages/TopicDetail/TopicDetail';
-import RequireAuth from './utils/RequireAuth';
 
 function App() {
     return (
@@ -16,19 +15,11 @@ function App() {
                 <Route path="/" element={<DefaultLayout />}>
                     <Route index element={<Home />} />
                     <Route path="info" element={<Info />} />
-                    <Route
-                        path="forum"
-                        element={
-                            <RequireAuth>
-                                <Forum />
-                            </RequireAuth>
-                        }
-                    >
-                        <Route path="login" element={<Login />} />
-                        <Route path="register" element={<Register />} />
-                        <Route path="topic/:id" element={<TopicDetail />} />
-                        <Route path="*" element={<NotFound />} />
-                    </Route>
+                    <Route path="forum" element={<Forum />} />
+                    <Route path="login" element={<Login />} />
+                    <Route path="register" element={<Register />} />
+                    <Route path="topic/:id" element={<TopicDetail />} />
+                    <Route path="*" element={<NotFound />} />
                     <Route path="*" element={<NotFound />} />
                 </Route>
             </Routes>

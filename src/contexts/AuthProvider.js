@@ -66,7 +66,9 @@ const AuthProvider = ({ children }) => {
             localStorage.removeItem(ACCESS_TOKEN);
             localStorage.removeItem(REFRESH_TOKEN);
             setAuthData(defaultAuth);
-        } catch (error) {}
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     const contextValues = {

@@ -21,6 +21,7 @@ const images = {
     plGif: require('~/assets/images/pl.gif'),
     topbanner: require('~/assets/images/topbanner.png'),
     logo: require('~/assets/images/logo.png'),
+    loading: require('~/assets/images/Loading.gif'),
 };
 
 const items = {

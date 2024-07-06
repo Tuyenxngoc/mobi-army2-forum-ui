@@ -8,10 +8,14 @@
 
 .title {
     padding: 4px;
+    font-weight: bold;
 }
 
 .formControl {
     padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .formlabel {
@@ -34,5 +38,5 @@
 
 .error {
     color: red;
-    padding-left: 4px;
+    text-align: left;
 }

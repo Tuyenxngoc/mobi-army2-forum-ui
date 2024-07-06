@@ -97,7 +97,7 @@ function Register() {
                     <button type="submit">Đăng ký</button>
                 </div>
                 <p>
-                    Bạn đã có tài khoản? <Link to="/forum/login">Đăng nhập</Link>
+                    Bạn đã có tài khoản? <Link to="/login">Đăng nhập</Link>
                 </p>
             </form>
         </main>

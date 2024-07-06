@@ -1,11 +1,11 @@
 import axios, { axiosPrivate } from '~/apis/configHttp.js';
 
-export const login = (values) => {
+export const loginUser = (values) => {
     return axios.post('auth/login', values);
 };
 
 export const getCurrentUserLogin = () => {
-    return axiosPrivate.get('user/profile');
+    return axiosPrivate.get('user/current');
 };
 
 export const logoutToken = () => {

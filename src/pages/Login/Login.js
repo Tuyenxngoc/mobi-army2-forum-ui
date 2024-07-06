@@ -1,12 +1,14 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import Style from './Login.module.scss';
 import classNames from 'classnames/bind';
-import { useState } from 'react';
-import { login } from '~/services/authService';
+import { useEffect, useState } from 'react';
+import { loginUser } from '~/services/authService';
+import useAuth from '~/hooks/useAuth';
+import { ROLES } from '~/common/contans';
 
 const cx = classNames.bind(Style);
 
@@ -22,7 +24,13 @@ const defaultValue = {
 };
 
 function Login() {
+    const navigate = useNavigate();
+    const location = useLocation();
     const [isLoading, setIsLoading] = useState(false);
+
+    const { isAuthenticated, login } = useAuth();
+
+    const from = location.state?.from?.pathname || '/';
 
     const formik = useFormik({
         initialValues: defaultValue,
@@ -35,8 +43,16 @@ function Login() {
     const handleLogin = async (values) => {
         setIsLoading(true);
         try {
-            const response = await login(values);
+            const response = await loginUser(values);
             if (response.status === 200) {
+                const { accessToken, refreshToken, authorities } = response.data.data;
+                const roleName = authorities[0].authority;
+                login({ accessToken, refreshToken });
+                if (roleName === ROLES.Admin) {
+                    navigate('/admin', { replace: true });
+                } else {
+                    navigate(from, { replace: true });
+                }
             }
         } catch (error) {
         } finally {
@@ -45,11 +61,11 @@ function Login() {
     };
 
     const renderInput = (name, label, type = 'text') => (
-        <>
-            <div className={cx('formControl')}>
-                <label className={cx('formlabel')} htmlFor={`txt${name}`}>
-                    {label}
-                </label>
+        <div className={cx('formControl')}>
+            <label className={cx('formlabel')} htmlFor={`txt${name}`}>
+                {label}
+            </label>
+            <div>
                 <input
                     id={`txt${name}`}
                     name={name}
@@ -59,10 +75,17 @@ function Login() {
                     onBlur={formik.handleBlur}
                     className={cx('formInput', { error: formik.touched[name] && Boolean(formik.errors[name]) })}
                 />
+                <div className={cx('error')}>{formik.touched[name] && formik.errors[name]}</div>
             </div>
-            <small className={cx('error')}>{formik.touched[name] && formik.errors[name]}</small>
-        </>
+        </div>
     );
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate('/', { replace: true });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <main className={cx('wrapper')}>
@@ -73,18 +96,20 @@ function Login() {
                 {renderInput('password', 'Mật khẩu', 'password')}
 
                 <div className={cx('formControl')}>
-                    <button type="submit">Đăng nhập</button>
+                    <button type="submit" disabled={isLoading}>
+                        Đăng nhập
+                    </button>
                 </div>
             </form>
 
             <div className={cx('footer')}>
                 <div className={cx('register')}>
-                    <span>Nếu bạn chưa có tài khoản, vui lòng đăng ký</span>
-                    <Link className={cx('link')} to={'/forum/register'}>
+                    <span>Nếu bạn chưa có tài khoản, vui lòng đăng ký </span>
+                    <Link className={cx('link')} to={'/register'}>
                         Đăng ký
                     </Link>
                 </div>
-                <Link className={cx('link')} to={'./forget'}>
+                <Link className={cx('link')} to={'/forget'}>
                     Quên mật khẩu
                 </Link>
             </div>
