@@ -7,14 +7,28 @@
 }
 
 .title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     border-bottom: 1px solid #072d5c;
 
+    input,
     h4 {
         font-size: 13px;
         color: #456ad4;
         font-weight: bold;
         margin: 2.6px 0;
     }
+
+    input {
+        padding: 0;
+        margin: 0;
+    }
+}
+
+.editButton {
+    margin-left: 4px;
+    cursor: pointer;
 }
 
 .content {

@@ -5,8 +5,9 @@ import Topic from '~/components/Topic';
 
 import images from '~/assets';
 import Pagination from '~/components/Pagination';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useAuth from '~/hooks/useAuth';
+import { getAllCategories } from '~/services/categoryService';
 
 const cx = classNames.bind(Style);
 
@@ -70,8 +71,9 @@ const data = [
 function Forum() {
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(0);
+    const [categories, setCategories] = useState([]);
 
-    const { isAuthenticated, logout } = useAuth();
+    const { isAuthenticated, player, logout } = useAuth();
 
     const handlePageChange = (pageNumber) => {
         if (pageNumber > 9) {
@@ -94,12 +96,26 @@ function Forum() {
         navigate('/register');
     };
 
+    const fetchCategories = async () => {
+        try {
+            const categories = await getAllCategories();
+            setCategories(categories.data.data);
+        } catch (error) {
+            console.error('Error fetching categories:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchCategories();
+    }, []);
+
     return (
         <main>
             <div className="box-container">
                 <div className={cx('authSection')}>
                     {isAuthenticated ? (
                         <>
+                            <div>Xin chào {player.username}</div>
                             <button onClick={handleLogoutClick}>Đăng xuất</button>
                         </>
                     ) : (
@@ -110,7 +126,7 @@ function Forum() {
                     )}
                     <div className={cx('recharge')}>
                         <a href="/">
-                            <img alt="nap the" />
+                            <img src={images.army} alt="nap the" />
                         </a>
                     </div>
                 </div>
@@ -118,15 +134,11 @@ function Forum() {
             <div>
                 <div className={cx('box_forums')}>
                     <ul className={cx('forumList')}>
-                        <li className={cx('forumItem')}>
-                            <Link to="/">Báo lỗi</Link>
-                        </li>
-                        <li className={cx('forumItem')}>
-                            <Link to="/">Tố cáo</Link>
-                        </li>
-                        <li className={cx('forumItem')}>
-                            <Link to="/">Góp ý</Link>
-                        </li>
+                        {categories.map((category, index) => (
+                            <li key={index} className={cx('forumItem')}>
+                                <Link to={`/${category.categoryId}`}>{category.name}</Link>
+                            </li>
+                        ))}
                     </ul>
                 </div>
                 <div className="topic-list">

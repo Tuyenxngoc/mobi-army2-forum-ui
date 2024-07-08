@@ -73,7 +73,7 @@ const AuthProvider = ({ children }) => {
 
     const contextValues = {
         isAuthenticated: authData.isAuthenticated,
-        customer: authData.customer,
+        player: authData.player,
         login,
         logout,
     };
