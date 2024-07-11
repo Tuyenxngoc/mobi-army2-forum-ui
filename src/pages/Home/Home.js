@@ -81,6 +81,7 @@ function Home() {
                     <Notification
                         key={index}
                         data={notification}
+                        fetchNotifications={fetchNotifications}
                         isLast={index === notification.length - 1}
                         canEdit={isAuthenticated && player.roleName === ROLES.Admin}
                     />

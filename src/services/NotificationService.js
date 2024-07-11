@@ -7,3 +7,11 @@ export const getAllNotifications = () => {
 export const createNotification = (values) => {
     return axiosPrivate.post('notifications', values);
 };
+
+export const deleteNotification = (id) => {
+    return axiosPrivate.delete(`notifications/${id}`);
+};
+
+export const updateNotification = (id, values) => {
+    return axiosPrivate.put(`notifications/${id}`, values);
+};

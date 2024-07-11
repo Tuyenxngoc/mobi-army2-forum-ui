@@ -8,10 +8,11 @@ import AlertDialog from '../AlertDialog';
 
 import 'react-quill/dist/quill.snow.css';
 import ReactQuill from 'react-quill';
+import { deleteNotification, updateNotification } from '~/services/NotificationService';
 
 const cx = classNames.bind(Style);
 
-const Notification = ({ data, isLast = false, canEdit = false }) => {
+const Notification = ({ data, fetchNotifications, isLast = false, canEdit = false }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [editedTitle, setEditedTitle] = useState(data.title);
     const [editedContent, setEditedContent] = useState(data.content);
@@ -24,8 +25,33 @@ const Notification = ({ data, isLast = false, canEdit = false }) => {
         setEditedContent(data.content);
     };
 
-    const handleDelete = () => {
+    const handleBtnDeleteClick = () => {
         setShowDialogDelete(true);
+    };
+
+    const handleBtnCloseClick = () => {
+        setIsEditing(false);
+    };
+
+    const handleChangeNotification = () => {
+        const newValues = {
+            title: editedTitle,
+            content: editedContent,
+        };
+        updateNotification(data.notificationId, newValues)
+            .then(() => {
+                fetchNotifications();
+                alert('Save changes successfully');
+            })
+            .catch(() => {});
+    };
+
+    const handleDelete = () => {
+        deleteNotification(data.notificationId)
+            .then(() => {
+                fetchNotifications();
+            })
+            .catch(() => {});
     };
 
     const imageHandler = useCallback(() => {
@@ -100,9 +126,7 @@ const Notification = ({ data, isLast = false, canEdit = false }) => {
                 description={
                     'Bạn có chắc muốn xóa thông báo này? Lưu ý: Sau khi xóa, bạn không thể hoàn tác hay khôi phục.'
                 }
-                handleSubmit={() => {
-                    console.log('ok');
-                }}
+                handleSubmit={handleDelete}
             />
             <div className={cx('box-container', 'textContent', isLast && 'm-0')}>
                 {isEditing ? (
@@ -115,10 +139,10 @@ const Notification = ({ data, isLast = false, canEdit = false }) => {
                                 onChange={(e) => setEditedTitle(e.target.value)}
                             />
                             <div className="d-flex">
-                                <div>
+                                <div onClick={handleBtnCloseClick}>
                                     <FontAwesomeIcon icon={faXmark} />
                                 </div>
-                                <div>
+                                <div onClick={handleChangeNotification}>
                                     <FontAwesomeIcon icon={faFloppyDisk} />
                                 </div>
                             </div>
@@ -147,7 +171,7 @@ const Notification = ({ data, isLast = false, canEdit = false }) => {
                                 )}
                             </div>
                             {canEdit && (
-                                <div onClick={handleDelete}>
+                                <div onClick={handleBtnDeleteClick}>
                                     <FontAwesomeIcon icon={faXmark} />
                                 </div>
                             )}
