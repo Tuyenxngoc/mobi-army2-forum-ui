@@ -1,77 +1,24 @@
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+
 import Style from './Forum.module.scss';
 import classNames from 'classnames/bind';
-import Topic from '~/components/Topic';
+
+import Post from '~/components/Post';
+import Pagination from '~/components/Pagination';
 
 import images from '~/assets';
-import Pagination from '~/components/Pagination';
-import { useEffect, useState } from 'react';
 import useAuth from '~/hooks/useAuth';
 import { getAllCategories } from '~/services/categoryService';
+import { getPost } from '~/services/postService';
 
 const cx = classNames.bind(Style);
 
-const data = [
-    {
-        user: {
-            username: 'admin',
-            avatar: images.plGif,
-            id: 1,
-        },
-        title: 'Army2 cho ip ios có sever trái đất',
-        comment: 10,
-        view: 1023,
-        favourite: 1,
-    },
-    {
-        user: {
-            username: 'admin',
-            avatar: images.plGif,
-            id: 1,
-        },
-        title: 'Army2 cho ip ios có sever trái đất',
-        comment: 10,
-        view: 1023,
-        favourite: 1,
-    },
-    {
-        user: {
-            username: 'admin',
-            avatar: images.plGif,
-            id: 1,
-        },
-        title: 'Army2 cho ip ios có sever trái đất',
-        comment: 10,
-        view: 1023,
-        favourite: 1,
-    },
-    {
-        user: {
-            username: 'admin',
-            avatar: images.plGif,
-            id: 1,
-        },
-        title: 'Army2 cho ip ios có sever trái đất',
-        comment: 10,
-        view: 1023,
-        favourite: 1,
-    },
-    {
-        user: {
-            username: 'admin',
-            avatar: images.plGif,
-            id: 1,
-        },
-        title: 'Army2 cho ip ios có sever trái đất',
-        comment: 10,
-        view: 1023,
-        favourite: 1,
-    },
-];
 function Forum() {
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(0);
     const [categories, setCategories] = useState([]);
+    const [posts, setPosts] = useState([]);
 
     const { isAuthenticated, player, logout } = useAuth();
 
@@ -105,8 +52,19 @@ function Forum() {
         }
     };
 
+    const fetchPosts = async () => {
+        try {
+            const posts = await getPost();
+            const { meta, items } = posts.data.data;
+            setPosts(items);
+        } catch (error) {
+            console.error('Error fetching posts:', error);
+        }
+    };
+
     useEffect(() => {
         fetchCategories();
+        fetchPosts();
     }, []);
 
     return (
@@ -141,9 +99,9 @@ function Forum() {
                         ))}
                     </ul>
                 </div>
-                <div className="topic-list">
-                    {data.map((item, i) => (
-                        <Topic key={i} data={item} />
+                <div>
+                    {posts.map((item, i) => (
+                        <Post key={i} data={item} />
                     ))}
                 </div>
                 <Pagination totalPages={4} currentPage={currentPage} onPageChange={handlePageChange} />
