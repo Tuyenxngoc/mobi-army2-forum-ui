@@ -6,9 +6,9 @@ import Info from './pages/Info/Info';
 import Forum from './pages/Forum/Forum';
 import Register from './pages/Register/Register';
 import NotFound from './pages/NotFound/NotFound';
-import TopicDetail from './pages/TopicDetail/TopicDetail';
 import NewPost from './pages/NewPost/NewPost';
 import ReviewPosts from './pages/ReviewPosts/ReviewPosts';
+import PostDetail from './pages/PostDetail/PostDetail';
 
 function App() {
     return (
@@ -20,7 +20,7 @@ function App() {
                     <Route path="forum" element={<Forum />} />
                     <Route path="login" element={<Login />} />
                     <Route path="register" element={<Register />} />
-                    <Route path="topic/:id" element={<TopicDetail />} />
+                    <Route path="post/:id" element={<PostDetail />} />
                     <Route path="post/new" element={<NewPost />} />
                     <Route path="post/review" element={<ReviewPosts />} />
                     <Route path="*" element={<NotFound />} />

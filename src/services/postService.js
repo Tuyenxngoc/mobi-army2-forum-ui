@@ -1,5 +1,9 @@
 import axios, { axiosPrivate } from '~/apis/configHttp';
 
+export const getPost = (postId) => {
+    return axios.get(`posts/${postId}`);
+};
+
 export const getPosts = () => {
     return axios.get('posts');
 };

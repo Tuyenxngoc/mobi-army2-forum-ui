@@ -45,14 +45,9 @@ function Login() {
         try {
             const response = await loginUser(values);
             if (response.status === 200) {
-                const { accessToken, refreshToken, authorities } = response.data.data;
-                const roleName = authorities[0].authority;
+                const { accessToken, refreshToken } = response.data.data;
                 login({ accessToken, refreshToken });
-                if (roleName === ROLES.Admin) {
-                    navigate('/admin', { replace: true });
-                } else {
-                    navigate(from, { replace: true });
-                }
+                navigate(from, { replace: true });
             }
         } catch (error) {
         } finally {

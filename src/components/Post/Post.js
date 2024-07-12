@@ -12,7 +12,7 @@ function Post({ data }) {
             </div>
             <div className={cx('post-details')}>
                 <div className={cx('post-title')}>
-                    <Link to={`post/${data.id}`}>{data.title}</Link>
+                    <Link to={`/post/${data.id}`}>{data.title}</Link>
                 </div>
                 <div className={cx('post-metadata')}>
                     bởi
