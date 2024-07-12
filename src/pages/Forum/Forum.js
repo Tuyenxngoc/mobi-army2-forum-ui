@@ -10,7 +10,7 @@ import Pagination from '~/components/Pagination';
 import images from '~/assets';
 import useAuth from '~/hooks/useAuth';
 import { getAllCategories } from '~/services/categoryService';
-import { getPost } from '~/services/postService';
+import { getPosts } from '~/services/postService';
 
 const cx = classNames.bind(Style);
 
@@ -54,7 +54,7 @@ function Forum() {
 
     const fetchPosts = async () => {
         try {
-            const posts = await getPost();
+            const posts = await getPosts();
             const { meta, items } = posts.data.data;
             setPosts(items);
         } catch (error) {
@@ -87,6 +87,11 @@ function Forum() {
                             <img src={images.army} alt="nap the" />
                         </a>
                     </div>
+                </div>
+
+                <div>
+                    <Link to={'/post/new'}>Bài viết mới</Link>
+                    <Link to={'/post/review'}>Duyệt bài viết</Link>
                 </div>
             </div>
             <div>

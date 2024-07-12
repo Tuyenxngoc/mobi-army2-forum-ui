@@ -7,6 +7,8 @@ import Forum from './pages/Forum/Forum';
 import Register from './pages/Register/Register';
 import NotFound from './pages/NotFound/NotFound';
 import TopicDetail from './pages/TopicDetail/TopicDetail';
+import NewPost from './pages/NewPost/NewPost';
+import ReviewPosts from './pages/ReviewPosts/ReviewPosts';
 
 function App() {
     return (
@@ -19,6 +21,8 @@ function App() {
                     <Route path="login" element={<Login />} />
                     <Route path="register" element={<Register />} />
                     <Route path="topic/:id" element={<TopicDetail />} />
+                    <Route path="post/new" element={<NewPost />} />
+                    <Route path="post/review" element={<ReviewPosts />} />
                     <Route path="*" element={<NotFound />} />
                     <Route path="*" element={<NotFound />} />
                 </Route>
