@@ -1,8 +1,11 @@
 .wrapper {
-    text-align: right;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     background-color: #aed0e1;
     padding: 5px;
 }
+
 .button {
     font-size: 12px;
     background-color: white;

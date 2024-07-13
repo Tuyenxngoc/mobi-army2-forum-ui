@@ -4,6 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import Style from './Forum.module.scss';
 import classNames from 'classnames/bind';
 
+import queryString from 'query-string';
+
 import Post from '~/components/Post';
 import Pagination from '~/components/Pagination';
 
@@ -16,21 +18,28 @@ const cx = classNames.bind(Style);
 
 function Forum() {
     const navigate = useNavigate();
-    const [currentPage, setCurrentPage] = useState(0);
     const [categories, setCategories] = useState([]);
     const [posts, setPosts] = useState([]);
+    const [meta, setMeta] = useState({
+        totalPages: 1,
+        pageSize: 10,
+    });
+    const [filters, setFilters] = useState({
+        pageNum: 1,
+        pageSize: 10,
+    });
 
     const { isAuthenticated, player, logout } = useAuth();
 
-    const handlePageChange = (pageNumber) => {
-        if (pageNumber > 9) {
-            return;
-        }
-        setCurrentPage(pageNumber);
+    const handleChangePage = (newPage) => {
+        setFilters({ ...filters, pageNum: newPage + 1 });
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setFilters({ ...filters, pageNum: 1, pageSize: parseInt(event.target.value, 10) });
     };
 
     const handleLoginClick = () => {
-        // Navigate to the login page
         navigate('/login');
     };
 
@@ -39,7 +48,6 @@ function Forum() {
     };
 
     const handleRegisterClick = () => {
-        // Navigate to the registration page
         navigate('/register');
     };
 
@@ -52,20 +60,25 @@ function Forum() {
         }
     };
 
-    const fetchPosts = async () => {
-        try {
-            const posts = await getPosts();
-            const { meta, items } = posts.data.data;
-            setPosts(items);
-        } catch (error) {
-            console.error('Error fetching posts:', error);
-        }
-    };
-
     useEffect(() => {
         fetchCategories();
-        fetchPosts();
     }, []);
+
+    useEffect(() => {
+        const fetchPosts = async () => {
+            try {
+                const params = queryString.stringify(filters);
+                const response = await getPosts(params);
+                const { meta, items } = response.data.data;
+                setPosts(items);
+                setMeta(meta);
+            } catch (error) {
+                console.error('Error fetching posts:', error);
+            }
+        };
+
+        fetchPosts();
+    }, [filters]);
 
     return (
         <main>
@@ -109,7 +122,14 @@ function Forum() {
                         <Post key={i} data={item} />
                     ))}
                 </div>
-                <Pagination totalPages={4} currentPage={currentPage} onPageChange={handlePageChange} />
+
+                <Pagination
+                    totalPages={meta.totalPages}
+                    currentPage={filters.pageNum - 1}
+                    rowsPerPage={meta.pageSize}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                />
             </div>
         </main>
     );

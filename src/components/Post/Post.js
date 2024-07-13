@@ -2,13 +2,14 @@ import { Link } from 'react-router-dom';
 
 import Style from './Post.module.scss';
 import classNames from 'classnames/bind';
+import images from '~/assets';
 
 const cx = classNames.bind(Style);
 function Post({ data }) {
     return (
         <div className={cx('post-wrapper')}>
             <div className={cx('avatar-container')}>
-                <img src={data.author} alt="avatar" />
+                <img src={images.plGif} alt="avatar" />
             </div>
             <div className={cx('post-details')}>
                 <div className={cx('post-title')}>

@@ -4,8 +4,8 @@ export const getPost = (postId) => {
     return axios.get(`posts/${postId}`);
 };
 
-export const getPosts = () => {
-    return axios.get('posts');
+export const getPosts = (params) => {
+    return axios.get(`posts?${params}`);
 };
 
 export const createPost = (values) => {
