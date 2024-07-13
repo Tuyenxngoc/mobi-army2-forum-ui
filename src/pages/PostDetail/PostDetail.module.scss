@@ -2,6 +2,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    margin: 20px 0;
 
     a {
         margin: 0 5px;
@@ -9,5 +10,14 @@
         &:hover {
             text-decoration: underline;
         }
+    }
+}
+
+.header {
+    background-color: #1d78b6;
+    padding: 2px 5px;
+
+    a {
+        color: white;
     }
 }

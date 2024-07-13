@@ -22,6 +22,8 @@ const images = {
     topbanner: require('~/assets/images/topbanner.png'),
     logo: require('~/assets/images/logo.png'),
     loading: require('~/assets/images/Loading.gif'),
+    online: require('~/assets/images/online.png'),
+    offline: require('~/assets/images/offline.png'),
 };
 
 const items = {

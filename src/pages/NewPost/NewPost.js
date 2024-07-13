@@ -53,7 +53,7 @@ function NewPost() {
                 <select value={categoryId} onChange={(e) => setCategoryId(parseInt(e.target.value))} required>
                     <option value="">Select category...</option>
                     {categories.map((category) => (
-                        <option key={category.categoryId} value={category.categoryId}>
+                        <option key={category.id} value={category.id}>
                             {category.name}
                         </option>
                     ))}
