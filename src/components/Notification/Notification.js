@@ -128,7 +128,7 @@ const Notification = ({ data, fetchNotifications, isLast = false, canEdit = fals
                 }
                 handleSubmit={handleDelete}
             />
-            <div className={cx('box-container', 'textContent', isLast && 'm-0')}>
+            <div className="box-container p-2">
                 {isEditing ? (
                     <>
                         <div className={cx('title')}>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import queryString from 'query-string';
@@ -13,6 +13,10 @@ import useAuth from '~/hooks/useAuth';
 import Comment from '~/components/Comment/Comment';
 import NewComment from '~/components/Comment/NewComment';
 import Pagination from '~/components/Pagination';
+import DateFormatter from '~/components/DateFormatter/DateFormatter';
+import { toggleLike } from '~/services/likeService';
+import { INITIAL_FILTERS, INITIAL_META } from '~/common/contans';
+import PlayerActions from '~/components/PlayerActions/PlayerActions';
 
 const cx = classNames.bind(Style);
 
@@ -22,72 +26,114 @@ function PostDetail() {
     const location = useLocation();
     const [post, setPost] = useState(null);
     const [comments, setComments] = useState([]);
-    const [meta, setMeta] = useState({
-        totalPages: 1,
-        pageSize: 10,
-    });
-    const [filters, setFilters] = useState({
-        pageNum: 1,
-        pageSize: 10,
-    });
-
+    const [meta, setMeta] = useState(INITIAL_META);
+    const [filters, setFilters] = useState(INITIAL_FILTERS);
     const { isAuthenticated } = useAuth();
 
     const handleChangePage = (newPage) => {
-        setFilters({ ...filters, pageNum: newPage + 1 });
+        setFilters((prev) => ({ ...prev, pageNum: newPage + 1 }));
     };
 
     const handleChangeRowsPerPage = (event) => {
-        setFilters({ ...filters, pageNum: 1, pageSize: parseInt(event.target.value, 10) });
+        setFilters({ pageNum: 1, pageSize: parseInt(event.target.value, 10) });
     };
 
     const handleCommentSubmit = (newComment) => {
-        setComments([...comments, newComment]);
+        setComments((prev) => [...prev, newComment]);
     };
 
-    const fetchPost = async () => {
+    const handleLoginClick = () => {
+        navigate('/login', { state: { from: location } });
+    };
+
+    const handleLikePost = async () => {
         try {
-            const response = await getPost(id);
-            const data = response.data.data;
-            setPost(data);
+            await toggleLike(id);
         } catch (err) {
-            console.log('Failed to fetch post data');
+            console.error('Failed to like post', err);
         }
     };
 
-    const fetchComments = async () => {
+    const fetchPost = useCallback(async () => {
+        try {
+            const {
+                data: { data },
+            } = await getPost(id);
+            setPost(data);
+        } catch (err) {
+            console.error('Failed to fetch post data', err);
+        }
+    }, [id]);
+
+    const fetchComments = useCallback(async () => {
         try {
             const params = queryString.stringify(filters);
-            const response = await getCommentByPostId(id, params);
-            const { meta, items } = response.data.data;
+            const {
+                data: {
+                    data: { meta, items },
+                },
+            } = await getCommentByPostId(id, params);
             setComments(items);
             setMeta(meta);
         } catch (err) {
-            console.log('Failed to fetch comments');
+            console.error('Failed to fetch comments', err);
         }
-    };
-
-    useEffect(() => {
-        fetchComments();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id, filters]);
 
     useEffect(() => {
-        fetchPost();
         fetchComments();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [id]);
+    }, [fetchComments]);
+
+    useEffect(() => {
+        fetchPost();
+    }, [fetchPost]);
 
     return (
         <main className="box-container">
+            <PlayerActions />
+
             <div className={cx('header')}>
                 <Link to="/forum">Quay lại</Link>
             </div>
 
             {post && (
                 <div className={cx('post-detail')}>
-                    <h1>{post.title}</h1>
-                    <p>{post.content}</p>
+                    <div className="text-center">
+                        <img src={images.plGif} alt="status" />
+                        <div>Bài: {post.player.points}</div>
+                    </div>
+
+                    <div className={cx('post-wrapper')}>
+                        <div className={cx('post-header')}>
+                            <div>
+                                <img src={post.player.isOnline ? images.online : images.offline} alt="status" />
+                                <Link to={`/player/${post.player.id}`} className={cx('username')}>
+                                    {post.player.name}
+                                </Link>
+                            </div>
+
+                            <div className={cx('time')}>
+                                <DateFormatter datetime={post.lastModifiedDate} />
+                            </div>
+                        </div>
+
+                        <div className={cx('post-body')}>
+                            <div className={cx('title')}>{post.title}</div>
+                            <div className={cx('content')}>{post.content}</div>
+                            <br />
+                            <br />
+                            <button onClick={handleLikePost}>like</button>
+                            {post.like.likeCount > 0 && (
+                                <div className={cx('like-count')}>
+                                    {post.like.likeCount === 1
+                                        ? ` ♥ ${post.like.latestLiker} đã thích bài này`
+                                        : ` ♥ ${post.like.latestLiker} và ${
+                                              post.like.likeCount - 1
+                                          } người khác đã thích bài này`}
+                                </div>
+                            )}
+                        </div>
+                    </div>
                 </div>
             )}
 
@@ -105,6 +151,15 @@ function PostDetail() {
                 </div>
             )}
 
+            {isAuthenticated ? (
+                <NewComment postId={id} onCommentSubmit={handleCommentSubmit} />
+            ) : (
+                <div className={cx('login-session')}>
+                    Đăng nhập để bình luận
+                    <span onClick={handleLoginClick}> Đăng nhập</span>
+                </div>
+            )}
+
             <Pagination
                 totalPages={meta.totalPages}
                 currentPage={filters.pageNum - 1}
@@ -112,21 +167,6 @@ function PostDetail() {
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
             />
-
-            {isAuthenticated ? (
-                <NewComment postId={id} onCommentSubmit={handleCommentSubmit} />
-            ) : (
-                <div>
-                    Đăng nhập để bình luận
-                    <button
-                        onClick={() => {
-                            navigate('/login', { state: { from: location } });
-                        }}
-                    >
-                        Đăng nhập
-                    </button>
-                </div>
-            )}
         </main>
     );
 }

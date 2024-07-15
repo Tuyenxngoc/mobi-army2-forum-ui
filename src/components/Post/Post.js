@@ -20,6 +20,7 @@ function Post({ data }) {
                     <span> {data.author}</span>
                     <span> Trả lời: {data.comments}</span>
                     <span> - Xem: {data.views}</span>
+                    {data.favorites > 0 && <span className="text-danger"> ♥{data.favorites}</span>}
                 </div>
             </div>
         </div>

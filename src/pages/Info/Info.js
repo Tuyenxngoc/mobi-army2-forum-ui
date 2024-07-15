@@ -134,7 +134,7 @@ const items = [
 ];
 function Info() {
     return (
-        <main className="box-container">
+        <main className="box-container p-2">
             <h1>Giới thiệu:</h1>
             <h3>Cách chơi:</h3>
             <span>

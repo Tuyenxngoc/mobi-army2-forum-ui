@@ -5,7 +5,7 @@ import classNames from 'classnames/bind';
 const cx = classNames.bind(Style);
 function NotFound() {
     return (
-        <main className={cx('box-container', 'wrapper')}>
+        <main className={cx('box-container', 'wrapper', 'p-2')}>
             <div className={cx('title')}>Trang bạn tìm kiếm không tồn tại.</div>
             <Link to="/">Trở về trang chủ</Link>
         </main>
