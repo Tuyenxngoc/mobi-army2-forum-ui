@@ -91,7 +91,6 @@ function PostDetail() {
     return (
         <main className="box-container">
             <PlayerActions />
-
             <div className={cx('header')}>
                 <Link to="/forum">Quay lại</Link>
             </div>
@@ -132,17 +131,19 @@ function PostDetail() {
                                           } người khác đã thích bài này`}
                                 </div>
                             )}
+
+                            {post.approvedBy && (
+                                <span className={cx('approved-by')}>Duyệt bởi: {post.approvedBy.name}</span>
+                            )}
                         </div>
                     </div>
                 </div>
             )}
-
             <div className={cx('ads')}>
                 <img src={images.newGif} alt="new" />
                 <Link to="/">Avatar Bùm</Link>
                 <img src={images.newGif} alt="new" />
             </div>
-
             {comments.length > 0 && (
                 <div className={cx('comment-list')}>
                     {comments.map((comment) => (
@@ -150,7 +151,6 @@ function PostDetail() {
                     ))}
                 </div>
             )}
-
             {isAuthenticated ? (
                 <NewComment postId={id} onCommentSubmit={handleCommentSubmit} />
             ) : (
@@ -159,7 +159,6 @@ function PostDetail() {
                     <span onClick={handleLoginClick}> Đăng nhập</span>
                 </div>
             )}
-
             <Pagination
                 totalPages={meta.totalPages}
                 currentPage={filters.pageNum - 1}
