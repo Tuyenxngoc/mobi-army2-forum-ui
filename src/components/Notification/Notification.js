@@ -4,20 +4,25 @@ import Style from './Notification.module.scss';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFloppyDisk, faPen, faXmark } from '@fortawesome/free-solid-svg-icons';
-import AlertDialog from '../AlertDialog';
 
 import 'react-quill/dist/quill.snow.css';
 import ReactQuill from 'react-quill';
 import { deleteNotification, updateNotification } from '~/services/NotificationService';
+import { message, Modal } from 'antd';
 
 const cx = classNames.bind(Style);
 
-const Notification = ({ data, fetchNotifications, isLast = false, canEdit = false }) => {
+const Notification = ({ data, fetchNotifications, canEdit = false }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [editedTitle, setEditedTitle] = useState(data.title);
     const [editedContent, setEditedContent] = useState(data.content);
     const [showDialogDelete, setShowDialogDelete] = useState(false);
     const reactQuillRef = useRef(null);
+    const [confirmLoading, setConfirmLoading] = useState(false);
+    const [modalText, setModalText] = useState(
+        'Bạn có chắc muốn xóa thông báo này? Lưu ý: Sau khi xóa, bạn không thể hoàn tác hay khôi phục.',
+    );
+    const [messageApi, contextHolder] = message.useMessage();
 
     const handleEdit = () => {
         setIsEditing(true);
@@ -41,15 +46,7 @@ const Notification = ({ data, fetchNotifications, isLast = false, canEdit = fals
         updateNotification(data.notificationId, newValues)
             .then(() => {
                 fetchNotifications();
-                alert('Save changes successfully');
-            })
-            .catch(() => {});
-    };
-
-    const handleDelete = () => {
-        deleteNotification(data.notificationId)
-            .then(() => {
-                fetchNotifications();
+                messageApi.success('Save changes successfully');
             })
             .catch(() => {});
     };
@@ -117,17 +114,39 @@ const Notification = ({ data, fetchNotifications, isLast = false, canEdit = fals
         'direction',
     ];
 
+    const handleDelete = () => {
+        setModalText('Đang xóa...');
+        setConfirmLoading(true);
+        deleteNotification(data.id)
+            .then(() => {
+                setShowDialogDelete(false);
+                setConfirmLoading(false);
+                fetchNotifications();
+            })
+            .catch(() => {
+                setModalText('Xóa thất bại. Vui lòng thử lại.');
+                setConfirmLoading(false);
+            });
+    };
+
+    const handleCancel = () => {
+        setShowDialogDelete(false);
+    };
+
     return (
         <>
-            <AlertDialog
+            {contextHolder}
+
+            <Modal
+                title="Xác nhận xóa"
                 open={showDialogDelete}
-                setOpen={setShowDialogDelete}
-                title={'Xác nhận xóa'}
-                description={
-                    'Bạn có chắc muốn xóa thông báo này? Lưu ý: Sau khi xóa, bạn không thể hoàn tác hay khôi phục.'
-                }
-                handleSubmit={handleDelete}
-            />
+                onOk={handleDelete}
+                confirmLoading={confirmLoading}
+                onCancel={handleCancel}
+            >
+                <p>{modalText}</p>
+            </Modal>
+
             <div className="box-container p-2">
                 {isEditing ? (
                     <>
