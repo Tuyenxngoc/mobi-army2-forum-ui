@@ -9,6 +9,9 @@ import NotFound from './pages/NotFound/NotFound';
 import NewPost from './pages/NewPost/NewPost';
 import ReviewPosts from './pages/ReviewPosts/ReviewPosts';
 import PostDetail from './pages/PostDetail/PostDetail';
+import RequireAuth from './utils/RequireAuth';
+import { ROLES } from './common/contans';
+import AccessDenied from './pages/AccessDenied/AccessDenied';
 
 function App() {
     return (
@@ -21,9 +24,16 @@ function App() {
                     <Route path="login" element={<Login />} />
                     <Route path="register" element={<Register />} />
                     <Route path="post/:id" element={<PostDetail />} />
-                    <Route path="post/new" element={<NewPost />} />
-                    <Route path="post/review" element={<ReviewPosts />} />
-                    <Route path="*" element={<NotFound />} />
+
+                    <Route element={<RequireAuth />}>
+                        <Route path="post/new" element={<NewPost />} />
+                    </Route>
+
+                    <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.SuperAdmin]} />}>
+                        <Route path="post/review" element={<ReviewPosts />} />
+                    </Route>
+
+                    <Route path="access-denied" element={<AccessDenied />} />
                     <Route path="*" element={<NotFound />} />
                 </Route>
             </Routes>

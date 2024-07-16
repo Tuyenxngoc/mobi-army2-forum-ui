@@ -91,6 +91,7 @@ function PostDetail() {
     return (
         <main className="box-container">
             <PlayerActions />
+
             <div className={cx('header')}>
                 <Link to="/forum">Quay lại</Link>
             </div>

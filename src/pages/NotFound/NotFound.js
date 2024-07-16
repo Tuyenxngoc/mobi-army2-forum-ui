@@ -1,12 +1,10 @@
 import { Link } from 'react-router-dom';
-import Style from './NotFound.module.scss';
-import classNames from 'classnames/bind';
 
-const cx = classNames.bind(Style);
 function NotFound() {
     return (
-        <main className={cx('box-container', 'wrapper', 'p-2')}>
-            <div className={cx('title')}>Trang bạn tìm kiếm không tồn tại.</div>
+        <main className="box-container p-2 text-center">
+            <h1 className="text-black">Not found</h1>
+            <p className="text-black">Trang bạn tìm kiếm không tồn tại.</p>
             <Link to="/">Trở về trang chủ</Link>
         </main>
     );
