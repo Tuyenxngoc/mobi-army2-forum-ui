@@ -20,7 +20,7 @@ const validationSchema = yup.object({
         .string('Nhập tiêu đề')
         .min(10, 'Tiêu đề phải có ít nhất 10 ký tự')
         .max(50, 'Tiêu đề chỉ được tối đa 50 ký tự')
-        .matches(/^[a-zA-Z0-9\s]+$/, 'Tiêu đề không được chứa ký tự đặc biệt')
+        .matches(/^[\p{L}\s\d]*$/u, 'Tiêu đề không được chứa ký tự đặc biệt')
         .required('Tiêu đề là bắt buộc'),
     content: yup.string('Nhập nội dung').min(10, 'Nội dung có ít nhất 10 ký tự').required('Nội dung là bắt buộc'),
 });
@@ -51,7 +51,11 @@ function NewPost() {
             alert('Thêm bài viết thành công, vui lòng chờ duyệt');
             resetForm();
         } catch (error) {
-            console.error('Error creating new post:', error.message);
+            if (error.response && error.response.status === 400 && error.response.data) {
+                alert(error.response.data.message);
+            } else {
+                console.error('Error creating new post:', error.message);
+            }
         } finally {
             setSubmitting(false);
         }
@@ -154,7 +158,7 @@ function NewPost() {
 
                     <div className="alert alert-light" role="alert">
                         Những bài viết vi phạm{' '}
-                        <Link to="#" className="alert-link">
+                        <Link to="/terms" target="_blank" className="alert-link">
                             Tiêu chuẩn cộng đồng{' '}
                         </Link>
                         sẽ không được duyệt

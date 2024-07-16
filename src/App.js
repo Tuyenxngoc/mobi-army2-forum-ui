@@ -12,6 +12,7 @@ import PostDetail from './pages/PostDetail/PostDetail';
 import RequireAuth from './utils/RequireAuth';
 import { ROLES } from './common/contans';
 import AccessDenied from './pages/AccessDenied/AccessDenied';
+import Terms from './pages/Terms/Terms';
 
 function App() {
     return (
@@ -24,6 +25,7 @@ function App() {
                     <Route path="login" element={<Login />} />
                     <Route path="register" element={<Register />} />
                     <Route path="post/:id" element={<PostDetail />} />
+                    <Route path="terms" element={<Terms />} />
 
                     <Route element={<RequireAuth />}>
                         <Route path="post/new" element={<NewPost />} />
