@@ -24,6 +24,7 @@ const images = {
     loading: require('~/assets/images/Loading.gif'),
     online: require('~/assets/images/online.png'),
     offline: require('~/assets/images/offline.png'),
+    lock: require('~/assets/images/lock_red.gif'),
 };
 
 const items = {

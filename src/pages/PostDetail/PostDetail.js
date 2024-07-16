@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import queryString from 'query-string';
@@ -7,7 +7,7 @@ import Style from './PostDetail.module.scss';
 import classNames from 'classnames/bind';
 
 import images from '~/assets';
-import { getPost } from '~/services/postService';
+import { getPost, lockPost, unlockPost } from '~/services/postService';
 import { getCommentByPostId } from '~/services/commentService';
 import useAuth from '~/hooks/useAuth';
 import Comment from '~/components/Comment/Comment';
@@ -15,10 +15,13 @@ import NewComment from '~/components/Comment/NewComment';
 import Pagination from '~/components/Pagination';
 import DateFormatter from '~/components/DateFormatter/DateFormatter';
 import { toggleLike } from '~/services/likeService';
-import { INITIAL_FILTERS, INITIAL_META } from '~/common/contans';
+import { INITIAL_FILTERS, INITIAL_META, ROLES } from '~/common/contans';
 import PlayerActions from '~/components/PlayerActions/PlayerActions';
+import { checkUserHasRequiredRole } from '~/utils/helper';
 
 const cx = classNames.bind(Style);
+
+const allowedRoles = [ROLES.Admin, ROLES.SuperAdmin];
 
 function PostDetail() {
     const { id } = useParams();
@@ -28,7 +31,12 @@ function PostDetail() {
     const [comments, setComments] = useState([]);
     const [meta, setMeta] = useState(INITIAL_META);
     const [filters, setFilters] = useState(INITIAL_FILTERS);
-    const { isAuthenticated } = useAuth();
+    const {
+        isAuthenticated,
+        player: { roleName },
+    } = useAuth();
+
+    const hasRequiredRole = useMemo(() => checkUserHasRequiredRole(roleName, allowedRoles), [roleName]);
 
     const handleChangePage = (newPage) => {
         setFilters((prev) => ({ ...prev, pageNum: newPage + 1 }));
@@ -49,6 +57,24 @@ function PostDetail() {
     const handleLikePost = async () => {
         try {
             await toggleLike(id);
+        } catch (err) {
+            console.error('Failed to like post', err);
+        }
+    };
+
+    const handleLockPost = async () => {
+        try {
+            await lockPost(id);
+            setPost((prev) => ({ ...prev, locked: true }));
+        } catch (err) {
+            console.error('Failed to like post', err);
+        }
+    };
+
+    const handleunlockPost = async () => {
+        try {
+            await unlockPost(id);
+            setPost((prev) => ({ ...prev, locked: false }));
         } catch (err) {
             console.error('Failed to like post', err);
         }
@@ -123,6 +149,14 @@ function PostDetail() {
                             <br />
                             <br />
                             <button onClick={handleLikePost}>like</button>
+
+                            {hasRequiredRole &&
+                                (post.locked ? (
+                                    <button onClick={handleunlockPost}>unlock</button>
+                                ) : (
+                                    <button onClick={handleLockPost}>lock</button>
+                                ))}
+
                             {post.like.likeCount > 0 && (
                                 <div className={cx('like-count')}>
                                     {post.like.likeCount === 1
@@ -152,14 +186,18 @@ function PostDetail() {
                     ))}
                 </div>
             )}
-            {isAuthenticated ? (
-                <NewComment postId={id} onCommentSubmit={handleCommentSubmit} />
-            ) : (
-                <div className={cx('login-session')}>
-                    Đăng nhập để bình luận
-                    <span onClick={handleLoginClick}> Đăng nhập</span>
-                </div>
-            )}
+
+            {post &&
+                !post.locked &&
+                (isAuthenticated ? (
+                    <NewComment postId={id} onCommentSubmit={handleCommentSubmit} />
+                ) : (
+                    <div className={cx('login-session')}>
+                        Đăng nhập để bình luận
+                        <span onClick={handleLoginClick}> Đăng nhập</span>
+                    </div>
+                ))}
+
             <Pagination
                 totalPages={meta.totalPages || 1}
                 currentPage={filters.pageNum - 1}
