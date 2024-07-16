@@ -7,13 +7,6 @@
     }
 }
 
-.post-actions-wrapper {
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
 .post-list {
 }
 
@@ -30,15 +23,9 @@
     }
 }
 
-.post-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
 .post-content {
-    margin-left: 10px;
     color: black;
+    flex: 1;
 }
 
 .post-title {

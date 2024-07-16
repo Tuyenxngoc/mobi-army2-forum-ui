@@ -7,12 +7,17 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './global.scss';
 import { AuthProvider } from './contexts/AuthProvider';
 
+import { ConfigProvider } from 'antd';
+import viVN from 'antd/es/locale/vi_VN';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
-        <AuthProvider>
-            <App />
-        </AuthProvider>
+        <ConfigProvider locale={viVN}>
+            <AuthProvider>
+                <App />
+            </AuthProvider>
+        </ConfigProvider>
     </React.StrictMode>,
 );
 

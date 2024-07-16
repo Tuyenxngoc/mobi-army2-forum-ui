@@ -1,43 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import PlayerActions from '~/components/PlayerActions/PlayerActions';
-import { getPostsForReview, approvePost, deletePost } from '~/services/postService.js';
-import Style from './ReviewPosts.module.scss';
-import classNames from 'classnames/bind';
-import { INITIAL_FILTERS, INITIAL_META } from '~/common/contans';
-import queryString from 'query-string';
-import Pagination from '~/components/Pagination';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Button, message, Modal } from 'antd';
+import classNames from 'classnames/bind';
+import queryString from 'query-string';
+
+import { INITIAL_FILTERS, INITIAL_META } from '~/common/contans';
+import PlayerActions from '~/components/PlayerActions/PlayerActions';
+import Pagination from '~/components/Pagination';
 import DateFormatter from '~/components/DateFormatter/DateFormatter';
+import { getPostsForReview, approvePost, deletePost, getPost } from '~/services/postService.js';
+import Style from './ReviewPosts.module.scss';
 
 const cx = classNames.bind(Style);
 
 const ReviewPosts = () => {
     const [posts, setPosts] = useState([]);
-    const [selectedPosts, setSelectedPosts] = useState([]);
     const [meta, setMeta] = useState(INITIAL_META);
     const [filters, setFilters] = useState(INITIAL_FILTERS);
+    const [open, setOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [postDetails, setPostDetails] = useState(null);
 
-    const handleSelectAll = (e) => {
-        if (e.target.checked) {
-            setSelectedPosts(posts.map((post) => post.id));
-        } else {
-            setSelectedPosts([]);
-        }
-    };
-
-    const handleSelectPost = (postId) => {
-        setSelectedPosts((prevSelected) =>
-            prevSelected.includes(postId) ? prevSelected.filter((id) => id !== postId) : [...prevSelected, postId],
-        );
-    };
-
-    const handleApproveAll = () => {
-        selectedPosts.forEach((postId) => handleApprove(postId));
-    };
-
-    const handleRemoveAll = () => {
-        selectedPosts.forEach((postId) => handleRemove(postId));
-    };
+    const [messageApi, contextHolder] = message.useMessage();
 
     const handleChangePage = (newPage) => {
         setFilters((prev) => ({ ...prev, pageNum: newPage + 1 }));
@@ -47,31 +31,38 @@ const ReviewPosts = () => {
         setFilters({ pageNum: 1, pageSize: parseInt(event.target.value, 10) });
     };
 
-    const handleApprove = (postId) => {
-        approvePost(postId)
-            .then((response) => {
-                setPosts(posts.filter((post) => post.id !== postId));
-                setSelectedPosts(selectedPosts.filter((id) => id !== postId));
-                alert('Duyệt thành công');
-            })
-            .catch((error) => {
-                console.error('Có lỗi xảy ra:', error);
-            });
+    const handleApprove = async (postId) => {
+        try {
+            const response = await approvePost(postId);
+            setPosts(posts.filter((post) => post.id !== postId));
+            messageApi.success('Duyệt thành công');
+        } catch (error) {
+            messageApi.error('Có lỗi xảy ra:', error);
+        }
     };
 
-    const handleRemove = (postId) => {
-        deletePost(postId)
-            .then((response) => {
-                setPosts(posts.filter((post) => post.id !== postId));
-                setSelectedPosts(selectedPosts.filter((id) => id !== postId));
-                alert('Xóa thành công');
-            })
-            .catch((error) => {
-                console.error('Có lỗi xảy ra:', error);
-            });
+    const handleRemove = async (postId) => {
+        try {
+            const response = await deletePost(postId);
+            setPosts(posts.filter((post) => post.id !== postId));
+            messageApi.success('Xóa thành công');
+        } catch (error) {
+            messageApi.error('Có lỗi xảy ra:', error);
+        }
     };
 
-    const handleView = (postId) => {};
+    const handleView = async (postId) => {
+        setLoading(true);
+        setOpen(true);
+        try {
+            const response = await getPost(postId);
+            setPostDetails(response.data.data);
+        } catch (error) {
+            messageApi.error('Có lỗi xảy ra khi lấy chi tiết bài viết:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
         const fetchPosts = async () => {
@@ -82,15 +73,45 @@ const ReviewPosts = () => {
                 setPosts(items);
                 setMeta(meta);
             } catch (error) {
-                console.error('Có lỗi xảy ra:', error);
+                messageApi.error('Có lỗi xảy ra:', error);
             }
         };
 
         fetchPosts();
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filters]);
 
     return (
         <div className="box-container">
+            <Modal
+                title="Chi tiết bài viết"
+                footer={
+                    <Button type="primary" onClick={() => setOpen(false)}>
+                        Đóng
+                    </Button>
+                }
+                loading={loading}
+                open={open}
+                onCancel={() => setOpen(false)}
+            >
+                {postDetails && (
+                    <div>
+                        <h2>{postDetails.title}</h2>
+                        <p>{postDetails.content}</p>
+                        <p>
+                            tạo bởi{' '}
+                            <Link to={`/player/${postDetails.player.id}`} target="_blank">
+                                {postDetails.player.name}
+                            </Link>{' '}
+                            lúc <DateFormatter datetime={postDetails.createdDate} />
+                        </p>
+                    </div>
+                )}
+            </Modal>
+
+            {contextHolder}
+
             <PlayerActions />
 
             <div className={cx('header')}>
@@ -100,71 +121,36 @@ const ReviewPosts = () => {
             <div>
                 <h3 className="p-2 pb-0"> Duyệt bài viết</h3>
                 {posts.length === 0 ? (
-                    <p>Không có bài viết nào cần duyệt.</p>
+                    <p className="px-2">Không có bài viết nào cần duyệt.</p>
                 ) : (
-                    <>
-                        <div className={cx('post-actions-wrapper')}>
-                            <div className="form-check">
-                                <input
-                                    className="form-check-input"
-                                    type="checkbox"
-                                    defaultValue=""
-                                    id="checkAll"
-                                    onChange={handleSelectAll}
-                                    checked={selectedPosts.length === posts.length && posts.length !== 0}
-                                />
-                                <label className="form-check-label" htmlFor="checkAll">
-                                    Chọn tất cả
-                                </label>
-                            </div>
-
-                            <div>
-                                <button onClick={handleApproveAll} disabled={selectedPosts.length === 0}>
-                                    Duyệt tất cả ({selectedPosts.length})
-                                </button>
-                                <button onClick={handleRemoveAll} disabled={selectedPosts.length === 0}>
-                                    Xóa tất cả ({selectedPosts.length})
-                                </button>
-                            </div>
-                        </div>
-
-                        <ul className={cx('post-list')}>
-                            {posts.map((post) => (
-                                <li key={post.id} className={cx('post-item')} onClick={() => handleSelectPost(post.id)}>
-                                    <div className={cx('post-wrapper')}>
-                                        <input
-                                            className="form-check-input"
-                                            type="checkbox"
-                                            onChange={() => handleSelectPost(post.id)}
-                                            checked={selectedPosts.includes(post.id)}
-                                        />
-                                        <div className={cx('post-content')}>
-                                            <div className={cx('post-title')}>{post.title}</div>
-                                            <span>
-                                                tạo bởi{' '}
-                                                <Link to={`/player/${1}`} target="_blank">
-                                                    {post.author}{' '}
-                                                </Link>
-                                                lúc{' '}
-                                                <span>
-                                                    <DateFormatter datetime="2021-01-01" />
-                                                </span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div className={cx('post-actions')}>
-                                        <button onClick={() => handleView(post.id)}>Xem</button>
-                                        <button onClick={() => handleApprove(post.id)}>Duyệt</button>
-                                        <button onClick={() => handleRemove(post.id)}>Xóa</button>
-                                    </div>
-                                </li>
-                            ))}
-                        </ul>
-                    </>
+                    <ul className={cx('post-list')}>
+                        {posts.map((post) => (
+                            <li key={post.id} className={cx('post-item')}>
+                                <div className={cx('post-content')}>
+                                    <div className={cx('post-title')}>{post.title}</div>
+                                    <span>
+                                        tạo bởi{' '}
+                                        <Link to={`/player/${1}`} target="_blank">
+                                            {post.author}{' '}
+                                        </Link>
+                                        lúc{' '}
+                                        <span>
+                                            <DateFormatter datetime="2021-01-01" />
+                                        </span>
+                                    </span>
+                                </div>
+                                <div className={cx('post-actions')}>
+                                    <button onClick={() => handleView(post.id)}>Xem</button>
+                                    <button onClick={() => handleApprove(post.id)}>Duyệt</button>
+                                    <button onClick={() => handleRemove(post.id)}>Xóa</button>
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
                 )}
             </div>
             <Pagination
-                totalPages={meta.totalPages}
+                totalPages={meta.totalPages || 1}
                 currentPage={filters.pageNum - 1}
                 rowsPerPage={meta.pageSize}
                 onPageChange={handleChangePage}

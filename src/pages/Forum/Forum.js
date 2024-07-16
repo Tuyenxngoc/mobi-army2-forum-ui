@@ -81,7 +81,7 @@ function Forum() {
                 </div>
 
                 <Pagination
-                    totalPages={meta.totalPages}
+                    totalPages={meta.totalPages || 1}
                     currentPage={filters.pageNum - 1}
                     rowsPerPage={meta.pageSize}
                     onPageChange={handleChangePage}
