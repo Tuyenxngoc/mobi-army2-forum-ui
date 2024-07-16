@@ -1,17 +1,18 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { getAllCategories } from '~/services/categoryService';
-import { createPost } from '~/services/postService';
-
+import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import PlayerActions from '~/components/PlayerActions/PlayerActions';
-import { Link } from 'react-router-dom';
+import { message } from 'antd';
 
-import Style from './NewPost.module.scss';
-import classNames from 'classnames/bind';
+import PlayerActions from '~/components/PlayerActions/PlayerActions';
 import useAuth from '~/hooks/useAuth';
 import { ROLES } from '~/common/contans';
 import { checkUserHasRequiredRole } from '~/utils/helper';
+import { getAllCategories } from '~/services/categoryService';
+import { createPost } from '~/services/postService';
+
+import Style from './NewPost.module.scss';
+import classNames from 'classnames/bind';
 
 const cx = classNames.bind(Style);
 
@@ -29,6 +30,7 @@ const allowedRoles = [ROLES.Admin, ROLES.SuperAdmin];
 
 function NewPost() {
     const [categories, setCategories] = useState([]);
+    const [messageApi, contextHolder] = message.useMessage();
     const {
         player: { roleName },
     } = useAuth();
@@ -48,13 +50,13 @@ function NewPost() {
     async function handleSubmit(values, { setSubmitting, resetForm }) {
         try {
             await createPost(values);
-            alert('Thêm bài viết thành công, vui lòng chờ duyệt');
+            messageApi.success('Thêm bài viết thành công, vui lòng chờ duyệt');
             resetForm();
         } catch (error) {
             if (error.response && error.response.status === 400 && error.response.data) {
-                alert(error.response.data.message);
+                messageApi.error(error.response.data.message);
             } else {
-                console.error('Error creating new post:', error.message);
+                messageApi.error('Error creating new post:', error.message);
             }
         } finally {
             setSubmitting(false);
@@ -66,16 +68,19 @@ function NewPost() {
             const response = await getAllCategories();
             setCategories(response.data.data);
         } catch (error) {
-            console.error('Error fetching categories:', error.message);
+            messageApi.error('Error fetching categories:', error.message);
         }
     };
 
     useEffect(() => {
         fetchCategories();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
         <div className="box-container">
+            {contextHolder}
+
             <PlayerActions />
 
             <div className={cx('header')}>
