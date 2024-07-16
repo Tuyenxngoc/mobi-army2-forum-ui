@@ -16,8 +16,8 @@ export const deletePost = (postId) => {
     return axiosPrivate.delete(`posts/${postId}`);
 };
 
-export const getPostsForReview = () => {
-    return axiosPrivate.get('posts/review');
+export const getPostsForReview = (params) => {
+    return axiosPrivate.get(`posts/review?${params}`);
 };
 
 export const approvePost = (postId) => {

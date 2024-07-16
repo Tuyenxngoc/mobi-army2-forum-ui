@@ -1,0 +1,50 @@
+.header {
+    background-color: #1d78b6;
+    padding: 2px 5px;
+
+    a {
+        color: white;
+    }
+}
+
+.post-actions-wrapper {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.post-list {
+}
+
+.post-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--back-ground);
+    border-bottom: 1px #65a5ac solid;
+    padding: 10px;
+
+    &:last-child {
+        border-bottom: none;
+    }
+}
+
+.post-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.post-content {
+    margin-left: 10px;
+    color: black;
+}
+
+.post-title {
+    color: black;
+    font-size: 16px;
+}
+
+.post-actions {
+}
