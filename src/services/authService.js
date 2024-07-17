@@ -4,8 +4,16 @@ export const loginUser = (values) => {
     return axios.post('auth/login', values);
 };
 
-export const register = (values) => {
-    return axios.post('auth/register', values);
+export const register = (url, values) => {
+    return axios.post(`auth/register?siteURL=${url}`, values);
+};
+
+export const confirmEmail = (code) => {
+    return axios.get(`auth/confirm?code=${code}`);
+};
+
+export const resendConfirmationEmail = (email, url) => {
+    return axios.post(`auth/resend-code?email=${email}&siteURL=${url}`);
 };
 
 export const getCurrentUserLogin = () => {

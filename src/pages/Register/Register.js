@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -54,6 +54,7 @@ const defaultValue = {
 };
 
 function Register() {
+    const navigate = useNavigate();
     const [messageApi, contextHolder] = message.useMessage();
 
     const formik = useFormik({
@@ -64,9 +65,10 @@ function Register() {
 
     async function handleRegister(values, { setSubmitting }) {
         try {
-            const response = await register(values);
+            const currentURL = window.location.origin;
+            const response = await register(currentURL, values);
             if (response.status === 200) {
-                messageApi.success('Đăng kí thành công');
+                navigate('/verify', { state: { email: values.email } });
             }
         } catch (error) {
             let message = '';

@@ -13,6 +13,7 @@ import RequireAuth from './utils/RequireAuth';
 import { ROLES } from './common/contans';
 import AccessDenied from './pages/AccessDenied/AccessDenied';
 import Terms from './pages/Terms/Terms';
+import ConfirmEmail from './pages/ConfirmEmail/ConfirmEmail';
 
 function App() {
     return (
@@ -34,6 +35,8 @@ function App() {
                     <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.SuperAdmin]} />}>
                         <Route path="post/review" element={<ReviewPosts />} />
                     </Route>
+
+                    <Route path="/verify" element={<ConfirmEmail />} />
 
                     <Route path="access-denied" element={<AccessDenied />} />
                     <Route path="*" element={<NotFound />} />
