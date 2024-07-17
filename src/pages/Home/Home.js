@@ -1,8 +1,5 @@
 import Style from './Home.module.scss';
 import classNames from 'classnames/bind';
-
-import background from '~/assets/images/background.jpg';
-
 import DownloadItem from '~/components/DownloadItem/DownloadItem';
 import Notification from '~/components/Notification/Notification';
 import CreateNotification from '~/components/Notification/CreateNotification';
@@ -12,6 +9,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { getAllNotifications } from '~/services/NotificationService';
 import { checkUserHasRequiredRole } from '~/utils/helper';
 import images from '~/assets';
+import { message } from 'antd';
 
 const cx = classNames.bind(Style);
 
@@ -46,6 +44,7 @@ const allowedRoles = [ROLES.Admin, ROLES.SuperAdmin];
 
 function Home() {
     const [notifications, setNotifications] = useState([]);
+    const [messageApi, contextHolder] = message.useMessage();
     const {
         player: { roleName },
     } = useAuth();
@@ -96,8 +95,10 @@ function Home() {
 
     return (
         <main>
+            {contextHolder}
+
             <div className={cx('slide')}>
-                <img src={background} alt="background" />
+                <img src={images.background} alt="background" />
             </div>
             <div className={cx('download')}>
                 <div className="container">
@@ -118,9 +119,10 @@ function Home() {
                         onNotificationUpdate={updateNotification}
                         onNotificationDelete={removeNotification}
                         canEdit={hasRequiredRole}
+                        messageApi={messageApi}
                     />
                 ))}
-                {hasRequiredRole && <CreateNotification addNotification={addNotification} />}
+                {hasRequiredRole && <CreateNotification onAddNotification={addNotification} messageApi={messageApi} />}
             </div>
         </main>
     );

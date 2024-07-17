@@ -4,7 +4,7 @@ import * as yup from 'yup';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFloppyDisk, faPen, faTrash, faXmark } from '@fortawesome/free-solid-svg-icons';
-import { message, Modal, Tooltip } from 'antd';
+import { Modal, Tooltip } from 'antd';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import 'react-quill/dist/quill.core.css';
@@ -26,14 +26,13 @@ const defaultValue = {
     content: '',
 };
 
-const Notification = ({ data, onNotificationUpdate, onNotificationDelete, canEdit = false }) => {
+const Notification = ({ data, onNotificationUpdate, onNotificationDelete, canEdit = false, messageApi }) => {
     const [isEditingNotification, setIsEditingNotification] = useState(false);
     const [isDeleteDialogVisible, setIsDeleteDialogVisible] = useState(false);
     const [isDeleteConfirmLoading, setIsDeleteConfirmLoading] = useState(false);
     const [deleteDialogText, setDeleteDialogText] = useState(
         'Bạn có chắc muốn xóa thông báo này? Lưu ý: Sau khi xóa, bạn không thể hoàn tác hay khôi phục.',
     );
-    const [messageApi, contextHolder] = message.useMessage();
 
     const formik = useFormik({
         initialValues: defaultValue,
@@ -99,8 +98,6 @@ const Notification = ({ data, onNotificationUpdate, onNotificationDelete, canEdi
 
     return (
         <>
-            {contextHolder}
-
             <Modal
                 title="Xác nhận xóa"
                 open={isDeleteDialogVisible}
@@ -216,6 +213,7 @@ Notification.propTypes = {
     onNotificationUpdate: PropTypes.func.isRequired,
     onNotificationDelete: PropTypes.func.isRequired,
     canEdit: PropTypes.bool,
+    messageApi: PropTypes.object.isRequired,
 };
 
 export default Notification;

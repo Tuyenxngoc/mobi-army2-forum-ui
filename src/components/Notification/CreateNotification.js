@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { message } from 'antd';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import 'react-quill/dist/quill.core.css';
@@ -19,19 +18,17 @@ const defaultValue = {
     content: '',
 };
 
-function CreateNotification({ addNotification }) {
-    const [messageApi, contextHolder] = message.useMessage();
-
+function CreateNotification({ onAddNotification, messageApi }) {
     const formik = useFormik({
         initialValues: defaultValue,
         validationSchema: validationSchema,
-        onSubmit: handleCreateNotification,
+        onSubmit: handleNotificationCreate,
     });
 
-    async function handleCreateNotification(values, { setSubmitting, resetForm }) {
+    async function handleNotificationCreate(values, { setSubmitting, resetForm }) {
         try {
             const response = await createNotification(values);
-            addNotification(response.data.data);
+            onAddNotification(response.data.data);
             resetForm();
             messageApi.success('Thêm thông báo thành công');
         } catch (error) {
@@ -43,8 +40,6 @@ function CreateNotification({ addNotification }) {
 
     return (
         <div className="box-container p-2">
-            {contextHolder}
-
             <h3>Thêm thông báo mới</h3>
             <form onSubmit={formik.handleSubmit}>
                 <div className="form-group mb-2">
@@ -87,7 +82,8 @@ function CreateNotification({ addNotification }) {
 }
 
 CreateNotification.propTypes = {
-    addNotification: PropTypes.func.isRequired,
+    onAddNotification: PropTypes.func.isRequired,
+    messageApi: PropTypes.object.isRequired,
 };
 
 export default CreateNotification;
