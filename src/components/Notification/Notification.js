@@ -1,77 +1,101 @@
-import { useCallback, useRef, useState } from 'react';
-
+import { useEffect, useState } from 'react';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
+import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFloppyDisk, faPen, faXmark } from '@fortawesome/free-solid-svg-icons';
-import { message, Modal } from 'antd';
+import { faFloppyDisk, faPen, faTrash, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { message, Modal, Tooltip } from 'antd';
+import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import 'react-quill/dist/quill.core.css';
-import ReactQuill from 'react-quill';
+import classNames from 'classnames/bind';
+import Style from './Notification.module.scss';
 import DateFormatter from '../DateFormatter/DateFormatter';
 import { deleteNotification, updateNotification } from '~/services/NotificationService';
-
-import Style from './Notification.module.scss';
-import classNames from 'classnames/bind';
 import { formats, modules } from '~/common/editorConfig';
 
 const cx = classNames.bind(Style);
 
-const Notification = ({ data, fetchNotifications, canEdit = false }) => {
-    const [isEditing, setIsEditing] = useState(false);
-    const [editedTitle, setEditedTitle] = useState(data.title);
-    const [editedContent, setEditedContent] = useState(data.content);
-    const [showDialogDelete, setShowDialogDelete] = useState(false);
-    const reactQuillRef = useRef(null);
-    const [confirmLoading, setConfirmLoading] = useState(false);
-    const [modalText, setModalText] = useState(
+const validationSchema = yup.object({
+    title: yup.string().trim().required('Tiêu đề là bắt buộc'),
+    content: yup.string().trim().required('Nội dung là bắt buộc'),
+});
+
+const defaultValue = {
+    title: '',
+    content: '',
+};
+
+const Notification = ({ data, onNotificationUpdate, onNotificationDelete, canEdit = false }) => {
+    const [isEditingNotification, setIsEditingNotification] = useState(false);
+    const [isDeleteDialogVisible, setIsDeleteDialogVisible] = useState(false);
+    const [isDeleteConfirmLoading, setIsDeleteConfirmLoading] = useState(false);
+    const [deleteDialogText, setDeleteDialogText] = useState(
         'Bạn có chắc muốn xóa thông báo này? Lưu ý: Sau khi xóa, bạn không thể hoàn tác hay khôi phục.',
     );
     const [messageApi, contextHolder] = message.useMessage();
 
-    const handleEdit = () => {
-        setIsEditing(true);
-        setEditedTitle(data.title);
-        setEditedContent(data.content);
+    const formik = useFormik({
+        initialValues: defaultValue,
+        validationSchema: validationSchema,
+        onSubmit: handleNotificationUpdate,
+    });
+
+    async function handleNotificationUpdate(values, { setSubmitting }) {
+        try {
+            const response = await updateNotification(data.id, values);
+            messageApi.success('Sửa thông báo thành công');
+            onNotificationUpdate(response.data.data);
+            setIsEditingNotification(false);
+        } catch (error) {
+            messageApi.error('Thêm thông báo thất bại', error.message);
+        } finally {
+            setSubmitting(false);
+        }
+    }
+
+    const handleNotificationDelete = async () => {
+        setIsDeleteConfirmLoading(true);
+        setDeleteDialogText('Đang xóa...');
+
+        try {
+            await deleteNotification(data.id);
+            messageApi.success('Xoá thông báo thành công');
+            setIsDeleteDialogVisible(false);
+            setIsDeleteConfirmLoading(false);
+            onNotificationDelete(data.id);
+        } catch (error) {
+            setDeleteDialogText('Xóa thất bại. Vui lòng thử lại.');
+        } finally {
+            setIsDeleteConfirmLoading(false);
+        }
     };
 
-    const handleBtnDeleteClick = () => {
-        setShowDialogDelete(true);
+    const handleEditButtonClick = () => {
+        setIsEditingNotification(true);
     };
 
-    const handleBtnCloseClick = () => {
-        setIsEditing(false);
+    const handleDeleteButtonClick = () => {
+        setIsDeleteDialogVisible(true);
     };
 
-    const handleChangeNotification = () => {
-        const newValues = {
-            title: editedTitle,
-            content: editedContent,
-        };
-        updateNotification(data.notificationId, newValues)
-            .then(() => {
-                fetchNotifications();
-                messageApi.success('Save changes successfully');
-            })
-            .catch(() => {});
+    const handleCloseEditButtonClick = () => {
+        setIsEditingNotification(false);
     };
 
-    const handleDelete = () => {
-        setModalText('Đang xóa...');
-        setConfirmLoading(true);
-        deleteNotification(data.id)
-            .then(() => {
-                setShowDialogDelete(false);
-                setConfirmLoading(false);
-                fetchNotifications();
-            })
-            .catch(() => {
-                setModalText('Xóa thất bại. Vui lòng thử lại.');
-                setConfirmLoading(false);
+    const handleCloseDeleteDialogClick = () => {
+        setIsDeleteDialogVisible(false);
+    };
+
+    useEffect(() => {
+        if (isEditingNotification) {
+            formik.setValues({
+                title: data.title,
+                content: data.content,
             });
-    };
-
-    const handleCancel = () => {
-        setShowDialogDelete(false);
-    };
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isEditingNotification]);
 
     return (
         <>
@@ -79,66 +103,99 @@ const Notification = ({ data, fetchNotifications, canEdit = false }) => {
 
             <Modal
                 title="Xác nhận xóa"
-                open={showDialogDelete}
-                onOk={handleDelete}
-                confirmLoading={confirmLoading}
-                onCancel={handleCancel}
+                open={isDeleteDialogVisible}
+                onOk={handleNotificationDelete}
+                confirmLoading={isDeleteConfirmLoading}
+                onCancel={handleCloseDeleteDialogClick}
             >
-                <p>{modalText}</p>
+                <p>{deleteDialogText}</p>
             </Modal>
 
             <div className="box-container p-2">
-                {isEditing ? (
+                {isEditingNotification ? (
                     <>
                         <div className={cx('title')}>
-                            <input
-                                type="text"
-                                className="form-control-plaintext"
-                                value={editedTitle}
-                                onChange={(e) => setEditedTitle(e.target.value)}
-                            />
-                            <div className="d-flex">
-                                <div onClick={handleBtnCloseClick}>
-                                    <FontAwesomeIcon icon={faXmark} />
-                                </div>
-                                <div onClick={handleChangeNotification}>
-                                    <FontAwesomeIcon icon={faFloppyDisk} />
-                                </div>
+                            <div className="form-group">
+                                <input
+                                    id="inputTitle"
+                                    className={`form-control-plaintext ${
+                                        formik.touched.title && formik.errors.title ? 'is-invalid' : ''
+                                    }`}
+                                    aria-describedby="titleHelp"
+                                    type="text"
+                                    name="title"
+                                    value={formik.values.title}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                />
+
+                                {formik.touched.title && formik.errors.title ? (
+                                    <div className="invalid-feedback">{formik.errors.title}</div>
+                                ) : (
+                                    <small id="titleHelp" className="form-text text-muted">
+                                        Tiêu đề thông báo không nên quá ngắn
+                                    </small>
+                                )}
+                            </div>
+
+                            <div className={cx('edit-action')}>
+                                <Tooltip title="Hủy">
+                                    <div
+                                        className="me-2"
+                                        style={{ cursor: 'pointer' }}
+                                        onClick={handleCloseEditButtonClick}
+                                    >
+                                        <FontAwesomeIcon icon={faXmark} />
+                                    </div>
+                                </Tooltip>
+
+                                <Tooltip title="Lưu">
+                                    <div style={{ cursor: 'pointer' }} onClick={formik.handleSubmit}>
+                                        <FontAwesomeIcon icon={faFloppyDisk} />
+                                    </div>
+                                </Tooltip>
                             </div>
                         </div>
                         <div className={cx('content')}>
                             <ReactQuill
-                                id="formControlTextarea"
-                                ref={reactQuillRef}
-                                theme="snow"
+                                id="inputContent"
+                                className="custom-quill"
+                                value={formik.values.content}
                                 modules={modules}
                                 formats={formats}
-                                value={editedContent}
-                                onChange={(value) => setEditedContent(value)}
+                                onChange={(value) => formik.setFieldValue('content', value)}
                             />
                         </div>
                     </>
                 ) : (
                     <>
                         <div className={cx('title')}>
-                            <div className="d-flex">
-                                <h4>{data.title}</h4>
-                                {canEdit && (
-                                    <div className={cx('editButton')} onClick={handleEdit}>
-                                        <FontAwesomeIcon icon={faPen} />
+                            {canEdit ? (
+                                <>
+                                    <div className="d-flex align-items-center">
+                                        <h4 className="me-2">{data.title}</h4>
+                                        <Tooltip title="Sửa">
+                                            <div style={{ cursor: 'pointer' }} onClick={handleEditButtonClick}>
+                                                <FontAwesomeIcon icon={faPen} />
+                                            </div>
+                                        </Tooltip>
                                     </div>
-                                )}
-                            </div>
-                            {canEdit && (
-                                <div onClick={handleBtnDeleteClick}>
-                                    <FontAwesomeIcon icon={faXmark} />
-                                </div>
+                                    <Tooltip title="Xóa">
+                                        <div style={{ cursor: 'pointer' }} onClick={handleDeleteButtonClick}>
+                                            <FontAwesomeIcon icon={faTrash} />
+                                        </div>
+                                    </Tooltip>
+                                </>
+                            ) : (
+                                <h4>{data.title}</h4>
                             )}
                         </div>
+
                         <div
-                            className={cx('ql-editor', 'content')}
+                            className={cx('ql-snow', 'ql-editor', 'content')}
                             dangerouslySetInnerHTML={{ __html: data.content }}
                         />
+
                         <div className={cx('date')}>
                             <DateFormatter datetime={data.lastModifiedDate} />
                         </div>
@@ -147,6 +204,18 @@ const Notification = ({ data, fetchNotifications, canEdit = false }) => {
             </div>
         </>
     );
+};
+
+Notification.propTypes = {
+    data: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        title: PropTypes.string.isRequired,
+        content: PropTypes.string.isRequired,
+        lastModifiedDate: PropTypes.string.isRequired,
+    }).isRequired,
+    onNotificationUpdate: PropTypes.func.isRequired,
+    onNotificationDelete: PropTypes.func.isRequired,
+    canEdit: PropTypes.bool,
 };
 
 export default Notification;

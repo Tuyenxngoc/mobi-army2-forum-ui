@@ -56,6 +56,31 @@ function Home() {
         setNotifications((prevNotifications) => [...prevNotifications, newNotification]);
     };
 
+    const updateNotification = (updatedNotification) => {
+        setNotifications((prevNotifications) => {
+            const index = prevNotifications.findIndex((notification) => notification.id === updatedNotification.id);
+
+            if (index !== -1) {
+                const updatedNotifications = [...prevNotifications];
+                updatedNotifications[index] = updatedNotification;
+
+                return updatedNotifications;
+            } else {
+                return prevNotifications;
+            }
+        });
+    };
+
+    const removeNotification = (notificationIdToRemove) => {
+        setNotifications((prevNotifications) => {
+            const updatedNotifications = prevNotifications.filter(
+                (notification) => notification.id !== notificationIdToRemove,
+            );
+
+            return updatedNotifications;
+        });
+    };
+
     const fetchNotifications = async () => {
         try {
             const notifications = await getAllNotifications();
@@ -90,7 +115,8 @@ function Home() {
                     <Notification
                         key={index}
                         data={notification}
-                        fetchNotifications={fetchNotifications}
+                        onNotificationUpdate={updateNotification}
+                        onNotificationDelete={removeNotification}
                         canEdit={hasRequiredRole}
                     />
                 ))}
