@@ -2,16 +2,16 @@ import Style from './Home.module.scss';
 import classNames from 'classnames/bind';
 
 import background from '~/assets/images/background.jpg';
-import apk_0 from '~/assets/images/apk_0.png';
-import apk_1 from '~/assets/images/apk_1.png';
 
 import DownloadItem from '~/components/DownloadItem/DownloadItem';
 import Notification from '~/components/Notification/Notification';
 import CreateNotification from '~/components/Notification/CreateNotification';
 import useAuth from '~/hooks/useAuth';
 import { ROLES } from '~/common/contans';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { getAllNotifications } from '~/services/NotificationService';
+import { checkUserHasRequiredRole } from '~/utils/helper';
+import images from '~/assets';
 
 const cx = classNames.bind(Style);
 
@@ -19,33 +19,42 @@ const downloadInfo = [
     {
         title: 'Phiên bản: 244',
         link: '~/assets/files/army2local.jar',
-        icon1: apk_0,
-        icon2: apk_1,
+        icon1: images.ggplay0,
+        icon2: images.ggplay1,
     },
     {
         title: 'Phiên bản: 244',
         link: '~/assets/files/army2local.jar',
-        icon1: apk_0,
-        icon2: apk_1,
+        icon1: images.apk0,
+        icon2: images.apk1,
     },
     {
-        title: 'Phiên bản: 244',
+        title: 'Phiên bản: 243',
         link: '~/assets/files/army2local.jar',
-        icon1: apk_0,
-        icon2: apk_1,
+        icon1: images.pc0,
+        icon2: images.pc1,
     },
     {
-        title: 'Phiên bản: 244',
+        title: 'Phiên bản: 243',
         link: '~/assets/files/army2local.jar',
-        icon1: apk_0,
-        icon2: apk_1,
+        icon1: images.ios0,
+        icon2: images.ios1,
     },
 ];
 
+const allowedRoles = [ROLES.Admin, ROLES.SuperAdmin];
+
 function Home() {
     const [notifications, setNotifications] = useState([]);
+    const {
+        player: { roleName },
+    } = useAuth();
 
-    const { isAuthenticated, player } = useAuth();
+    const hasRequiredRole = useMemo(() => checkUserHasRequiredRole(roleName, allowedRoles), [roleName]);
+
+    const addNotification = (newNotification) => {
+        setNotifications((prevNotifications) => [...prevNotifications, newNotification]);
+    };
 
     const fetchNotifications = async () => {
         try {
@@ -82,12 +91,10 @@ function Home() {
                         key={index}
                         data={notification}
                         fetchNotifications={fetchNotifications}
-                        canEdit={isAuthenticated && player.roleName === ROLES.Admin}
+                        canEdit={hasRequiredRole}
                     />
                 ))}
-                {isAuthenticated && player.roleName === ROLES.Admin && (
-                    <CreateNotification fetchNotifications={fetchNotifications} />
-                )}
+                {hasRequiredRole && <CreateNotification addNotification={addNotification} />}
             </div>
         </main>
     );

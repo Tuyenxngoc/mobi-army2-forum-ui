@@ -1,14 +1,17 @@
 import { useCallback, useRef, useState } from 'react';
-import DateFormatter from '../DateFormatter/DateFormatter';
-import Style from './Notification.module.scss';
-import classNames from 'classnames/bind';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFloppyDisk, faPen, faXmark } from '@fortawesome/free-solid-svg-icons';
-
-import 'react-quill/dist/quill.snow.css';
-import ReactQuill from 'react-quill';
-import { deleteNotification, updateNotification } from '~/services/NotificationService';
 import { message, Modal } from 'antd';
+import 'react-quill/dist/quill.snow.css';
+import 'react-quill/dist/quill.core.css';
+import ReactQuill from 'react-quill';
+import DateFormatter from '../DateFormatter/DateFormatter';
+import { deleteNotification, updateNotification } from '~/services/NotificationService';
+
+import Style from './Notification.module.scss';
+import classNames from 'classnames/bind';
+import { formats, modules } from '~/common/editorConfig';
 
 const cx = classNames.bind(Style);
 
@@ -50,69 +53,6 @@ const Notification = ({ data, fetchNotifications, canEdit = false }) => {
             })
             .catch(() => {});
     };
-
-    const imageHandler = useCallback(() => {
-        const input = document.createElement('input');
-        input.setAttribute('type', 'file');
-        input.setAttribute('accept', 'image/*');
-        input.click();
-        input.onchange = async () => {
-            if (input !== null && input.files !== null) {
-                const file = input.files[0];
-            }
-        };
-    }, []);
-
-    const modules = {
-        toolbar: {
-            container: [
-                [{ font: [] }],
-                [{ header: [1, 2, 3, 4, 5, 6, false] }],
-                [{ size: ['huge', 'large', false, 'small'] }], // custom dropdown
-                ['bold', 'italic', 'underline', 'strike'], // toggled buttons
-                [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-                ['blockquote', 'code-block'],
-                ['link', 'image', 'formula'],
-                [{ list: 'ordered' }, { list: 'bullet' }, { list: 'check' }],
-                [{ align: [] }],
-                [{ indent: '-1' }, { indent: '+1' }], // outdent/indent
-                [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
-                [{ direction: 'rtl' }], // text direction
-
-                ['clean'], // remove formatting button
-            ],
-            handlers: {
-                image: imageHandler,
-            },
-        },
-        clipboard: {
-            matchVisual: false,
-        },
-    };
-
-    const formats = [
-        'font',
-        'header',
-        'size',
-        'bold',
-        'italic',
-        'underline',
-        'strike',
-        'color',
-        'background',
-        'blockquote',
-        'code-block',
-        'link',
-        'image',
-        'formula',
-        'list',
-        'bullet',
-        'check',
-        'align',
-        'indent',
-        'script',
-        'direction',
-    ];
 
     const handleDelete = () => {
         setModalText('Đang xóa...');
@@ -195,7 +135,10 @@ const Notification = ({ data, fetchNotifications, canEdit = false }) => {
                                 </div>
                             )}
                         </div>
-                        <div className={cx('content')} dangerouslySetInnerHTML={{ __html: data.content }} />
+                        <div
+                            className={cx('ql-editor', 'content')}
+                            dangerouslySetInnerHTML={{ __html: data.content }}
+                        />
                         <div className={cx('date')}>
                             <DateFormatter datetime={data.lastModifiedDate} />
                         </div>

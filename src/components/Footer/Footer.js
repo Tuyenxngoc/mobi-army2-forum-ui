@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import Style from './Footer.module.scss';
 import classNames from 'classnames/bind';
 
@@ -9,7 +10,7 @@ function Footer() {
             <h2 className={cx('name')}>Mobi Army 2</h2>
             <div className={cx('des')}>Bản Quyền thuộc về @TeaMobi - 2022</div>
             <div className={cx('link')}>
-                <a href="/">Điều Khoản Sử Dụng</a>
+                <Link to="/terms">Điều Khoản Sử Dụng</Link>
             </div>
         </footer>
     );

@@ -1,13 +1,16 @@
 import PropTypes from 'prop-types';
-
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { createNotification } from '~/services/NotificationService';
 import { message } from 'antd';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import 'react-quill/dist/quill.core.css';
+
+import { createNotification } from '~/services/NotificationService';
+import { formats, modules } from '~/common/editorConfig';
 
 const validationSchema = yup.object({
     title: yup.string().trim().required('Tiêu đề là bắt buộc'),
-
     content: yup.string().trim().required('Nội dung là bắt buộc'),
 });
 
@@ -16,7 +19,7 @@ const defaultValue = {
     content: '',
 };
 
-function CreateNotification({ fetchNotifications }) {
+function CreateNotification({ addNotification }) {
     const [messageApi, contextHolder] = message.useMessage();
 
     const formik = useFormik({
@@ -27,8 +30,8 @@ function CreateNotification({ fetchNotifications }) {
 
     async function handleCreateNotification(values, { setSubmitting, resetForm }) {
         try {
-            await createNotification(values);
-            fetchNotifications();
+            const response = await createNotification(values);
+            addNotification(response.data.data);
             resetForm();
             messageApi.success('Thêm thông báo thành công');
         } catch (error) {
@@ -62,20 +65,15 @@ function CreateNotification({ fetchNotifications }) {
 
                 <div className="form-group mb-2">
                     <label htmlFor="inputContent">Nội dung</label>
-                    <textarea
+                    <ReactQuill
                         id="inputContent"
-                        className={`form-control ${
-                            formik.touched.content && formik.errors.content ? 'is-invalid' : ''
-                        }`}
-                        name="content"
-                        rows="3"
+                        className="custom-quill"
                         value={formik.values.content}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
+                        modules={modules}
+                        formats={formats}
+                        onChange={(value) => formik.setFieldValue('content', value)}
                     />
-                    {formik.touched.content && formik.errors.content ? (
-                        <div className="invalid-feedback">{formik.errors.content}</div>
-                    ) : null}
+                    {formik.errors.content ? <div className="invalid-feedback">{formik.errors.content}</div> : null}
                 </div>
 
                 <div className="text-center">
@@ -89,7 +87,7 @@ function CreateNotification({ fetchNotifications }) {
 }
 
 CreateNotification.propTypes = {
-    fetchNotifications: PropTypes.func.isRequired,
+    addNotification: PropTypes.func.isRequired,
 };
 
 export default CreateNotification;
