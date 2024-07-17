@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import { useFormik } from 'formik';
@@ -5,10 +6,9 @@ import * as yup from 'yup';
 
 import Style from './Login.module.scss';
 import classNames from 'classnames/bind';
-import { useEffect, useState } from 'react';
 import { loginUser } from '~/services/authService';
 import useAuth from '~/hooks/useAuth';
-import { ROLES } from '~/common/contans';
+import { message } from 'antd';
 
 const cx = classNames.bind(Style);
 
@@ -26,8 +26,7 @@ const defaultValue = {
 function Login() {
     const navigate = useNavigate();
     const location = useLocation();
-    const [isLoading, setIsLoading] = useState(false);
-
+    const [messageApi, contextHolder] = message.useMessage();
     const { isAuthenticated, login } = useAuth();
 
     const from = location.state?.from?.pathname || '/';
@@ -35,13 +34,10 @@ function Login() {
     const formik = useFormik({
         initialValues: defaultValue,
         validationSchema: validationSchema,
-        onSubmit: (values) => {
-            handleLogin(values);
-        },
+        onSubmit: handleLogin,
     });
 
-    const handleLogin = async (values) => {
-        setIsLoading(true);
+    async function handleLogin(values, { setSubmitting }) {
         try {
             const response = await loginUser(values);
             if (response.status === 200) {
@@ -50,10 +46,17 @@ function Login() {
                 navigate(from, { replace: true });
             }
         } catch (error) {
+            let message = '';
+            if (!error?.response) {
+                message = 'Máy chủ không phản hồi';
+            } else {
+                message = error?.response?.data?.message || 'Thông tin đăng nhập không đúng';
+            }
+            messageApi.error(message);
         } finally {
-            setIsLoading(false);
+            setSubmitting(false);
         }
-    };
+    }
 
     const renderInput = (name, label, type = 'text') => (
         <div className={cx('formControl')}>
@@ -84,6 +87,8 @@ function Login() {
 
     return (
         <main className={cx('wrapper')}>
+            {contextHolder}
+
             <div className={cx('title')}>Sử dụng tài khoản Mobi Army 2 để đăng nhập.</div>
 
             <form onSubmit={formik.handleSubmit}>
@@ -91,7 +96,7 @@ function Login() {
                 {renderInput('password', 'Mật khẩu', 'password')}
 
                 <div className={cx('formControl')}>
-                    <button type="submit" disabled={isLoading}>
+                    <button type="submit" disabled={formik.isSubmitting}>
                         Đăng nhập
                     </button>
                 </div>

@@ -4,6 +4,10 @@ export const loginUser = (values) => {
     return axios.post('auth/login', values);
 };
 
+export const register = (values) => {
+    return axios.post('auth/register', values);
+};
+
 export const getCurrentUserLogin = () => {
     return axiosPrivate.get('user/current');
 };

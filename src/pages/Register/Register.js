@@ -5,21 +5,39 @@ import * as yup from 'yup';
 
 import Style from './Register.module.scss';
 import classNames from 'classnames/bind';
+import { register } from '~/services/authService';
+import { message } from 'antd';
 
 const cx = classNames.bind(Style);
 
 const validationSchema = yup.object({
-    name: yup.string().trim().required('Họ và tên là bắt buộc'),
+    fullName: yup
+        .string()
+        .trim()
+        .matches(/^\S+(?:\s+\S+)+$/, 'Họ và tên không hợp lệ')
+        .required('Họ và tên là bắt buộc'),
 
-    phoneNumber: yup.string().trim().required('Số điện thoại là bắt buộc'),
+    phoneNumber: yup
+        .string()
+        .trim()
+        .matches(/^(?:\+84|0)(?:1[2689]|9[0-9]|3[2-9]|5[6-9]|7[0-9])(?:\d{7}|\d{8})$/, 'Số điện thoại không hợp lệ')
+        .required('Số điện thoại là bắt buộc'),
 
     email: yup.string().trim().email('Email không hợp lệ').required('Email là bắt buộc'),
 
-    username: yup.string().trim().required('Tên tài khoản là bắt buộc'),
+    username: yup
+        .string()
+        .trim()
+        .matches(/^[a-z][a-z0-9]{3,15}$/, 'Tên tài khoản không hợp lệ')
+        .required('Tên tài khoản là bắt buộc'),
 
-    password: yup.string().min(6, 'Mật khẩu phải có ít nhất 6 ký tự').required('Mật khẩu là bắt buộc'),
+    password: yup
+        .string()
+        .min(6, 'Mật khẩu phải có ít nhất 6 ký tự')
+        .matches(/^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{6,}$/, 'Mật khẩu phải bao gồm ít nhất một chữ cái và một số')
+        .required('Mật khẩu là bắt buộc'),
 
-    confirmPassword: yup
+    repeatPassword: yup
         .string()
         .trim()
         .oneOf([yup.ref('password'), null], 'Mật khẩu xác nhận phải giống với mật khẩu đã nhập')
@@ -27,22 +45,51 @@ const validationSchema = yup.object({
 });
 
 const defaultValue = {
-    name: '',
+    fullName: '',
     phoneNumber: '',
     email: '',
     username: '',
     password: '',
-    confirmPassword: '',
+    repeatPassword: '',
 };
 
 function Register() {
+    const [messageApi, contextHolder] = message.useMessage();
+
     const formik = useFormik({
         initialValues: defaultValue,
         validationSchema: validationSchema,
-        onSubmit: (values) => {
-            alert(JSON.stringify(values, null, 2));
-        },
+        onSubmit: handleRegister,
     });
+
+    async function handleRegister(values, { setSubmitting }) {
+        try {
+            const response = await register(values);
+            if (response.status === 200) {
+                messageApi.success('Đăng kí thành công');
+            }
+        } catch (error) {
+            let message = '';
+            if (!error?.response) {
+                message = 'Máy chủ không phản hồi';
+            } else {
+                if (error.response.status === 409) {
+                    message = error?.response?.data?.message;
+                } else {
+                    message = 'Có lỗi xảy ra, vui lòng thử lại';
+
+                    const errorMessages = error?.response?.data?.message;
+
+                    Object.keys(errorMessages).forEach((field) => {
+                        formik.setFieldError(field, errorMessages[field]);
+                    });
+                }
+            }
+            messageApi.error(message);
+        } finally {
+            setSubmitting(false);
+        }
+    }
 
     const renderInput = (name, label, type = 'text') => (
         <>
@@ -66,13 +113,15 @@ function Register() {
 
     return (
         <main className={cx('wrapper')}>
+            {contextHolder}
+
             <form onSubmit={formik.handleSubmit}>
-                {renderInput('name', 'Họ và tên')}
+                {renderInput('fullName', 'Họ và tên')}
                 {renderInput('phoneNumber', 'Số điện thoại', 'tel')}
                 {renderInput('email', 'Email', 'email')}
                 {renderInput('username', 'Tên tài khoản')}
                 {renderInput('password', 'Mật khẩu', 'password', true)}
-                {renderInput('confirmPassword', 'Xác nhận mật khẩu', 'password')}
+                {renderInput('repeatPassword', 'Xác nhận mật khẩu', 'password')}
                 <p>
                     <span>- Bạn có thể đăng ký tại đây, hoặc ngay trong trò chơi</span>
                     <br />
@@ -94,7 +143,9 @@ function Register() {
                     <br />
                 </p>
                 <div className={cx('formControl')}>
-                    <button type="submit">Đăng ký</button>
+                    <button type="submit" disabled={formik.isSubmitting}>
+                        Đăng ký
+                    </button>
                 </div>
                 <p>
                     Bạn đã có tài khoản? <Link to="/login">Đăng nhập</Link>

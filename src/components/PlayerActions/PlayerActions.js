@@ -5,12 +5,19 @@ import images from '~/assets';
 
 import Style from './PlayerActions.module.scss';
 import classNames from 'classnames/bind';
+import { ROLES } from '~/common/contans';
+import { useMemo } from 'react';
+import { checkUserHasRequiredRole } from '~/utils/helper';
 
 const cx = classNames.bind(Style);
+
+const allowedRoles = [ROLES.Admin, ROLES.SuperAdmin];
 
 function PlayerActions() {
     const navigate = useNavigate();
     const { isAuthenticated, player, logout } = useAuth();
+
+    const hasRequiredRole = useMemo(() => checkUserHasRequiredRole(player.roleName, allowedRoles), [player.roleName]);
 
     const handleLoginClick = () => {
         navigate('/login');
@@ -37,22 +44,22 @@ function PlayerActions() {
                     <button onClick={handleRegisterClick}>Đăng ký</button>
                 </>
             )}
+
             <div>
-                <a href="/">
+                <Link to="/">
                     <img src={images.army} alt="nap the" />
-                </a>
+                </Link>
             </div>
 
             <div>
-                <ul>
-                    <li>
-                        <Link to={'/post/new'}>Bài viết mới</Link>
-                    </li>
-                    <li>
-                        <Link to={'/post/review'}>Duyệt bài viết</Link>
-                    </li>
-                </ul>
+                <Link to={'/post/new'}>Bài viết mới</Link>
             </div>
+
+            {hasRequiredRole && (
+                <div>
+                    <Link to={'/post/review'}>Duyệt bài viết</Link>
+                </div>
+            )}
         </div>
     );
 }
