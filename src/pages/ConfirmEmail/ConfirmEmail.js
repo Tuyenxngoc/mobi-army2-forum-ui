@@ -1,23 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { message } from 'antd';
 import { confirmEmail, resendConfirmationEmail } from '~/services/authService';
 
 const ConfirmEmail = () => {
     const location = useLocation();
-    const [messageApi, contextHolder] = message.useMessage();
     const [counter, setCounter] = useState(60);
+    const [messageApi, contextHolder] = message.useMessage();
 
     const email = location.state?.email;
 
-    useEffect(() => {
-        const params = new URLSearchParams(location.search);
-        const code = params.get('code');
-
-        const verifyEmail = async (code) => {
-            if (!code || code === '') {
-                return;
-            }
+    const verifyEmail = useCallback(
+        async (code) => {
+            if (!code) return;
             try {
                 const response = await confirmEmail(code);
                 if (response.status === 200) {
@@ -26,14 +21,11 @@ const ConfirmEmail = () => {
             } catch (error) {
                 messageApi.error('Xác thực thất bại. Mã xác thực không hợp lệ.');
             }
-        };
+        },
+        [messageApi],
+    );
 
-        verifyEmail(code);
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [location]);
-
-    const handleResendEmail = async () => {
+    const handleResendEmail = useCallback(async () => {
         setCounter(60);
         try {
             const currentURL = window.location.origin;
@@ -44,14 +36,19 @@ const ConfirmEmail = () => {
         } catch (error) {
             messageApi.error('Gửi lại mã xác nhận thất bại.');
         }
-    };
+    }, [email, messageApi]);
 
     useEffect(() => {
-        let timer;
+        const params = new URLSearchParams(location.search);
+        const code = params.get('code');
+        verifyEmail(code);
+    }, [location, verifyEmail]);
+
+    useEffect(() => {
         if (counter > 0) {
-            timer = setTimeout(() => setCounter(counter - 1), 1000);
+            const timer = setTimeout(() => setCounter((prev) => prev - 1), 1000);
+            return () => clearTimeout(timer);
         }
-        return () => clearTimeout(timer);
     }, [counter]);
 
     return (
@@ -68,7 +65,7 @@ const ConfirmEmail = () => {
                     <div>Xác minh bằng liên kết gửi qua Email</div>
                     <p>Vui lòng nhấn vào liên kết xác thực đã được gửi đến địa chỉ Email</p>
                     <p>{email}</p>
-                    <span> Bạn vẫn chưa nhận được?</span>
+                    <span> Bạn vẫn chưa nhận được? </span>
                     <button onClick={handleResendEmail} disabled={counter > 0}>
                         {counter > 0 ? `Gửi lại sau ${counter} giây` : 'Gửi lại'}
                     </button>
