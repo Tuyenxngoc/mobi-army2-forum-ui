@@ -18,6 +18,8 @@ import { toggleLike } from '~/services/likeService';
 import { INITIAL_FILTERS, INITIAL_META, ROLES } from '~/common/contans';
 import PlayerActions from '~/components/PlayerActions/PlayerActions';
 import { checkUserHasRequiredRole } from '~/utils/helper';
+import 'react-quill/dist/quill.snow.css';
+import 'react-quill/dist/quill.core.css';
 
 const cx = classNames.bind(Style);
 
@@ -145,7 +147,10 @@ function PostDetail() {
 
                         <div className={cx('post-body')}>
                             <div className={cx('title')}>{post.title}</div>
-                            <div className={cx('content')}>{post.content}</div>
+                            <div
+                                className={cx('ql-snow', 'ql-editor', 'content')}
+                                dangerouslySetInnerHTML={{ __html: post.content }}
+                            />
                             <br />
                             <br />
                             <button onClick={handleLikePost}>like</button>

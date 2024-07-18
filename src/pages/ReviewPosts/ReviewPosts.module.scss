@@ -33,5 +33,11 @@
     font-size: 16px;
 }
 
-.post-actions {
+.modal-content-scrollable {
+    max-height: calc(100vh - 400px);
+    overflow-y: auto;
+
+    .content {
+        padding: 0;
+    }
 }

@@ -13,6 +13,8 @@ import { createPost } from '~/services/postService';
 
 import Style from './NewPost.module.scss';
 import classNames from 'classnames/bind';
+import ReactQuill from 'react-quill';
+import { formats, modules } from '~/common/editorConfig';
 
 const cx = classNames.bind(Style);
 
@@ -23,7 +25,11 @@ const validationSchema = yup.object({
         .max(50, 'Tiêu đề chỉ được tối đa 50 ký tự')
         .matches(/^[\p{L}\s\d]*$/u, 'Tiêu đề không được chứa ký tự đặc biệt')
         .required('Tiêu đề là bắt buộc'),
-    content: yup.string('Nhập nội dung').min(10, 'Nội dung có ít nhất 10 ký tự').required('Nội dung là bắt buộc'),
+    content: yup
+        .string('Nhập nội dung')
+        .min(10, 'Nội dung có ít nhất 10 ký tự')
+        .max(2000, 'Nội dung chỉ được tối đa 2000 ký tự')
+        .required('Nội dung là bắt buộc'),
 });
 
 const allowedRoles = [ROLES.Admin, ROLES.SuperAdmin];
@@ -135,21 +141,39 @@ function NewPost() {
                     </div>
                     <div className="form-group mb-2">
                         <label htmlFor="content">Nội dung</label>
-                        <textarea
-                            className={`form-control ${
-                                formik.touched.content && formik.errors.content ? 'is-invalid' : ''
-                            }`}
-                            id="content"
-                            rows={3}
-                            placeholder="Nhập nội dung bài viết"
-                            value={formik.values.content}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            name="content"
-                        />
-                        {formik.touched.content && formik.errors.content ? (
-                            <div className="text-danger">{formik.errors.content}</div>
-                        ) : null}
+                        {hasRequiredRole ? (
+                            <>
+                                <ReactQuill
+                                    id="inputContent"
+                                    className="custom-quill"
+                                    value={formik.values.content}
+                                    modules={modules}
+                                    formats={formats}
+                                    onChange={(value) => formik.setFieldValue('content', value)}
+                                />
+                                {formik.errors.content ? (
+                                    <div className="invalid-feedback">{formik.errors.content}</div>
+                                ) : null}
+                            </>
+                        ) : (
+                            <>
+                                <textarea
+                                    className={`form-control ${
+                                        formik.touched.content && formik.errors.content ? 'is-invalid' : ''
+                                    }`}
+                                    id="content"
+                                    rows={3}
+                                    placeholder="Nhập nội dung bài viết"
+                                    value={formik.values.content}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    name="content"
+                                />
+                                {formik.touched.content && formik.errors.content ? (
+                                    <div className="invalid-feedback">{formik.errors.content}</div>
+                                ) : null}
+                            </>
+                        )}
                     </div>
 
                     {hasRequiredRole && (

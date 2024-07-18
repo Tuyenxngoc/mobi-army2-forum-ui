@@ -38,7 +38,7 @@
     &::before {
         content: '';
         position: absolute;
-        top: 10%;
+        top: 19px;
         left: -19px;
         border: 10px solid transparent;
         border-right-color: white;
@@ -68,6 +68,10 @@
     .title {
         font-weight: bold;
         color: var(--text-color);
+    }
+
+    .content {
+        padding: 0;
     }
 
     .approved-by {

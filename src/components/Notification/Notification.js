@@ -41,6 +41,12 @@ const Notification = ({ data, onNotificationUpdate, onNotificationDelete, canEdi
     });
 
     async function handleNotificationUpdate(values, { setSubmitting }) {
+        if (values.title === data.title && values.content === data.content) {
+            messageApi.info('Không có thay đổi nào để cập nhật.');
+            setSubmitting(false);
+            setIsEditingNotification(false);
+            return;
+        }
         try {
             const response = await updateNotification(data.id, values);
             messageApi.success('Sửa thông báo thành công');

@@ -10,6 +10,8 @@ import Pagination from '~/components/Pagination';
 import DateFormatter from '~/components/DateFormatter/DateFormatter';
 import { getPostsForReview, approvePost, deletePost, getPost } from '~/services/postService.js';
 import Style from './ReviewPosts.module.scss';
+import 'react-quill/dist/quill.snow.css';
+import 'react-quill/dist/quill.core.css';
 
 const cx = classNames.bind(Style);
 
@@ -33,7 +35,7 @@ const ReviewPosts = () => {
 
     const handleApprove = async (postId) => {
         try {
-            const response = await approvePost(postId);
+            await approvePost(postId);
             setPosts(posts.filter((post) => post.id !== postId));
             messageApi.success('Duyệt thành công');
         } catch (error) {
@@ -43,7 +45,7 @@ const ReviewPosts = () => {
 
     const handleRemove = async (postId) => {
         try {
-            const response = await deletePost(postId);
+            await deletePost(postId);
             setPosts(posts.filter((post) => post.id !== postId));
             messageApi.success('Xóa thành công');
         } catch (error) {
@@ -96,9 +98,12 @@ const ReviewPosts = () => {
                 onCancel={() => setOpen(false)}
             >
                 {postDetails && (
-                    <div>
+                    <div className={cx('modal-content-scrollable')}>
                         <h2>{postDetails.title}</h2>
-                        <p>{postDetails.content}</p>
+                        <div
+                            className={cx('ql-snow', 'ql-editor', 'content')}
+                            dangerouslySetInnerHTML={{ __html: postDetails.content }}
+                        />
                         <p>
                             tạo bởi{' '}
                             <Link to={`/player/${postDetails.player.id}`} target="_blank">

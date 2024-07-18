@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import classNames from 'classnames/bind';
 import Style from './Comment.module.scss';
 import { createComment } from '~/services/commentService';
+import images from '~/assets';
+import TextArea from 'antd/es/input/TextArea';
 
 const cx = classNames.bind(Style);
 
@@ -29,10 +31,19 @@ function NewComment({ postId, onCommentSubmit }) {
     };
 
     return (
-        <form onSubmit={handleCommentSubmit} className={cx('comment-form')}>
-            <textarea value={newComment} onChange={handleCommentChange} placeholder="Write a comment..." required />
-            <button type="submit">Submit</button>
-        </form>
+        <div className={cx('comment-item')} style={{ padding: '5px' }}>
+            <div className="text-center">
+                <img src={images.plGif} alt="status" />
+                <div>Bài: 1</div>
+            </div>
+
+            <form onSubmit={handleCommentSubmit} className={cx('comment-body')}>
+                <TextArea rows={2} value={newComment} onChange={handleCommentChange} maxLength={50} required />
+                <button type="submit" className="p-x mt-2">
+                    Gửi
+                </button>
+            </form>
+        </div>
     );
 }
 
