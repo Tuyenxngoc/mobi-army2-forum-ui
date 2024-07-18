@@ -38,7 +38,7 @@ function NewComment({ postId, onCommentSubmit }) {
             </div>
 
             <form onSubmit={handleCommentSubmit} className={cx('comment-body')}>
-                <TextArea rows={2} value={newComment} onChange={handleCommentChange} maxLength={50} required />
+                <TextArea rows={2} value={newComment} onChange={handleCommentChange} maxLength={255} required />
                 <button type="submit" className="p-x mt-2">
                     Gửi
                 </button>
