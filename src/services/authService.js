@@ -16,6 +16,10 @@ export const resendConfirmationEmail = (email, url) => {
     return axios.post(`auth/resend-code?email=${email}&siteURL=${url}`);
 };
 
+export const checkEmailConfirmed = (email) => {
+    return axios.get(`auth/check-email?email=${email}`);
+};
+
 export const getCurrentUserLogin = () => {
     return axiosPrivate.get('user/current');
 };

@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { message } from 'antd';
-import { confirmEmail, resendConfirmationEmail } from '~/services/authService';
+import { checkEmailConfirmed, confirmEmail, resendConfirmationEmail } from '~/services/authService';
 
 const ConfirmEmail = () => {
     const location = useLocation();
+    const navigate = useNavigate();
     const [counter, setCounter] = useState(60);
+    const [emailConfirmed, setEmailConfirmed] = useState(false);
     const [messageApi, contextHolder] = message.useMessage();
 
     const email = location.state?.email;
@@ -38,6 +40,20 @@ const ConfirmEmail = () => {
         }
     }, [email, messageApi]);
 
+    const checkEmailConfirmationStatus = useCallback(async () => {
+        try {
+            const response = await checkEmailConfirmed(email);
+            if (response.status === 200 && response.data.data) {
+                setEmailConfirmed(true);
+                setTimeout(() => {
+                    navigate('/', { replace: true });
+                }, 5000); // Redirect after 5 seconds
+            }
+        } catch (error) {
+            console.log('Không thể kiểm tra trạng thái xác nhận email.');
+        }
+    }, [email, navigate]);
+
     useEffect(() => {
         const params = new URLSearchParams(location.search);
         const code = params.get('code');
@@ -51,6 +67,16 @@ const ConfirmEmail = () => {
         }
     }, [counter]);
 
+    useEffect(() => {
+        if (email && !emailConfirmed) {
+            const intervalId = setInterval(() => {
+                checkEmailConfirmationStatus();
+            }, 2000);
+
+            return () => clearInterval(intervalId);
+        }
+    }, [email, emailConfirmed, checkEmailConfirmationStatus]);
+
     return (
         <div className="box-container p-2">
             {contextHolder}
@@ -60,6 +86,8 @@ const ConfirmEmail = () => {
                     <h4>Xác minh bằng liên kết gửi qua Email</h4>
                     <Link to="/">Quay lại trang chủ</Link>
                 </div>
+            ) : emailConfirmed ? (
+                <div>Xác thực thành công, tự động chuyển hướng trang chủ sau 5s</div>
             ) : (
                 <>
                     <div>Xác minh bằng liên kết gửi qua Email</div>
