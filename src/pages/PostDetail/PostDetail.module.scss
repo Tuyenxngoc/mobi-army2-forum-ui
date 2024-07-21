@@ -79,6 +79,12 @@
         font-style: italic;
         color: black;
     }
+
+    .like-session {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
 }
 
 .comment-list {

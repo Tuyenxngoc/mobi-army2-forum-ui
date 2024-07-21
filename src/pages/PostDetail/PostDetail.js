@@ -7,7 +7,7 @@ import Style from './PostDetail.module.scss';
 import classNames from 'classnames/bind';
 
 import images from '~/assets';
-import { getPost, lockPost, unlockPost } from '~/services/postService';
+import { getPost, toggleFollow, toggleLock } from '~/services/postService';
 import { getCommentByPostId } from '~/services/commentService';
 import useAuth from '~/hooks/useAuth';
 import Comment from '~/components/Comment/Comment';
@@ -20,6 +20,10 @@ import PlayerActions from '~/components/PlayerActions/PlayerActions';
 import { checkUserHasRequiredRole } from '~/utils/helper';
 import 'react-quill/dist/quill.snow.css';
 import 'react-quill/dist/quill.core.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Tooltip } from 'antd';
+import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
+import { faHeart as faHeartSolid, faLock, faUnlock } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(Style);
 
@@ -56,29 +60,50 @@ function PostDetail() {
         navigate('/login', { state: { from: location } });
     };
 
-    const handleLikePost = async () => {
+    const handleToggleLikePost = async () => {
         try {
-            await toggleLike(id);
+            const response = await toggleLike(id);
+            if (response.status === 200) {
+                setPost((prev) => ({
+                    ...prev,
+                    like: {
+                        ...prev.like,
+                        hasLikes: !prev.like.hasLikes,
+                        likeCount: prev.like.hasLikes ? prev.like.likeCount - 1 : prev.like.likeCount + 1,
+                        latestLiker: !prev.like.hasLikes ? 'Bạn' : prev.like.latestLiker,
+                    },
+                }));
+            }
         } catch (err) {
             console.error('Failed to like post', err);
         }
     };
 
-    const handleLockPost = async () => {
+    const handleToggleFollowPost = async () => {
         try {
-            await lockPost(id);
-            setPost((prev) => ({ ...prev, locked: true }));
+            const response = await toggleFollow(id);
+            if (response.status === 200) {
+                setPost((prev) => ({
+                    ...prev,
+                    followed: !prev.followed,
+                }));
+            }
         } catch (err) {
-            console.error('Failed to like post', err);
+            console.error('Failed to follow/unfollow post', err);
         }
     };
 
-    const handleunlockPost = async () => {
+    const handleToggleLockPost = async () => {
         try {
-            await unlockPost(id);
-            setPost((prev) => ({ ...prev, locked: false }));
+            const response = await toggleLock(id);
+            if (response.status === 200) {
+                setPost((prev) => ({
+                    ...prev,
+                    locked: !prev.locked,
+                }));
+            }
         } catch (err) {
-            console.error('Failed to like post', err);
+            console.error('Failed to toggle lock status', err);
         }
     };
 
@@ -142,6 +167,9 @@ function PostDetail() {
 
                             <div className={cx('time')}>
                                 <DateFormatter datetime={post.lastModifiedDate} />
+                                <button onClick={handleToggleFollowPost}>
+                                    {post.followed ? 'Bỏ theo dõi' : 'Theo dõi'}
+                                </button>
                             </div>
                         </div>
 
@@ -153,28 +181,42 @@ function PostDetail() {
                             />
                             <br />
                             <br />
-                            <button onClick={handleLikePost}>like</button>
 
-                            {hasRequiredRole &&
-                                (post.locked ? (
-                                    <button onClick={handleunlockPost}>unlock</button>
-                                ) : (
-                                    <button onClick={handleLockPost}>lock</button>
-                                ))}
+                            <div className={cx('like-session')}>
+                                {isAuthenticated && (
+                                    <Tooltip title={post.like.hasLikes ? 'Bỏ thích' : 'Thích'}>
+                                        <div className="text-danger" onClick={handleToggleLikePost}>
+                                            <FontAwesomeIcon
+                                                icon={post.like.hasLikes ? faHeartSolid : faHeartRegular}
+                                            />
+                                        </div>
+                                    </Tooltip>
+                                )}
 
-                            {post.like.likeCount > 0 && (
-                                <div className={cx('like-count')}>
-                                    {post.like.likeCount === 1
-                                        ? ` ♥ ${post.like.latestLiker} đã thích bài này`
-                                        : ` ♥ ${post.like.latestLiker} và ${
-                                              post.like.likeCount - 1
-                                          } người khác đã thích bài này`}
-                                </div>
-                            )}
+                                {post.like.likeCount > 0 && (
+                                    <div className={cx('like-count')}>
+                                        <span className="text-danger"> ♥ </span>
+                                        {`${post.like.latestLiker}${
+                                            post.like.likeCount === 1
+                                                ? ' đã thích bài này'
+                                                : ` và ${post.like.likeCount - 1} người khác đã thích bài này`
+                                        }`}
+                                    </div>
+                                )}
+                            </div>
 
-                            {post.approvedBy && (
-                                <span className={cx('approved-by')}>Duyệt bởi: {post.approvedBy.name}</span>
-                            )}
+                            <div>
+                                {hasRequiredRole && (
+                                    <button onClick={handleToggleLockPost}>
+                                        {post.locked ? 'Mở khóa' : 'Khóa'}
+                                        <FontAwesomeIcon icon={post.locked ? faUnlock : faLock} />
+                                    </button>
+                                )}
+
+                                {post.approvedBy && (
+                                    <div className={cx('approved-by')}>Duyệt bởi: {post.approvedBy.name}</div>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>

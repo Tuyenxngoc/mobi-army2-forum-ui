@@ -24,10 +24,10 @@ export const approvePost = (postId) => {
     return axiosPrivate.post(`posts/${postId}/approve`);
 };
 
-export const lockPost = (postId) => {
+export const toggleLock = (postId) => {
     return axiosPrivate.post(`posts/${postId}/lock`);
 };
 
-export const unlockPost = (postId) => {
-    return axiosPrivate.post(`posts/${postId}/unlock`);
+export const toggleFollow = (postId) => {
+    return axiosPrivate.post(`posts/${postId}/follow`);
 };
