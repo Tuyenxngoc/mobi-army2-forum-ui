@@ -55,6 +55,10 @@ function PlayerActions() {
                 <Link to={'/post/new'}>Bài viết mới</Link>
             </div>
 
+            <div>
+                <Link to={'/notifications'}>Thông báo</Link>
+            </div>
+
             {hasRequiredRole && (
                 <div>
                     <Link to={'/post/review'}>Duyệt bài viết</Link>

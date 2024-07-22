@@ -1,0 +1,23 @@
+.header {
+    background-color: #1d78b6;
+    padding: 2px 5px;
+
+    a {
+        color: white;
+    }
+}
+
+.content {
+    padding: 0;
+}
+
+.read {
+    background-color: white;
+}
+
+.notification-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px #65a5ac solid;
+}
