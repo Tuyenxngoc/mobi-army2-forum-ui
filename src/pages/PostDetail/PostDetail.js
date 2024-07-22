@@ -7,7 +7,7 @@ import Style from './PostDetail.module.scss';
 import classNames from 'classnames/bind';
 
 import images from '~/assets';
-import { getPost, toggleFollow, toggleLock } from '~/services/postService';
+import { deletePost, getPost, toggleFollow, toggleLock } from '~/services/postService';
 import { getCommentByPostId } from '~/services/commentService';
 import useAuth from '~/hooks/useAuth';
 import Comment from '~/components/Comment/Comment';
@@ -21,7 +21,7 @@ import { checkUserHasRequiredRole } from '~/utils/helper';
 import 'react-quill/dist/quill.snow.css';
 import 'react-quill/dist/quill.core.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { message, Tooltip } from 'antd';
+import { message, Modal, Tooltip } from 'antd';
 import { faBellSlash, faBell, faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
 import { faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons';
 
@@ -37,6 +37,12 @@ function PostDetail() {
     const [comments, setComments] = useState([]);
     const [meta, setMeta] = useState(INITIAL_META);
     const [filters, setFilters] = useState(INITIAL_FILTERS);
+    const [isDeleteDialogVisible, setIsDeleteDialogVisible] = useState(false);
+    const [isDeleteConfirmLoading, setIsDeleteConfirmLoading] = useState(false);
+    const [deleteDialogText, setDeleteDialogText] = useState(
+        'Bạn có chắc muốn xóa bài viết này? Lưu ý: Sau khi xóa, bạn không thể hoàn tác hay khôi phục.',
+    );
+
     const {
         isAuthenticated,
         player: { roleName },
@@ -120,6 +126,32 @@ function PostDetail() {
         }
     };
 
+    const handleDeletePost = async () => {
+        setIsDeleteConfirmLoading(true);
+        setDeleteDialogText('Đang xóa...');
+
+        try {
+            const response = await deletePost(id);
+            if (response.status === 200) {
+                navigate('/forum');
+            }
+            setIsDeleteDialogVisible(false);
+            setIsDeleteConfirmLoading(false);
+        } catch (error) {
+            setDeleteDialogText('Xóa thất bại. Vui lòng thử lại.');
+        } finally {
+            setIsDeleteConfirmLoading(false);
+        }
+    };
+
+    const handleDeleteButtonClick = () => {
+        setIsDeleteDialogVisible(true);
+    };
+
+    const handleCloseDeleteDialogClick = () => {
+        setIsDeleteDialogVisible(false);
+    };
+
     const fetchPost = useCallback(async () => {
         try {
             const response = await getPost(id);
@@ -152,6 +184,16 @@ function PostDetail() {
     return (
         <main className="box-container">
             {contextHolder}
+
+            <Modal
+                title="Xác nhận xóa"
+                open={isDeleteDialogVisible}
+                onOk={handleDeletePost}
+                confirmLoading={isDeleteConfirmLoading}
+                onCancel={handleCloseDeleteDialogClick}
+            >
+                <p>{deleteDialogText}</p>
+            </Modal>
 
             <PlayerActions />
 
@@ -229,7 +271,12 @@ function PostDetail() {
 
                             <div>
                                 {hasRequiredRole && (
-                                    <button onClick={handleToggleLockPost}>{post.locked ? 'Mở khóa' : 'Khóa'}</button>
+                                    <>
+                                        <button onClick={handleToggleLockPost}>
+                                            {post.locked ? 'Mở khóa' : 'Khóa'}
+                                        </button>
+                                        <button onClick={handleDeleteButtonClick}>Xóa</button>
+                                    </>
                                 )}
 
                                 {post.approvedBy && (

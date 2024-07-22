@@ -37,6 +37,20 @@ function PlayerActions() {
                 <>
                     <div>Xin chào {player.username}</div>
                     <button onClick={handleLogoutClick}>Đăng xuất</button>
+
+                    <div>
+                        <Link to={'/post/new'}>Bài viết mới</Link>
+                    </div>
+
+                    <div>
+                        <Link to={'/notifications'}>Thông báo</Link>
+                    </div>
+
+                    {hasRequiredRole && (
+                        <div>
+                            <Link to={'/post/review'}>Duyệt bài viết</Link>
+                        </div>
+                    )}
                 </>
             ) : (
                 <>
@@ -50,20 +64,6 @@ function PlayerActions() {
                     <img src={images.army} alt="nap the" />
                 </Link>
             </div>
-
-            <div>
-                <Link to={'/post/new'}>Bài viết mới</Link>
-            </div>
-
-            <div>
-                <Link to={'/notifications'}>Thông báo</Link>
-            </div>
-
-            {hasRequiredRole && (
-                <div>
-                    <Link to={'/post/review'}>Duyệt bài viết</Link>
-                </div>
-            )}
         </div>
     );
 }

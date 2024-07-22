@@ -140,7 +140,7 @@ const ReviewPosts = () => {
                                         </Link>
                                         lúc{' '}
                                         <span>
-                                            <DateFormatter datetime="2021-01-01" />
+                                            <DateFormatter datetime={post.createdDate} />
                                         </span>
                                     </span>
                                 </div>
