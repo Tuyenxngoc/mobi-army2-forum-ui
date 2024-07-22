@@ -21,9 +21,9 @@ import { checkUserHasRequiredRole } from '~/utils/helper';
 import 'react-quill/dist/quill.snow.css';
 import 'react-quill/dist/quill.core.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Tooltip } from 'antd';
-import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
-import { faHeart as faHeartSolid, faLock, faUnlock } from '@fortawesome/free-solid-svg-icons';
+import { message, Tooltip } from 'antd';
+import { faBellSlash, faBell, faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
+import { faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(Style);
 
@@ -41,6 +41,7 @@ function PostDetail() {
         isAuthenticated,
         player: { roleName },
     } = useAuth();
+    const [messageApi, contextHolder] = message.useMessage();
 
     const hasRequiredRole = useMemo(() => checkUserHasRequiredRole(roleName, allowedRoles), [roleName]);
 
@@ -54,6 +55,18 @@ function PostDetail() {
 
     const handleCommentSubmit = (newComment) => {
         setComments((prev) => [...prev, newComment]);
+    };
+
+    const handleUpdateComment = (updatedComment) => {
+        setComments((prev) =>
+            prev.map((comment) =>
+                comment.id === updatedComment.id ? { ...comment, content: updatedComment.content } : comment,
+            ),
+        );
+    };
+
+    const handleDeleteComment = (deletedCommentId) => {
+        setComments((prev) => prev.filter((comment) => comment.id !== deletedCommentId));
     };
 
     const handleLoginClick = () => {
@@ -109,10 +122,8 @@ function PostDetail() {
 
     const fetchPost = useCallback(async () => {
         try {
-            const {
-                data: { data },
-            } = await getPost(id);
-            setPost(data);
+            const response = await getPost(id);
+            setPost(response.data.data);
         } catch (err) {
             console.error('Failed to fetch post data', err);
         }
@@ -121,11 +132,8 @@ function PostDetail() {
     const fetchComments = useCallback(async () => {
         try {
             const params = queryString.stringify(filters);
-            const {
-                data: {
-                    data: { meta, items },
-                },
-            } = await getCommentByPostId(id, params);
+            const response = await getCommentByPostId(id, params);
+            const { meta, items } = response.data.data;
             setComments(items);
             setMeta(meta);
         } catch (err) {
@@ -143,10 +151,27 @@ function PostDetail() {
 
     return (
         <main className="box-container">
+            {contextHolder}
+
             <PlayerActions />
 
             <div className={cx('header')}>
                 <Link to="/forum">Quay lại</Link>
+                {isAuthenticated && post && (
+                    <button onClick={handleToggleFollowPost}>
+                        {post.followed ? (
+                            <>
+                                <FontAwesomeIcon icon={faBellSlash} />
+                                {' Bỏ theo dõi'}
+                            </>
+                        ) : (
+                            <>
+                                <FontAwesomeIcon icon={faBell} />
+                                {' Theo dõi'}
+                            </>
+                        )}
+                    </button>
+                )}
             </div>
 
             {post && (
@@ -167,9 +192,6 @@ function PostDetail() {
 
                             <div className={cx('time')}>
                                 <DateFormatter datetime={post.lastModifiedDate} />
-                                <button onClick={handleToggleFollowPost}>
-                                    {post.followed ? 'Bỏ theo dõi' : 'Theo dõi'}
-                                </button>
                             </div>
                         </div>
 
@@ -207,10 +229,7 @@ function PostDetail() {
 
                             <div>
                                 {hasRequiredRole && (
-                                    <button onClick={handleToggleLockPost}>
-                                        {post.locked ? 'Mở khóa' : 'Khóa'}
-                                        <FontAwesomeIcon icon={post.locked ? faUnlock : faLock} />
-                                    </button>
+                                    <button onClick={handleToggleLockPost}>{post.locked ? 'Mở khóa' : 'Khóa'}</button>
                                 )}
 
                                 {post.approvedBy && (
@@ -221,6 +240,7 @@ function PostDetail() {
                     </div>
                 </div>
             )}
+
             <div className={cx('ads')}>
                 <img src={images.newGif} alt="new" />
                 <Link to="/">Avatar Bùm</Link>
@@ -229,7 +249,13 @@ function PostDetail() {
             {comments.length > 0 && (
                 <div className={cx('comment-list')}>
                     {comments.map((comment) => (
-                        <Comment key={comment.id} data={comment} />
+                        <Comment
+                            key={comment.id}
+                            data={comment}
+                            onUpdateComment={handleUpdateComment}
+                            onDeleteComment={handleDeleteComment}
+                            message={messageApi}
+                        />
                     ))}
                 </div>
             )}

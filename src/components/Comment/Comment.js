@@ -9,6 +9,7 @@ import useAuth from '~/hooks/useAuth';
 import { ROLES } from '~/common/contans';
 import { deleteComment, updateComment } from '~/services/commentService';
 import DateFormatter from '../DateFormatter/DateFormatter';
+import TextArea from 'antd/es/input/TextArea';
 
 const cx = classNames.bind(Style);
 
@@ -17,7 +18,7 @@ const allowedRoles = {
     [ROLES.SuperAdmin]: true,
 };
 
-function Comment({ data }) {
+function Comment({ data, onUpdateComment, onDeleteComment, message }) {
     const { player } = useAuth();
     const [isEditing, setIsEditing] = useState(false);
     const [editedContent, setEditedContent] = useState(data.content);
@@ -28,30 +29,29 @@ function Comment({ data }) {
         setIsEditing(true);
     };
 
-    const handleSaveEdit = () => {
+    const handleSaveEditComment = async () => {
         const values = {
             content: editedContent,
         };
-        updateComment(data.id, values)
-            .then(() => {
-                alert(`Updated comment with id: ${data.id}`);
-            })
-            .catch((err) => {
-                console.error('Failed to update comment:', err);
-            })
-            .finally(() => {
-                setIsEditing(false);
-            });
+        try {
+            const response = await updateComment(data.id, values);
+            onUpdateComment(response.data.data);
+            message.success(`Đã cập nhật bình luận có id: ${data.id}`);
+        } catch (err) {
+            console.error('Failed to update comment:', err);
+        } finally {
+            setIsEditing(false);
+        }
     };
 
-    const handleDelete = () => {
-        deleteComment(data.id)
-            .then(() => {
-                alert(`Delete comment with id: ${data.id}`);
-            })
-            .catch((err) => {
-                console.error('Failed to update comment:', err);
-            });
+    const handleDeleteComment = async () => {
+        try {
+            await deleteComment(data.id);
+            onDeleteComment(data.id);
+            message.success(`Đã xóa bình luận có id: ${data.id}`);
+        } catch (err) {
+            console.error('Failed to delete comment:', err);
+        }
     };
 
     const handleInputChange = (event) => {
@@ -81,11 +81,13 @@ function Comment({ data }) {
 
                 <div className={cx('comment-content')}>
                     {isEditing ? (
-                        <textarea
+                        <TextArea
+                            rows={2}
                             value={editedContent}
                             onChange={handleInputChange}
-                            onBlur={handleSaveEdit}
-                            className={cx('edit-textarea')}
+                            onBlur={handleSaveEditComment}
+                            maxLength={255}
+                            required
                         />
                     ) : (
                         <div onDoubleClick={handleEdit}>{data.content}</div>
@@ -98,7 +100,7 @@ function Comment({ data }) {
             {canEditOrDelete && (
                 <div className={cx('comment-actions')}>
                     <button onClick={handleEdit}>Edit</button>
-                    <button onClick={handleDelete}>Delete</button>
+                    <button onClick={handleDeleteComment}>Delete</button>
                 </div>
             )}
         </div>
