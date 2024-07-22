@@ -48,6 +48,7 @@ function NewPost() {
             title: '',
             content: '',
             categoryId: undefined,
+            priority: 0,
         },
         validationSchema: validationSchema,
         onSubmit: handleSubmit,
@@ -177,11 +178,27 @@ function NewPost() {
                     </div>
 
                     {hasRequiredRole && (
-                        <div className="form-check">
-                            <input type="checkbox" className="form-check-input" id="exampleCheck" />
-                            <label className="form-check-label" htmlFor="exampleCheck">
-                                Ưu tiên hiển thị
-                            </label>
+                        <div className="form-group mb-2">
+                            <label htmlFor="priority">Số thứ tự hiển thị</label>
+                            <input
+                                type="number"
+                                className={`form-control ${
+                                    formik.touched.priority && formik.errors.priority ? 'is-invalid' : ''
+                                }`}
+                                id="priority"
+                                aria-describedby="priorityHelp"
+                                placeholder="Nhập số cần xắp xếp"
+                                value={formik.values.priority}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                            />
+                            {formik.touched.priority && formik.errors.priority ? (
+                                <div className="text-danger">{formik.errors.priority}</div>
+                            ) : (
+                                <small id="priorityHelp" className="form-text text-muted">
+                                    Số càng lớn độ ưu tiên càng cao
+                                </small>
+                            )}
                         </div>
                     )}
 

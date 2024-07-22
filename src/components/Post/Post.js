@@ -7,7 +7,7 @@ import images from '~/assets';
 const cx = classNames.bind(Style);
 function Post({ data }) {
     return (
-        <div className={cx('post-wrapper')}>
+        <div className={cx('post-wrapper', { admin: data.priority })}>
             <div className={cx('avatar-container')}>
                 <img src={images.plGif} alt="avatar" />
             </div>

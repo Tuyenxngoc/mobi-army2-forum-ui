@@ -77,7 +77,7 @@ function Notification() {
         };
 
         fetchNotifications();
-    }, []);
+    }, [filters]);
 
     return (
         <div className="box-container">
@@ -85,12 +85,11 @@ function Notification() {
                 title="Chi tiết thông báo"
                 footer={
                     <>
-                        <Button type="primary" onClick={() => setIsModalOpen(false)}>
+                        <Button type="default" onClick={() => setIsModalOpen(false)}>
                             Đóng
                         </Button>
-
                         {notificationDetails && (
-                            <Button type="default" onClick={() => handleRemoveNotification(notificationDetails.id)}>
+                            <Button type="primary" onClick={() => handleRemoveNotification(notificationDetails.id)}>
                                 Xóa
                             </Button>
                         )}

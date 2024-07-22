@@ -13,8 +13,9 @@
     border: 2px solid #00467a;
     flex: 1;
     text-align: center;
+    cursor: pointer;
 
-    a {
+    div {
         color: white;
         font-size: 12px;
 
@@ -23,4 +24,9 @@
             text-decoration: underline;
         }
     }
+}
+
+.empty-box {
+    background-color: white;
+    text-align: center;
 }

@@ -30,6 +30,14 @@ function Forum() {
         setFilters({ pageNum: 1, pageSize: parseInt(event.target.value, 10) });
     };
 
+    const handleCategoryClick = (categoryId) => {
+        setFilters({
+            ...INITIAL_FILTERS,
+            keyword: categoryId,
+            searchBy: 'category',
+        });
+    };
+
     const fetchCategories = async () => {
         try {
             const categories = await getAllCategories();
@@ -69,15 +77,17 @@ function Forum() {
                     <ul className={cx('forum-list')}>
                         {categories.map((category, index) => (
                             <li key={index} className={cx('forum-item')}>
-                                <Link to={`/category/${category.id}`}>{category.name}</Link>
+                                <div onClick={() => handleCategoryClick(category.id)}>{category.name}</div>
                             </li>
                         ))}
                     </ul>
                 </div>
                 <div>
-                    {posts.map((item, i) => (
-                        <Post key={i} data={item} />
-                    ))}
+                    {posts && posts.length > 0 ? (
+                        posts.map((item, i) => <Post key={i} data={item} />)
+                    ) : (
+                        <div className={cx('empty-box', 'p-2')}>Box hiện chưa có bài viết nào ... !</div>
+                    )}
                 </div>
 
                 <Pagination
