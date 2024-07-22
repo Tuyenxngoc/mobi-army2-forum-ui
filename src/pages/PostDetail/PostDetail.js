@@ -1,29 +1,29 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBellSlash, faBell, faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
+import { faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons';
+import { message, Modal, Tooltip } from 'antd';
+import 'react-quill/dist/quill.snow.css';
+import 'react-quill/dist/quill.core.css';
 
 import queryString from 'query-string';
 
-import Style from './PostDetail.module.scss';
 import classNames from 'classnames/bind';
+import Style from './PostDetail.module.scss';
 
 import images from '~/assets';
 import { deletePost, getPost, toggleFollow, toggleLock } from '~/services/postService';
 import { getCommentByPostId } from '~/services/commentService';
+import { toggleLike } from '~/services/likeService';
 import useAuth from '~/hooks/useAuth';
 import Comment from '~/components/Comment/Comment';
 import NewComment from '~/components/Comment/NewComment';
 import Pagination from '~/components/Pagination';
 import DateFormatter from '~/components/DateFormatter/DateFormatter';
-import { toggleLike } from '~/services/likeService';
-import { INITIAL_FILTERS, INITIAL_META, ROLES } from '~/common/contans';
 import PlayerActions from '~/components/PlayerActions/PlayerActions';
+import { INITIAL_FILTERS, INITIAL_META, ROLES } from '~/common/contans';
 import { checkUserHasRequiredRole } from '~/utils/helper';
-import 'react-quill/dist/quill.snow.css';
-import 'react-quill/dist/quill.core.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { message, Modal, Tooltip } from 'antd';
-import { faBellSlash, faBell, faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
-import { faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(Style);
 
@@ -42,42 +42,36 @@ function PostDetail() {
     const [deleteDialogText, setDeleteDialogText] = useState(
         'Bạn có chắc muốn xóa bài viết này? Lưu ý: Sau khi xóa, bạn không thể hoàn tác hay khôi phục.',
     );
-
+    const [messageApi, contextHolder] = message.useMessage();
     const {
         isAuthenticated,
         player: { roleName },
     } = useAuth();
-    const [messageApi, contextHolder] = message.useMessage();
-
     const hasRequiredRole = useMemo(() => checkUserHasRequiredRole(roleName, allowedRoles), [roleName]);
 
-    const handleChangePage = (newPage) => {
+    const handleChangePage = useCallback((newPage) => {
         setFilters((prev) => ({ ...prev, pageNum: newPage + 1 }));
-    };
+    }, []);
 
-    const handleChangeRowsPerPage = (event) => {
+    const handleChangeRowsPerPage = useCallback((event) => {
         setFilters({ pageNum: 1, pageSize: parseInt(event.target.value, 10) });
-    };
+    }, []);
 
-    const handleCommentSubmit = (newComment) => {
+    const handleCommentSubmit = useCallback((newComment) => {
         setComments((prev) => [...prev, newComment]);
-    };
+    }, []);
 
-    const handleUpdateComment = (updatedComment) => {
+    const handleUpdateComment = useCallback((updatedComment) => {
         setComments((prev) =>
             prev.map((comment) =>
                 comment.id === updatedComment.id ? { ...comment, content: updatedComment.content } : comment,
             ),
         );
-    };
+    }, []);
 
-    const handleDeleteComment = (deletedCommentId) => {
+    const handleDeleteComment = useCallback((deletedCommentId) => {
         setComments((prev) => prev.filter((comment) => comment.id !== deletedCommentId));
-    };
-
-    const handleLoginClick = () => {
-        navigate('/login', { state: { from: location } });
-    };
+    }, []);
 
     const handleToggleLikePost = async () => {
         try {
@@ -126,7 +120,7 @@ function PostDetail() {
         }
     };
 
-    const handleDeletePost = async () => {
+    const handleDeletePost = useCallback(async () => {
         setIsDeleteConfirmLoading(true);
         setDeleteDialogText('Đang xóa...');
 
@@ -142,10 +136,14 @@ function PostDetail() {
         } finally {
             setIsDeleteConfirmLoading(false);
         }
-    };
+    }, [id, navigate]);
 
     const handleDeleteButtonClick = () => {
         setIsDeleteDialogVisible(true);
+    };
+
+    const handleLoginButtonClick = () => {
+        navigate('/login', { state: { from: location } });
     };
 
     const handleCloseDeleteDialogClick = () => {
@@ -314,7 +312,7 @@ function PostDetail() {
                 ) : (
                     <div className={cx('login-session')}>
                         Đăng nhập để bình luận
-                        <span onClick={handleLoginClick}> Đăng nhập</span>
+                        <span onClick={handleLoginButtonClick}>Đăng nhập</span>
                     </div>
                 ))}
 
