@@ -10,7 +10,8 @@ import { INITIAL_FILTERS, INITIAL_META } from '~/common/contans';
 import queryString from 'query-string';
 import { Spin } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMessage, faThumbsUp } from '@fortawesome/free-regular-svg-icons';
+import { faHeart, faMessage } from '@fortawesome/free-regular-svg-icons';
+import DateFormatter from '~/components/DateFormatter/DateFormatter';
 
 const cx = classNames.bind(Style);
 
@@ -59,23 +60,28 @@ function FollowingPosts() {
         if (error) {
             return (
                 <div className="alert alert-danger m-2 p-2" role="alert">
-                    Error: {error.message}
+                    Lỗi: {error.message}
                 </div>
             );
         }
 
-        return posts.length > 0 ? (
-            posts.map((post) => (
-                <div key={post.id} className={cx('item', 'p-2')}>
-                    <Link to={`/post/${post.id}`}>{post.title}</Link>
-                    <div>
-                        bởi {post.author} 5 năm trước <FontAwesomeIcon icon={faThumbsUp} /> {post.favorites}
-                        <FontAwesomeIcon icon={faMessage} /> {post.comments}
-                    </div>
-                </div>
-            ))
-        ) : (
-            <p className="px-2">Chưa có bài viết nào.</p>
+        return (
+            <div>
+                {posts.length > 0 ? (
+                    posts.map((post) => (
+                        <div key={post.id} className={cx('item', 'p-2')}>
+                            <Link to={`/post/${post.id}`}>{post.title}</Link>
+                            <div>
+                                bởi {post.author} <DateFormatter datetime={post.createdDate} />{' '}
+                                <FontAwesomeIcon icon={faHeart} /> {post.favorites} <FontAwesomeIcon icon={faMessage} />{' '}
+                                {post.comments}
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    <p className="px-2">Chưa có bài viết nào.</p>
+                )}
+            </div>
         );
     };
 
