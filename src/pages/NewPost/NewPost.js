@@ -27,15 +27,20 @@ const validationSchema = yup.object({
         .required('Tiêu đề là bắt buộc'),
     content: yup
         .string('Nhập nội dung')
-        .min(10, 'Nội dung có ít nhất 10 ký tự')
+        .min(20, 'Nội dung có ít nhất 20 ký tự')
         .max(2000, 'Nội dung chỉ được tối đa 2000 ký tự')
         .required('Nội dung là bắt buộc'),
+    priority: yup
+        .number('Nhập số thứ tự hiển thị')
+        .integer('Số thứ tự phải là số nguyên')
+        .min(0, 'Số thứ tự không được nhỏ hơn 0'),
 });
 
 const allowedRoles = [ROLES.Admin, ROLES.SuperAdmin];
 
 function NewPost() {
     const [categories, setCategories] = useState([]);
+
     const [messageApi, contextHolder] = message.useMessage();
     const {
         player: { roleName },
@@ -63,23 +68,23 @@ function NewPost() {
             if (error.response && error.response.status === 400 && error.response.data) {
                 messageApi.error(error.response.data.message);
             } else {
-                messageApi.error('Error creating new post:', error.message);
+                messageApi.error('Lỗi khi tạo bài viết mới');
             }
         } finally {
             setSubmitting(false);
         }
     }
 
-    const fetchCategories = async () => {
-        try {
-            const response = await getAllCategories();
-            setCategories(response.data.data);
-        } catch (error) {
-            messageApi.error('Error fetching categories:', error.message);
-        }
-    };
-
     useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await getAllCategories();
+                setCategories(response.data.data);
+            } catch (error) {
+                messageApi.error('Lỗi khi tải danh mục');
+            }
+        };
+
         fetchCategories();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -145,15 +150,18 @@ function NewPost() {
                         {hasRequiredRole ? (
                             <>
                                 <ReactQuill
-                                    id="inputContent"
+                                    id="content"
                                     className="custom-quill"
+                                    name="content"
+                                    placeholder="Nhập nội dung bài viết"
                                     value={formik.values.content}
                                     modules={modules}
                                     formats={formats}
                                     onChange={(value) => formik.setFieldValue('content', value)}
+                                    onBlur={() => formik.setFieldTouched('content', true)}
                                 />
-                                {formik.errors.content ? (
-                                    <div className="invalid-feedback">{formik.errors.content}</div>
+                                {formik.touched.content && formik.errors.content ? (
+                                    <div className="text-danger">{formik.errors.content}</div>
                                 ) : null}
                             </>
                         ) : (
@@ -171,7 +179,7 @@ function NewPost() {
                                     name="content"
                                 />
                                 {formik.touched.content && formik.errors.content ? (
-                                    <div className="invalid-feedback">{formik.errors.content}</div>
+                                    <div className="text-danger">{formik.errors.content}</div>
                                 ) : null}
                             </>
                         )}

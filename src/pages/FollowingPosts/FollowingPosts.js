@@ -18,9 +18,11 @@ const cx = classNames.bind(Style);
 function FollowingPosts() {
     const [meta, setMeta] = useState(INITIAL_META);
     const [filters, setFilters] = useState(INITIAL_FILTERS);
+
     const [posts, setPosts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+
+    const [isLoading, setIsLoading] = useState(true);
+    const [errorMessage, setErrorMessage] = useState(null);
 
     const handleChangePage = (newPage) => {
         setFilters((prev) => ({ ...prev, pageNum: newPage + 1 }));
@@ -38,10 +40,10 @@ function FollowingPosts() {
                 const { meta, items } = response.data.data;
                 setPosts(items);
                 setMeta(meta);
-                setLoading(false);
             } catch (err) {
-                setError(err);
-                setLoading(false);
+                setErrorMessage(err);
+            } finally {
+                setIsLoading(false);
             }
         };
 
@@ -49,7 +51,7 @@ function FollowingPosts() {
     }, [filters]);
 
     const renderContent = () => {
-        if (loading) {
+        if (isLoading) {
             return (
                 <div className="alert alert-primary m-2 p-2" role="alert">
                     Loading... <Spin />
@@ -57,10 +59,10 @@ function FollowingPosts() {
             );
         }
 
-        if (error) {
+        if (errorMessage) {
             return (
                 <div className="alert alert-danger m-2 p-2" role="alert">
-                    Lỗi: {error.message}
+                    Lỗi: {errorMessage.message}
                 </div>
             );
         }
