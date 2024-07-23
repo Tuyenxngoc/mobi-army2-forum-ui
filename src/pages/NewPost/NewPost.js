@@ -148,9 +148,9 @@ function NewPost() {
                         ) : null}
                     </div>
                     <div className="form-group mb-2">
-                        <label htmlFor="content">Nội dung</label>
                         {hasRequiredRole ? (
                             <>
+                                <label>Nội dung</label>
                                 <ReactQuill
                                     id="content"
                                     className="custom-quill"
@@ -168,6 +168,7 @@ function NewPost() {
                             </>
                         ) : (
                             <>
+                                <label htmlFor="content">Nội dung</label>
                                 <textarea
                                     className={`form-control ${
                                         formik.touched.content && formik.errors.content ? 'is-invalid' : ''

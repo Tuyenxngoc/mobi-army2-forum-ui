@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import PlayerActions from '~/components/PlayerActions/PlayerActions';
-import { getFollowingPosts } from '~/services/postService';
 
 import classNames from 'classnames/bind';
 import Style from './FollowingPosts.module.scss';
@@ -12,6 +11,7 @@ import { Spin } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faMessage } from '@fortawesome/free-regular-svg-icons';
 import DateFormatter from '~/components/DateFormatter/DateFormatter';
+import { getFollowingPosts } from '~/services/playerService';
 
 const cx = classNames.bind(Style);
 
@@ -95,7 +95,7 @@ function FollowingPosts() {
                 <Link to="/forum">Quay lại</Link>
             </div>
 
-            <h2 className="p-2 pb-0">Các bài viết đang theo dõi</h2>
+            <h3 className="p-2 pb-0">Các bài viết đang theo dõi</h3>
 
             {renderContent()}
 
