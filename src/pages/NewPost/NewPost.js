@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { message } from 'antd';
+import { Button, message } from 'antd';
 
 import PlayerActions from '~/components/PlayerActions/PlayerActions';
 import useAuth from '~/hooks/useAuth';
@@ -61,8 +61,10 @@ function NewPost() {
 
     async function handleSubmit(values, { setSubmitting, resetForm }) {
         try {
-            await createPost(values);
-            messageApi.success('Thêm bài viết thành công, vui lòng chờ duyệt');
+            const response = await createPost(values);
+            if (response.status === 200) {
+                messageApi.success(response.data.data.message);
+            }
             resetForm();
         } catch (error) {
             if (error.response && error.response.status === 400 && error.response.data) {
@@ -219,9 +221,9 @@ function NewPost() {
                     </div>
 
                     <div className="text-center">
-                        <button type="submit" className="btn btn-primary" disabled={formik.isSubmitting}>
+                        <Button type="primary" htmlType="submit" loading={formik.isSubmitting}>
                             Đăng
-                        </button>
+                        </Button>
                     </div>
                 </form>
             </div>

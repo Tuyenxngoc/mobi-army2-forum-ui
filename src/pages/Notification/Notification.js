@@ -23,6 +23,7 @@ function Notification() {
 
     const [notifications, setNotifications] = useState([]);
 
+    const [isDeleteLoading, setIsDeleteLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isDetailLoading, setIsDetailLoading] = useState(false);
     const [notificationDetails, setNotificationDetails] = useState(null);
@@ -41,27 +42,34 @@ function Notification() {
     };
 
     const handleViewNotification = async (id) => {
-        setIsDetailLoading(true);
-        setIsModalOpen(true);
-        try {
-            const response = await getPlayerNotificationById(id);
-            setNotificationDetails(response.data.data);
-            setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, read: true } : n)));
-        } catch (error) {
-            messageApi.error('Có lỗi xảy ra khi lấy chi tiết thông báo:', error);
-        } finally {
-            setIsDetailLoading(false);
+        if (!notificationDetails || id !== notificationDetails.id) {
+            setIsDetailLoading(true);
+            setIsModalOpen(true);
+            try {
+                const response = await getPlayerNotificationById(id);
+                setNotificationDetails(response.data.data);
+                setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, read: true } : n)));
+            } catch (error) {
+                messageApi.error('Có lỗi xảy ra khi lấy chi tiết thông báo');
+            } finally {
+                setIsDetailLoading(false);
+            }
+        } else {
+            setIsModalOpen(true);
         }
     };
 
     const handleRemoveNotification = async (id) => {
-        setIsModalOpen(false);
+        setIsDeleteLoading(true);
         try {
             const response = await deletePlayerNotificationById(id);
             messageApi.success(response.data.data.message);
-            setNotifications((prevNotifications) => prevNotifications.filter((notification) => notification.id !== id));
+            setNotifications((prev) => prev.filter((n) => n.id !== id));
         } catch (error) {
-            messageApi.error('Có lỗi xảy ra khi xóa thông báo:', error);
+            messageApi.error('Có lỗi xảy ra khi xóa thông báo');
+        } finally {
+            setIsModalOpen(false);
+            setIsDeleteLoading(false);
         }
     };
 
@@ -131,7 +139,11 @@ function Notification() {
                             Đóng
                         </Button>
                         {notificationDetails && (
-                            <Button type="primary" onClick={() => handleRemoveNotification(notificationDetails.id)}>
+                            <Button
+                                type="primary"
+                                onClick={() => handleRemoveNotification(notificationDetails.id)}
+                                loading={isDeleteLoading}
+                            >
                                 Xóa
                             </Button>
                         )}
@@ -140,6 +152,7 @@ function Notification() {
                 loading={isDetailLoading}
                 open={isModalOpen}
                 onCancel={() => setIsModalOpen(false)}
+                confirmLoading={isDeleteLoading}
             >
                 {notificationDetails && (
                     <div className={cx('modal-content-scrollable')}>

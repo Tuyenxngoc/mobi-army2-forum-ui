@@ -28,6 +28,8 @@ const ReviewPosts = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState(null);
 
+    const [loadingAction, setLoadingAction] = useState(false);
+
     const [messageApi, contextHolder] = message.useMessage();
 
     const handleChangePage = (newPage) => {
@@ -39,35 +41,46 @@ const ReviewPosts = () => {
     };
 
     const handleApprove = async (postId) => {
+        setLoadingAction(true);
         try {
             await approvePost(postId);
             setPosts(posts.filter((post) => post.id !== postId));
             messageApi.success('Duyệt thành công');
         } catch (error) {
-            messageApi.error('Có lỗi xảy ra:', error);
+            messageApi.error('Có lỗi xảy ra');
+        } finally {
+            setLoadingAction(false);
         }
     };
 
     const handleRemove = async (postId) => {
+        setLoadingAction(true);
         try {
             await deletePost(postId);
             setPosts(posts.filter((post) => post.id !== postId));
             messageApi.success('Xóa thành công');
         } catch (error) {
-            messageApi.error('Có lỗi xảy ra:', error);
+            messageApi.error('Có lỗi xảy ra');
+        } finally {
+            setLoadingAction(false);
         }
     };
 
     const handleView = async (postId) => {
-        setIsDetailLoading(true);
-        setIsModalOpen(true);
-        try {
-            const response = await getPost(postId);
-            setPostDetails(response.data.data);
-        } catch (error) {
-            messageApi.error('Có lỗi xảy ra khi lấy chi tiết bài viết:', error);
-        } finally {
-            setIsDetailLoading(false);
+        if (!postDetails || postId !== postDetails.id) {
+            setIsDetailLoading(true);
+            setIsModalOpen(true);
+            try {
+                const response = await getPost(postId);
+                setPostDetails(response.data.data);
+            } catch (error) {
+                setIsModalOpen(true);
+                messageApi.error('Có lỗi xảy ra khi lấy chi tiết bài viết');
+            } finally {
+                setIsDetailLoading(false);
+            }
+        } else {
+            setIsModalOpen(true);
         }
     };
 
@@ -125,9 +138,20 @@ const ReviewPosts = () => {
                                 </span>
                             </div>
                             <div className={cx('post-actions')}>
-                                <button onClick={() => handleView(post.id)}>Xem</button>
-                                <button onClick={() => handleApprove(post.id)}>Duyệt</button>
-                                <button onClick={() => handleRemove(post.id)}>Xóa</button>
+                                <Button type="primary" loading={loadingAction} onClick={() => handleView(post.id)}>
+                                    Xem
+                                </Button>
+                                <Button type="default" loading={loadingAction} onClick={() => handleApprove(post.id)}>
+                                    Duyệt
+                                </Button>
+                                <Button
+                                    danger
+                                    type="default"
+                                    loading={loadingAction}
+                                    onClick={() => handleRemove(post.id)}
+                                >
+                                    Xóa
+                                </Button>
                             </div>
                         </div>
                     ))
