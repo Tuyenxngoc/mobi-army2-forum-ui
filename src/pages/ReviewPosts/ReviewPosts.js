@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, message, Modal } from 'antd';
+import { Button, message, Modal, Spin } from 'antd';
 import classNames from 'classnames/bind';
 import queryString from 'query-string';
 
@@ -16,12 +16,17 @@ import 'react-quill/dist/quill.core.css';
 const cx = classNames.bind(Style);
 
 const ReviewPosts = () => {
-    const [posts, setPosts] = useState([]);
     const [meta, setMeta] = useState(INITIAL_META);
     const [filters, setFilters] = useState(INITIAL_FILTERS);
-    const [open, setOpen] = useState(false);
-    const [loading, setLoading] = useState(false);
+
+    const [posts, setPosts] = useState([]);
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isDetailLoading, setIsDetailLoading] = useState(false);
     const [postDetails, setPostDetails] = useState(null);
+
+    const [isLoading, setIsLoading] = useState(true);
+    const [errorMessage, setErrorMessage] = useState(null);
 
     const [messageApi, contextHolder] = message.useMessage();
 
@@ -54,15 +59,15 @@ const ReviewPosts = () => {
     };
 
     const handleView = async (postId) => {
-        setLoading(true);
-        setOpen(true);
+        setIsDetailLoading(true);
+        setIsModalOpen(true);
         try {
             const response = await getPost(postId);
             setPostDetails(response.data.data);
         } catch (error) {
             messageApi.error('Có lỗi xảy ra khi lấy chi tiết bài viết:', error);
         } finally {
-            setLoading(false);
+            setIsDetailLoading(false);
         }
     };
 
@@ -75,27 +80,76 @@ const ReviewPosts = () => {
                 setPosts(items);
                 setMeta(meta);
             } catch (error) {
-                messageApi.error('Có lỗi xảy ra:', error);
+                setErrorMessage(error);
+            } finally {
+                setIsLoading(false);
             }
         };
 
         fetchPosts();
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filters]);
+
+    const renderContent = () => {
+        if (isLoading) {
+            return (
+                <div className="alert alert-primary m-2 p-2" role="alert">
+                    Loading... <Spin />
+                </div>
+            );
+        }
+
+        if (errorMessage) {
+            return (
+                <div className="alert alert-danger m-2 p-2" role="alert">
+                    Lỗi: {errorMessage.message}
+                </div>
+            );
+        }
+
+        return (
+            <div>
+                {posts.length > 0 ? (
+                    posts.map((post) => (
+                        <div key={post.id} className={cx('post-item')}>
+                            <div className={cx('post-content')}>
+                                <div className={cx('post-title')}>{post.title}</div>
+                                <span>
+                                    tạo bởi{' '}
+                                    <Link to={`/player/${1}`} target="_blank">
+                                        {post.author}{' '}
+                                    </Link>
+                                    lúc{' '}
+                                    <span>
+                                        <DateFormatter datetime={post.createdDate} />
+                                    </span>
+                                </span>
+                            </div>
+                            <div className={cx('post-actions')}>
+                                <button onClick={() => handleView(post.id)}>Xem</button>
+                                <button onClick={() => handleApprove(post.id)}>Duyệt</button>
+                                <button onClick={() => handleRemove(post.id)}>Xóa</button>
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    <p className="px-2">Không có bài viết nào cần duyệt.</p>
+                )}
+            </div>
+        );
+    };
 
     return (
         <div className="box-container">
             <Modal
                 title="Chi tiết bài viết"
                 footer={
-                    <Button type="primary" onClick={() => setOpen(false)}>
+                    <Button type="primary" onClick={() => setIsModalOpen(false)}>
                         Đóng
                     </Button>
                 }
-                loading={loading}
-                open={open}
-                onCancel={() => setOpen(false)}
+                loading={isDetailLoading}
+                open={isModalOpen}
+                onCancel={() => setIsModalOpen(false)}
             >
                 {postDetails && (
                     <div className={cx('modal-content-scrollable')}>
@@ -123,37 +177,10 @@ const ReviewPosts = () => {
                 <Link to="/forum">Quay lại</Link>
             </div>
 
-            <div>
-                <h3 className="p-2 pb-0"> Duyệt bài viết</h3>
-                {posts.length === 0 ? (
-                    <p className="px-2">Không có bài viết nào cần duyệt.</p>
-                ) : (
-                    <ul className={cx('post-list')}>
-                        {posts.map((post) => (
-                            <li key={post.id} className={cx('post-item')}>
-                                <div className={cx('post-content')}>
-                                    <div className={cx('post-title')}>{post.title}</div>
-                                    <span>
-                                        tạo bởi{' '}
-                                        <Link to={`/player/${1}`} target="_blank">
-                                            {post.author}{' '}
-                                        </Link>
-                                        lúc{' '}
-                                        <span>
-                                            <DateFormatter datetime={post.createdDate} />
-                                        </span>
-                                    </span>
-                                </div>
-                                <div className={cx('post-actions')}>
-                                    <button onClick={() => handleView(post.id)}>Xem</button>
-                                    <button onClick={() => handleApprove(post.id)}>Duyệt</button>
-                                    <button onClick={() => handleRemove(post.id)}>Xóa</button>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
-                )}
-            </div>
+            <h3 className="p-2 pb-0"> Duyệt bài viết</h3>
+
+            {renderContent()}
+
             <Pagination
                 totalPages={meta.totalPages || 1}
                 currentPage={filters.pageNum - 1}

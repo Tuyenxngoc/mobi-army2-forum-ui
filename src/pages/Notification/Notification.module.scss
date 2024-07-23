@@ -20,4 +20,8 @@
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px #65a5ac solid;
+
+    &:last-child {
+        border-bottom: none;
+    }
 }
