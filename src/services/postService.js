@@ -31,3 +31,7 @@ export const toggleLock = (postId) => {
 export const toggleFollow = (postId) => {
     return axiosPrivate.post(`posts/${postId}/follow`);
 };
+
+export const getFollowingPosts = (params) => {
+    return axiosPrivate.get(`posts/following?${params}`);
+};

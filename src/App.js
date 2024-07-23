@@ -15,6 +15,7 @@ import AccessDenied from './pages/AccessDenied/AccessDenied';
 import Terms from './pages/Terms/Terms';
 import ConfirmEmail from './pages/ConfirmEmail/ConfirmEmail';
 import Notification from './pages/Notification/Notification';
+import FollowingPosts from './pages/FollowingPosts/FollowingPosts';
 
 function App() {
     return (
@@ -32,6 +33,7 @@ function App() {
                     <Route element={<RequireAuth />}>
                         <Route path="post/new" element={<NewPost />} />
                         <Route path="notifications" element={<Notification />} />
+                        <Route path="following-posts" element={<FollowingPosts />} />
                     </Route>
 
                     <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.SuperAdmin]} />}>
