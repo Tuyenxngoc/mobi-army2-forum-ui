@@ -43,17 +43,22 @@ function PlayerActions() {
                     </div>
 
                     <div>
-                        <Link to={'/notifications'}>Thông báo</Link>
+                        <Link to={'/notification'}>Thông báo</Link>
                     </div>
 
                     <div>
-                        <Link to={'/following-posts'}>Theo giõi</Link>
+                        <Link to={'/following-post'}>Theo giõi</Link>
                     </div>
 
                     {hasRequiredRole && (
-                        <div>
-                            <Link to={'/post/review'}>Duyệt bài viết</Link>
-                        </div>
+                        <>
+                            <div>
+                                <Link to={'/post/review'}>Duyệt bài viết</Link>
+                            </div>
+                            <div>
+                                <Link to={'/notification/new'}>Thêm thông báo</Link>
+                            </div>
+                        </>
                     )}
                 </>
             ) : (

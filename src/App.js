@@ -16,6 +16,7 @@ import Terms from './pages/Terms/Terms';
 import ConfirmEmail from './pages/ConfirmEmail/ConfirmEmail';
 import Notification from './pages/Notification/Notification';
 import FollowingPosts from './pages/FollowingPosts/FollowingPosts';
+import NewNotification from './pages/NewNotification/NewNotification';
 
 function App() {
     return (
@@ -32,12 +33,13 @@ function App() {
 
                     <Route element={<RequireAuth />}>
                         <Route path="post/new" element={<NewPost />} />
-                        <Route path="notifications" element={<Notification />} />
-                        <Route path="following-posts" element={<FollowingPosts />} />
+                        <Route path="notification" element={<Notification />} />
+                        <Route path="following-post" element={<FollowingPosts />} />
                     </Route>
 
                     <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.SuperAdmin]} />}>
                         <Route path="post/review" element={<ReviewPosts />} />
+                        <Route path="notification/new" element={<NewNotification />} />
                     </Route>
 
                     <Route path="/verify" element={<ConfirmEmail />} />
