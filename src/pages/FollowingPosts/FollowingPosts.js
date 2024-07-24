@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import PlayerActions from '~/components/PlayerActions/PlayerActions';
 
 import classNames from 'classnames/bind';
 import Style from './FollowingPosts.module.scss';
@@ -34,6 +33,8 @@ function FollowingPosts() {
 
     useEffect(() => {
         const fetchFollowingPosts = async () => {
+            setIsLoading(true);
+            setErrorMessage(null);
             try {
                 const params = queryString.stringify(filters);
                 const response = await getFollowingPosts(params);
@@ -99,6 +100,7 @@ function FollowingPosts() {
                 rowsPerPage={meta.pageSize}
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
+                isLoading={isLoading}
             />
         </>
     );

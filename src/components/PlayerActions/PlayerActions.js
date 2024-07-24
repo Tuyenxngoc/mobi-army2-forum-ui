@@ -1,15 +1,11 @@
+import { useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import useAuth from '~/hooks/useAuth';
 import images from '~/assets';
 
-import Style from './PlayerActions.module.scss';
-import classNames from 'classnames/bind';
 import { ROLES } from '~/common/contans';
-import { useMemo } from 'react';
 import { checkUserHasRequiredRole } from '~/utils/helper';
-
-const cx = classNames.bind(Style);
 
 const allowedRoles = [ROLES.Admin, ROLES.SuperAdmin];
 
@@ -57,6 +53,9 @@ function PlayerActions() {
                             </div>
                             <div>
                                 <Link to={'/notification/new'}>Thêm thông báo</Link>
+                            </div>
+                            <div>
+                                <Link to={'/player'}>Quản lý thành viên</Link>
                             </div>
                         </>
                     )}

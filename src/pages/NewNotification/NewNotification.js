@@ -112,7 +112,7 @@ function NewNotification() {
                         onBlur={formik.handleBlur}
                     />
                     <label className="form-check-label" htmlFor="isPrivate">
-                        Chỉ dành cho riêng tư
+                        Chỉ dành cho quản trị
                     </label>
                 </div>
 

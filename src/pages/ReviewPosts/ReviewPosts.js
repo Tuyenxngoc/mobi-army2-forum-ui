@@ -85,6 +85,8 @@ const ReviewPosts = () => {
 
     useEffect(() => {
         const fetchPosts = async () => {
+            setIsLoading(true);
+            setErrorMessage(null);
             try {
                 const params = queryString.stringify(filters);
                 const response = await getPostsForReview(params);
@@ -204,6 +206,7 @@ const ReviewPosts = () => {
                 rowsPerPage={meta.pageSize}
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
+                isLoading={isLoading}
             />
         </>
     );

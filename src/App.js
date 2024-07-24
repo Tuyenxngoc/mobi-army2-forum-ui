@@ -18,6 +18,7 @@ import Notification from './pages/Notification/Notification';
 import FollowingPosts from './pages/FollowingPosts/FollowingPosts';
 import NewNotification from './pages/NewNotification/NewNotification';
 import ForumLayout from './layouts/ForumLayout';
+import PlayerManagement from './pages/PlayerManagement/PlayerManagement';
 
 function App() {
     return (
@@ -47,6 +48,7 @@ function App() {
                         <Route element={<ForumLayout />}>
                             <Route path="post/review" element={<ReviewPosts />} />
                             <Route path="notification/new" element={<NewNotification />} />
+                            <Route path="player" element={<PlayerManagement />} />
                         </Route>
                     </Route>
 

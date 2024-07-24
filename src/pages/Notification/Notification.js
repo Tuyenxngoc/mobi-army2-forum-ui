@@ -75,6 +75,8 @@ function Notification() {
 
     useEffect(() => {
         const fetchNotifications = async () => {
+            setIsLoading(true);
+            setErrorMessage(null);
             try {
                 const params = queryString.stringify(filters);
                 const response = await getPlayerNotifications(params);
@@ -177,6 +179,7 @@ function Notification() {
                 rowsPerPage={meta.pageSize}
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
+                isLoading={isLoading}
             />
         </>
     );
