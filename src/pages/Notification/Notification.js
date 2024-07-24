@@ -1,9 +1,7 @@
-import queryString from 'query-string';
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { INITIAL_FILTERS, INITIAL_META } from '~/common/contans';
-import Pagination from '~/components/Pagination';
-import PlayerActions from '~/components/PlayerActions/PlayerActions';
+import queryString from 'query-string';
+import { Button, message, Modal, Spin } from 'antd';
+
 import {
     deletePlayerNotificationById,
     getPlayerNotificationById,
@@ -12,8 +10,10 @@ import {
 
 import Style from './Notification.module.scss';
 import classNames from 'classnames/bind';
+
+import { INITIAL_FILTERS, INITIAL_META } from '~/common/contans';
 import DateFormatter from '~/components/DateFormatter/DateFormatter';
-import { Button, message, Modal, Spin } from 'antd';
+import Pagination from '~/components/Pagination';
 
 const cx = classNames.bind(Style);
 

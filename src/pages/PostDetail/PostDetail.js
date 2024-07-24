@@ -192,22 +192,6 @@ function PostDetail() {
                 <p>{deleteDialogText}</p>
             </Modal>
 
-            {isAuthenticated && post && (
-                <button onClick={handleToggleFollowPost}>
-                    {post.followed ? (
-                        <>
-                            <FontAwesomeIcon icon={faBellSlash} />
-                            {' Bỏ theo dõi'}
-                        </>
-                    ) : (
-                        <>
-                            <FontAwesomeIcon icon={faBell} />
-                            {' Theo dõi'}
-                        </>
-                    )}
-                </button>
-            )}
-
             {post && (
                 <div className={cx('post-detail')}>
                     <div className="text-center">
@@ -218,7 +202,11 @@ function PostDetail() {
                     <div className={cx('post-wrapper')}>
                         <div className={cx('post-header')}>
                             <div>
-                                <img src={post.player.isOnline ? images.online : images.offline} alt="status" />
+                                <img
+                                    className="me-1"
+                                    src={post.player.isOnline ? images.online : images.offline}
+                                    alt="status"
+                                />
                                 <Link to={`/player/${post.player.id}`} className={cx('username')}>
                                     {post.player.name}
                                 </Link>
@@ -226,6 +214,22 @@ function PostDetail() {
 
                             <div className={cx('time')}>
                                 <DateFormatter datetime={post.lastModifiedDate} />
+
+                                {isAuthenticated && post && (
+                                    <button className="ms-2" onClick={handleToggleFollowPost}>
+                                        {post.followed ? (
+                                            <>
+                                                <FontAwesomeIcon icon={faBellSlash} />
+                                                {' Bỏ theo dõi'}
+                                            </>
+                                        ) : (
+                                            <>
+                                                <FontAwesomeIcon icon={faBell} />
+                                                {' Theo dõi'}
+                                            </>
+                                        )}
+                                    </button>
+                                )}
                             </div>
                         </div>
 
