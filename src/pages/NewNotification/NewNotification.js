@@ -1,18 +1,15 @@
 import * as yup from 'yup';
 
-import classNames from 'classnames/bind';
-import Style from './NewNotification.module.scss';
 import { Button, message } from 'antd';
-import PlayerActions from '~/components/PlayerActions/PlayerActions';
-import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
-import { createPlayerNotification } from '~/services/playerNotificationService';
+
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import 'react-quill/dist/quill.core.css';
+
+import { createPlayerNotification } from '~/services/playerNotificationService';
 import { formats, modules } from '~/common/editorConfig';
 
-const cx = classNames.bind(Style);
 const validationSchema = yup.object({
     title: yup
         .string('Nhập tiêu đề')
@@ -26,6 +23,7 @@ const validationSchema = yup.object({
         .max(2000, 'Nội dung chỉ được tối đa 2000 ký tự')
         .required('Nội dung là bắt buộc'),
 });
+
 function NewNotification() {
     const [messageApi, contextHolder] = message.useMessage();
 
@@ -58,14 +56,8 @@ function NewNotification() {
     }
 
     return (
-        <div className="box-container">
+        <>
             {contextHolder}
-
-            <PlayerActions />
-
-            <div className={cx('header')}>
-                <Link to="/forum">Quay lại</Link>
-            </div>
 
             <h3 className="p-2 pb-0">Thêm thông báo mới</h3>
 
@@ -130,7 +122,7 @@ function NewNotification() {
                     </Button>
                 </div>
             </form>
-        </div>
+        </>
     );
 }
 

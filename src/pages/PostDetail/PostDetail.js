@@ -21,7 +21,6 @@ import Comment from '~/components/Comment/Comment';
 import NewComment from '~/components/Comment/NewComment';
 import Pagination from '~/components/Pagination';
 import DateFormatter from '~/components/DateFormatter/DateFormatter';
-import PlayerActions from '~/components/PlayerActions/PlayerActions';
 import { INITIAL_FILTERS, INITIAL_META, ROLES } from '~/common/contans';
 import { checkUserHasRequiredRole } from '~/utils/helper';
 
@@ -180,7 +179,7 @@ function PostDetail() {
     }, [fetchPost]);
 
     return (
-        <main className="box-container">
+        <>
             {contextHolder}
 
             <Modal
@@ -193,26 +192,21 @@ function PostDetail() {
                 <p>{deleteDialogText}</p>
             </Modal>
 
-            <PlayerActions />
-
-            <div className={cx('header')}>
-                <Link to="/forum">Quay lại</Link>
-                {isAuthenticated && post && (
-                    <button onClick={handleToggleFollowPost}>
-                        {post.followed ? (
-                            <>
-                                <FontAwesomeIcon icon={faBellSlash} />
-                                {' Bỏ theo dõi'}
-                            </>
-                        ) : (
-                            <>
-                                <FontAwesomeIcon icon={faBell} />
-                                {' Theo dõi'}
-                            </>
-                        )}
-                    </button>
-                )}
-            </div>
+            {isAuthenticated && post && (
+                <button onClick={handleToggleFollowPost}>
+                    {post.followed ? (
+                        <>
+                            <FontAwesomeIcon icon={faBellSlash} />
+                            {' Bỏ theo dõi'}
+                        </>
+                    ) : (
+                        <>
+                            <FontAwesomeIcon icon={faBell} />
+                            {' Theo dõi'}
+                        </>
+                    )}
+                </button>
+            )}
 
             {post && (
                 <div className={cx('post-detail')}>
@@ -291,6 +285,7 @@ function PostDetail() {
                 <Link to="/">Avatar Bùm</Link>
                 <img src={images.newGif} alt="new" />
             </div>
+
             {comments.length > 0 && (
                 <div className={cx('comment-list')}>
                     {comments.map((comment) => (
@@ -323,7 +318,7 @@ function PostDetail() {
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
             />
-        </main>
+        </>
     );
 }
 

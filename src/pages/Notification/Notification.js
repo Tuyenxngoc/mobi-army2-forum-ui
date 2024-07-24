@@ -130,7 +130,9 @@ function Notification() {
         );
     };
     return (
-        <div className="box-container">
+        <>
+            {contextHolder}
+
             <Modal
                 title="Chi tiết thông báo"
                 footer={
@@ -165,14 +167,6 @@ function Notification() {
                 )}
             </Modal>
 
-            {contextHolder}
-
-            <PlayerActions />
-
-            <div className={cx('header')}>
-                <Link to="/forum">Quay lại</Link>
-            </div>
-
             <h3 className="p-2 pb-0">Thông báo</h3>
 
             {renderContent()}
@@ -184,7 +178,7 @@ function Notification() {
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
             />
-        </div>
+        </>
     );
 }
 

@@ -17,6 +17,7 @@ import ConfirmEmail from './pages/ConfirmEmail/ConfirmEmail';
 import Notification from './pages/Notification/Notification';
 import FollowingPosts from './pages/FollowingPosts/FollowingPosts';
 import NewNotification from './pages/NewNotification/NewNotification';
+import ForumLayout from './layouts/ForumLayout';
 
 function App() {
     return (
@@ -28,18 +29,25 @@ function App() {
                     <Route path="forum" element={<Forum />} />
                     <Route path="login" element={<Login />} />
                     <Route path="register" element={<Register />} />
-                    <Route path="post/:id" element={<PostDetail />} />
                     <Route path="terms" element={<Terms />} />
 
+                    <Route element={<ForumLayout />}>
+                        <Route path="post/:id" element={<PostDetail />} />
+                    </Route>
+
                     <Route element={<RequireAuth />}>
-                        <Route path="post/new" element={<NewPost />} />
-                        <Route path="notification" element={<Notification />} />
-                        <Route path="following-post" element={<FollowingPosts />} />
+                        <Route element={<ForumLayout />}>
+                            <Route path="post/new" element={<NewPost />} />
+                            <Route path="notification" element={<Notification />} />
+                            <Route path="following-post" element={<FollowingPosts />} />
+                        </Route>
                     </Route>
 
                     <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.SuperAdmin]} />}>
-                        <Route path="post/review" element={<ReviewPosts />} />
-                        <Route path="notification/new" element={<NewNotification />} />
+                        <Route element={<ForumLayout />}>
+                            <Route path="post/review" element={<ReviewPosts />} />
+                            <Route path="notification/new" element={<NewNotification />} />
+                        </Route>
                     </Route>
 
                     <Route path="/verify" element={<ConfirmEmail />} />

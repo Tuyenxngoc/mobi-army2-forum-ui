@@ -5,7 +5,6 @@ import classNames from 'classnames/bind';
 import queryString from 'query-string';
 
 import { INITIAL_FILTERS, INITIAL_META } from '~/common/contans';
-import PlayerActions from '~/components/PlayerActions/PlayerActions';
 import Pagination from '~/components/Pagination';
 import DateFormatter from '~/components/DateFormatter/DateFormatter';
 import { getPostsForReview, approvePost, deletePost, getPost } from '~/services/postService.js';
@@ -163,7 +162,9 @@ const ReviewPosts = () => {
     };
 
     return (
-        <div className="box-container">
+        <>
+            {contextHolder}
+
             <Modal
                 title="Chi tiết bài viết"
                 footer={
@@ -193,14 +194,6 @@ const ReviewPosts = () => {
                 )}
             </Modal>
 
-            {contextHolder}
-
-            <PlayerActions />
-
-            <div className={cx('header')}>
-                <Link to="/forum">Quay lại</Link>
-            </div>
-
             <h3 className="p-2 pb-0"> Duyệt bài viết</h3>
 
             {renderContent()}
@@ -212,7 +205,7 @@ const ReviewPosts = () => {
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
             />
-        </div>
+        </>
     );
 };
 
