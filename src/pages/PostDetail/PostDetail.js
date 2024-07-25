@@ -83,6 +83,18 @@ function PostDetail() {
         setComments((prev) => prev.filter((comment) => comment.id !== deletedCommentId));
     };
 
+    const handleDeleteButtonClick = () => {
+        setIsDeleteDialogVisible(true);
+    };
+
+    const handleLoginButtonClick = () => {
+        navigate('/login', { state: { from: location } });
+    };
+
+    const handleCloseDeleteDialogClick = () => {
+        setIsDeleteDialogVisible(false);
+    };
+
     const handleToggleLikePost = async () => {
         try {
             const response = await toggleLike(id);
@@ -148,18 +160,6 @@ function PostDetail() {
         }
     }, [id, navigate]);
 
-    const handleDeleteButtonClick = () => {
-        setIsDeleteDialogVisible(true);
-    };
-
-    const handleLoginButtonClick = () => {
-        navigate('/login', { state: { from: location } });
-    };
-
-    const handleCloseDeleteDialogClick = () => {
-        setIsDeleteDialogVisible(false);
-    };
-
     useEffect(() => {
         const fetchComments = async () => {
             setIsCommentsLoading(true);
@@ -215,7 +215,7 @@ function PostDetail() {
                         <Skeleton active avatar />
                     </div>
                     <div className={cx('ads')}>
-                        <Skeleton.Button active size="small" />
+                        <Skeleton.Input active size="small" />
                     </div>
                 </>
             ) : postErrorMessage ? (
