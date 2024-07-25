@@ -6,7 +6,7 @@ import * as yup from 'yup';
 import Style from './Register.module.scss';
 import classNames from 'classnames/bind';
 import { register } from '~/services/authService';
-import { message } from 'antd';
+import { Button, Input, message } from 'antd';
 
 const cx = classNames.bind(Style);
 
@@ -99,17 +99,18 @@ function Register() {
                 <label className={cx('formlabel')} htmlFor={`txt${name}`}>
                     {label}
                 </label>
-                <input
+                <Input
                     id={`txt${name}`}
                     name={name}
                     type={type}
                     value={formik.values[name]}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    className={cx('formInput', { error: formik.touched[name] && Boolean(formik.errors[name]) })}
+                    status={formik.touched[name] && formik.errors[name] ? 'error' : undefined}
+                    className="w-50"
                 />
             </div>
-            <small className={cx('error')}>{formik.touched[name] && formik.errors[name]}</small>
+            <div className="text-danger">{formik.touched[name] && formik.errors[name]}</div>
         </>
     );
 
@@ -145,9 +146,9 @@ function Register() {
                     <br />
                 </p>
                 <div className={cx('formControl')}>
-                    <button type="submit" disabled={formik.isSubmitting}>
+                    <Button type="primary" htmlType="submit" loading={formik.isSubmitting}>
                         Đăng ký
-                    </button>
+                    </Button>
                 </div>
                 <p>
                     Bạn đã có tài khoản? <Link to="/login">Đăng nhập</Link>

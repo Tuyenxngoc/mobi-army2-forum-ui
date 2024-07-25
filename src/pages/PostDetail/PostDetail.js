@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBellSlash, faBell, faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
 import { faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons';
-import { Button, message, Modal, Tooltip } from 'antd';
+import { Button, message, Modal, Skeleton, Tooltip } from 'antd';
 import 'react-quill/dist/quill.snow.css';
 import 'react-quill/dist/quill.core.css';
 
@@ -209,113 +209,138 @@ function PostDetail() {
                 <p>{deleteDialogText}</p>
             </Modal>
 
-            {post && (
-                <div className={cx('post-detail')}>
-                    <div className="text-center">
-                        <img src={images.plGif} alt="status" />
-                        <div>Bài: {post.player.points}</div>
+            {isPostLoading ? (
+                <>
+                    <div className={cx('post-detail')}>
+                        <Skeleton active avatar />
                     </div>
-
-                    <div className={cx('post-wrapper')}>
-                        <div className={cx('post-header')}>
-                            <div>
-                                <img
-                                    className="me-1"
-                                    src={post.player.isOnline ? images.online : images.offline}
-                                    alt="status"
-                                />
-                                <Link to={`/player/${post.player.id}`} className={cx('username')}>
-                                    {post.player.name}
-                                </Link>
+                    <div className={cx('ads')}>
+                        <Skeleton.Button active size="small" />
+                    </div>
+                </>
+            ) : postErrorMessage ? (
+                <div className="alert alert-danger m-2 p-2" role="alert">
+                    Lỗi khi tải bài viết: {postErrorMessage.message}
+                </div>
+            ) : (
+                post && (
+                    <>
+                        <div className={cx('post-detail')}>
+                            <div className="text-center">
+                                <img src={images.plGif} alt="status" />
+                                <div>Bài: {post.player.points}</div>
                             </div>
 
-                            <div className={cx('time')}>
-                                <DateFormatter datetime={post.lastModifiedDate} />
+                            <div className={cx('post-wrapper')}>
+                                <div className={cx('post-header')}>
+                                    <div>
+                                        <img
+                                            className="me-1"
+                                            src={post.player.isOnline ? images.online : images.offline}
+                                            alt="status"
+                                        />
+                                        <Link to={`/player/${post.player.id}`} className={cx('username')}>
+                                            {post.player.name}
+                                        </Link>
+                                    </div>
 
-                                {isAuthenticated && post && (
-                                    <Button
-                                        type="primary"
-                                        size="small"
-                                        className="ms-2"
-                                        onClick={handleToggleFollowPost}
-                                    >
-                                        {post.followed ? (
+                                    <div className={cx('time')}>
+                                        <DateFormatter datetime={post.lastModifiedDate} />
+
+                                        {isAuthenticated && post && (
+                                            <Button
+                                                type="primary"
+                                                size="small"
+                                                className="ms-2"
+                                                onClick={handleToggleFollowPost}
+                                            >
+                                                {post.followed ? (
+                                                    <>
+                                                        <FontAwesomeIcon icon={faBellSlash} />
+                                                        {' Bỏ theo dõi'}
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <FontAwesomeIcon icon={faBell} />
+                                                        {' Theo dõi'}
+                                                    </>
+                                                )}
+                                            </Button>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <div className={cx('post-body')}>
+                                    <div className={cx('title')}>{post.title}</div>
+                                    <div
+                                        className={cx('ql-snow', 'ql-editor', 'content')}
+                                        dangerouslySetInnerHTML={{ __html: post.content }}
+                                    />
+                                    <br />
+                                    <br />
+
+                                    <div className={cx('like-session')}>
+                                        {isAuthenticated && (
+                                            <Tooltip title={post.like.hasLikes ? 'Bỏ thích' : 'Thích'}>
+                                                <div className="text-danger" onClick={handleToggleLikePost}>
+                                                    <FontAwesomeIcon
+                                                        icon={post.like.hasLikes ? faHeartSolid : faHeartRegular}
+                                                    />
+                                                </div>
+                                            </Tooltip>
+                                        )}
+
+                                        {post.like.likeCount > 0 && (
+                                            <div className={cx('like-count')}>
+                                                <span className="text-danger"> ♥ </span>
+                                                {`${post.like.latestLiker}${
+                                                    post.like.likeCount === 1
+                                                        ? ' đã thích bài này'
+                                                        : ` và ${post.like.likeCount - 1} người khác đã thích bài này`
+                                                }`}
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    <div>
+                                        {hasRequiredRole && (
                                             <>
-                                                <FontAwesomeIcon icon={faBellSlash} />
-                                                {' Bỏ theo dõi'}
-                                            </>
-                                        ) : (
-                                            <>
-                                                <FontAwesomeIcon icon={faBell} />
-                                                {' Theo dõi'}
+                                                <Button type="default" size="small" onClick={handleToggleLockPost}>
+                                                    {post.locked ? 'Mở khóa' : 'Khóa'}
+                                                </Button>
+                                                <Button
+                                                    danger
+                                                    type="primary"
+                                                    size="small"
+                                                    onClick={handleDeleteButtonClick}
+                                                >
+                                                    Xóa
+                                                </Button>
                                             </>
                                         )}
-                                    </Button>
-                                )}
-                            </div>
-                        </div>
 
-                        <div className={cx('post-body')}>
-                            <div className={cx('title')}>{post.title}</div>
-                            <div
-                                className={cx('ql-snow', 'ql-editor', 'content')}
-                                dangerouslySetInnerHTML={{ __html: post.content }}
-                            />
-                            <br />
-                            <br />
-
-                            <div className={cx('like-session')}>
-                                {isAuthenticated && (
-                                    <Tooltip title={post.like.hasLikes ? 'Bỏ thích' : 'Thích'}>
-                                        <div className="text-danger" onClick={handleToggleLikePost}>
-                                            <FontAwesomeIcon
-                                                icon={post.like.hasLikes ? faHeartSolid : faHeartRegular}
-                                            />
-                                        </div>
-                                    </Tooltip>
-                                )}
-
-                                {post.like.likeCount > 0 && (
-                                    <div className={cx('like-count')}>
-                                        <span className="text-danger"> ♥ </span>
-                                        {`${post.like.latestLiker}${
-                                            post.like.likeCount === 1
-                                                ? ' đã thích bài này'
-                                                : ` và ${post.like.likeCount - 1} người khác đã thích bài này`
-                                        }`}
+                                        {post.approvedBy && (
+                                            <div className={cx('approved-by')}>Duyệt bởi: {post.approvedBy.name}</div>
+                                        )}
                                     </div>
-                                )}
-                            </div>
-
-                            <div>
-                                {hasRequiredRole && (
-                                    <>
-                                        <Button type="default" size="small" onClick={handleToggleLockPost}>
-                                            {post.locked ? 'Mở khóa' : 'Khóa'}
-                                        </Button>
-                                        <Button danger type="primary" size="small" onClick={handleDeleteButtonClick}>
-                                            Xóa
-                                        </Button>
-                                    </>
-                                )}
-
-                                {post.approvedBy && (
-                                    <div className={cx('approved-by')}>Duyệt bởi: {post.approvedBy.name}</div>
-                                )}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
+                        <div className={cx('ads')}>
+                            <img src={images.newGif} alt="new" />
+                            <Link to="/">Avatar Bùm</Link>
+                            <img src={images.newGif} alt="new" />
+                        </div>
+                    </>
+                )
             )}
 
-            <div className={cx('ads')}>
-                <img src={images.newGif} alt="new" />
-                <Link to="/">Avatar Bùm</Link>
-                <img src={images.newGif} alt="new" />
-            </div>
-
             {isCommentsLoading ? (
-                <div>Loading comments...</div>
+                <div className={cx('comment-list')}>
+                    {Array.from({ length: 5 }).map((_, index) => (
+                        <Skeleton key={index} active avatar />
+                    ))}
+                </div>
             ) : commentErrorMessage ? (
                 <div className="alert alert-danger m-2 p-2" role="alert">
                     Lỗi khi tải bình luận: {commentErrorMessage.message}
@@ -353,6 +378,7 @@ function PostDetail() {
                 rowsPerPage={meta.pageSize}
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
+                isLoading={isCommentsLoading}
             />
         </>
     );

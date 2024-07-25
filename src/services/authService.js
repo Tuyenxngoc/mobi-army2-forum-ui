@@ -27,3 +27,7 @@ export const getCurrentUserLogin = () => {
 export const logoutToken = () => {
     return axiosPrivate.post('auth/logout');
 };
+
+export const forgetPassword = (values) => {
+    return axios.post('auth/forget-password', values);
+};

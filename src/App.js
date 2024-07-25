@@ -19,6 +19,7 @@ import FollowingPosts from './pages/FollowingPosts/FollowingPosts';
 import NewNotification from './pages/NewNotification/NewNotification';
 import ForumLayout from './layouts/ForumLayout';
 import PlayerManagement from './pages/PlayerManagement/PlayerManagement';
+import ForgetPassword from './pages/ForgetPassword/ForgetPassword';
 
 function App() {
     return (
@@ -30,6 +31,7 @@ function App() {
                     <Route path="forum" element={<Forum />} />
                     <Route path="login" element={<Login />} />
                     <Route path="register" element={<Register />} />
+                    <Route path="forgot-password" element={<ForgetPassword />} />
                     <Route path="terms" element={<Terms />} />
 
                     <Route element={<ForumLayout />}>

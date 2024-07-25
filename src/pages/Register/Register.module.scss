@@ -7,25 +7,10 @@
 }
 
 .formControl {
-    padding: 0 4px;
+    padding: 4px;
 }
 
 .formlabel {
     text-align: left;
     min-width: 160px;
-}
-
-.formInput {
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    padding: 2px;
-}
-
-.formInput.error {
-    border: 2px solid red;
-}
-
-.error {
-    color: red;
-    padding-left: 4px;
 }

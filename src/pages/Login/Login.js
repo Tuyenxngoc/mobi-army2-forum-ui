@@ -1,14 +1,15 @@
 import { useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
+import { Button, Input, message } from 'antd';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import Style from './Login.module.scss';
 import classNames from 'classnames/bind';
+
 import { loginUser } from '~/services/authService';
 import useAuth from '~/hooks/useAuth';
-import { message } from 'antd';
 
 const cx = classNames.bind(Style);
 
@@ -26,6 +27,7 @@ const defaultValue = {
 function Login() {
     const navigate = useNavigate();
     const location = useLocation();
+
     const [messageApi, contextHolder] = message.useMessage();
     const { isAuthenticated, login } = useAuth();
 
@@ -64,16 +66,16 @@ function Login() {
                 {label}
             </label>
             <div>
-                <input
+                <Input
                     id={`txt${name}`}
                     name={name}
                     type={type}
                     value={formik.values[name]}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    className={cx('formInput', { error: formik.touched[name] && Boolean(formik.errors[name]) })}
+                    status={formik.touched[name] && formik.errors[name] ? 'error' : undefined}
                 />
-                <div className={cx('error')}>{formik.touched[name] && formik.errors[name]}</div>
+                <div className="text-danger">{formik.touched[name] && formik.errors[name]}</div>
             </div>
         </div>
     );
@@ -82,8 +84,7 @@ function Login() {
         if (isAuthenticated) {
             navigate('/', { replace: true });
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [isAuthenticated, navigate]);
 
     return (
         <main className={cx('wrapper')}>
@@ -96,9 +97,9 @@ function Login() {
                 {renderInput('password', 'Mật khẩu', 'password')}
 
                 <div className={cx('formControl')}>
-                    <button type="submit" disabled={formik.isSubmitting}>
+                    <Button type="primary" htmlType="submit" loading={formik.isSubmitting}>
                         Đăng nhập
-                    </button>
+                    </Button>
                 </div>
             </form>
 
@@ -109,7 +110,7 @@ function Login() {
                         Đăng ký
                     </Link>
                 </div>
-                <Link className={cx('link')} to={'/forget'}>
+                <Link className={cx('link')} to={'/forgot-password'}>
                     Quên mật khẩu
                 </Link>
             </div>

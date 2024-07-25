@@ -112,9 +112,9 @@ function Forum() {
                         <div>
                             <Skeleton active title={false} avatar={{ shape: 'square' }} paragraph={false} />
                         </div>
-                        <div>
-                            <Skeleton active title={false} paragraph={{ rows: 1, width: 250 }} className="mb-1" />
-                            <Skeleton active title={false} paragraph={{ rows: 1, width: 350 }} />
+                        <div className="w-100">
+                            <Skeleton active title={false} paragraph={{ rows: 1, width: '50%' }} className="mb-1" />
+                            <Skeleton active title={false} paragraph={{ rows: 1, width: '75%' }} />
                         </div>
                     </div>
                 ))

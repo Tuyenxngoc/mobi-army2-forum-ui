@@ -6,6 +6,7 @@ import images from '~/assets';
 
 import { ROLES } from '~/common/contans';
 import { checkUserHasRequiredRole } from '~/utils/helper';
+import { Button } from 'antd';
 
 const allowedRoles = [ROLES.Admin, ROLES.SuperAdmin];
 
@@ -62,8 +63,12 @@ function PlayerActions() {
                 </>
             ) : (
                 <>
-                    <button onClick={handleLoginClick}>Đăng nhập</button>
-                    <button onClick={handleRegisterClick}>Đăng ký</button>
+                    <Button type="primary" onClick={handleLoginClick}>
+                        Đăng nhập
+                    </Button>
+                    <Button type="primary" onClick={handleRegisterClick}>
+                        Đăng ký
+                    </Button>
                 </>
             )}
 
