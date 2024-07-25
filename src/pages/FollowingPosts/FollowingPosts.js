@@ -41,8 +41,8 @@ function FollowingPosts() {
                 const { meta, items } = response.data.data;
                 setPosts(items);
                 setMeta(meta);
-            } catch (err) {
-                setErrorMessage(err);
+            } catch (error) {
+                setErrorMessage(error);
             } finally {
                 setIsLoading(false);
             }

@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBellSlash, faBell, faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
 import { faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons';
-import { message, Modal, Tooltip } from 'antd';
+import { Button, message, Modal, Tooltip } from 'antd';
 import 'react-quill/dist/quill.snow.css';
 import 'react-quill/dist/quill.core.css';
 
@@ -22,55 +22,66 @@ import NewComment from '~/components/Comment/NewComment';
 import Pagination from '~/components/Pagination';
 import DateFormatter from '~/components/DateFormatter/DateFormatter';
 import { INITIAL_FILTERS, INITIAL_META, ROLES } from '~/common/contans';
-import { checkUserHasRequiredRole } from '~/utils/helper';
 
 const cx = classNames.bind(Style);
 
-const allowedRoles = [ROLES.Admin, ROLES.SuperAdmin];
+const allowedRoles = {
+    [ROLES.SuperAdmin]: true,
+    [ROLES.Admin]: true,
+};
 
 function PostDetail() {
     const { id } = useParams();
+
     const navigate = useNavigate();
     const location = useLocation();
+
     const [post, setPost] = useState(null);
     const [comments, setComments] = useState([]);
+
+    const [isCommentsLoading, setIsCommentsLoading] = useState(true);
+    const [commentErrorMessage, setCommentErrorMessage] = useState(null);
+
+    const [isPostLoading, setIsPostLoading] = useState(true);
+    const [postErrorMessage, setPostErrorMessage] = useState(null);
+
     const [meta, setMeta] = useState(INITIAL_META);
     const [filters, setFilters] = useState(INITIAL_FILTERS);
+
     const [isDeleteDialogVisible, setIsDeleteDialogVisible] = useState(false);
     const [isDeleteConfirmLoading, setIsDeleteConfirmLoading] = useState(false);
     const [deleteDialogText, setDeleteDialogText] = useState(
         'Bạn có chắc muốn xóa bài viết này? Lưu ý: Sau khi xóa, bạn không thể hoàn tác hay khôi phục.',
     );
+
     const [messageApi, contextHolder] = message.useMessage();
-    const {
-        isAuthenticated,
-        player: { roleName },
-    } = useAuth();
-    const hasRequiredRole = useMemo(() => checkUserHasRequiredRole(roleName, allowedRoles), [roleName]);
+    const { isAuthenticated, player } = useAuth();
 
-    const handleChangePage = useCallback((newPage) => {
+    const hasRequiredRole = allowedRoles[player.roleName];
+
+    const handleChangePage = (newPage) => {
         setFilters((prev) => ({ ...prev, pageNum: newPage + 1 }));
-    }, []);
+    };
 
-    const handleChangeRowsPerPage = useCallback((event) => {
+    const handleChangeRowsPerPage = (event) => {
         setFilters({ pageNum: 1, pageSize: parseInt(event.target.value, 10) });
-    }, []);
+    };
 
-    const handleCommentSubmit = useCallback((newComment) => {
+    const handleCommentSubmit = (newComment) => {
         setComments((prev) => [...prev, newComment]);
-    }, []);
+    };
 
-    const handleUpdateComment = useCallback((updatedComment) => {
+    const handleUpdateComment = (updatedComment) => {
         setComments((prev) =>
             prev.map((comment) =>
                 comment.id === updatedComment.id ? { ...comment, content: updatedComment.content } : comment,
             ),
         );
-    }, []);
+    };
 
-    const handleDeleteComment = useCallback((deletedCommentId) => {
+    const handleDeleteComment = (deletedCommentId) => {
         setComments((prev) => prev.filter((comment) => comment.id !== deletedCommentId));
-    }, []);
+    };
 
     const handleToggleLikePost = async () => {
         try {
@@ -86,8 +97,8 @@ function PostDetail() {
                     },
                 }));
             }
-        } catch (err) {
-            console.error('Failed to like post', err);
+        } catch (error) {
+            message.error('Đã có lỗi xảy ra, vui lòng thử lại');
         }
     };
 
@@ -100,8 +111,8 @@ function PostDetail() {
                     followed: !prev.followed,
                 }));
             }
-        } catch (err) {
-            console.error('Failed to follow/unfollow post', err);
+        } catch (error) {
+            message.error('Đã có lỗi xảy ra, vui lòng thử lại');
         }
     };
 
@@ -114,8 +125,8 @@ function PostDetail() {
                     locked: !prev.locked,
                 }));
             }
-        } catch (err) {
-            console.error('Failed to toggle lock status', err);
+        } catch (error) {
+            message.error('Đã có lỗi xảy ra, vui lòng thử lại');
         }
     };
 
@@ -149,34 +160,40 @@ function PostDetail() {
         setIsDeleteDialogVisible(false);
     };
 
-    const fetchPost = useCallback(async () => {
-        try {
-            const response = await getPost(id);
-            setPost(response.data.data);
-        } catch (err) {
-            console.error('Failed to fetch post data', err);
-        }
-    }, [id]);
-
-    const fetchComments = useCallback(async () => {
-        try {
-            const params = queryString.stringify(filters);
-            const response = await getCommentByPostId(id, params);
-            const { meta, items } = response.data.data;
-            setComments(items);
-            setMeta(meta);
-        } catch (err) {
-            console.error('Failed to fetch comments', err);
-        }
-    }, [id, filters]);
-
     useEffect(() => {
+        const fetchComments = async () => {
+            setIsCommentsLoading(true);
+            try {
+                const params = queryString.stringify(filters);
+                const response = await getCommentByPostId(id, params);
+                const { meta, items } = response.data.data;
+                setComments(items);
+                setMeta(meta);
+            } catch (error) {
+                setCommentErrorMessage(error);
+            } finally {
+                setIsCommentsLoading(false);
+            }
+        };
+
         fetchComments();
-    }, [fetchComments]);
+    }, [filters, id]);
 
     useEffect(() => {
+        const fetchPost = async () => {
+            setIsPostLoading(true);
+            try {
+                const response = await getPost(id);
+                setPost(response.data.data);
+            } catch (error) {
+                setPostErrorMessage(error);
+            } finally {
+                setIsPostLoading(false);
+            }
+        };
+
         fetchPost();
-    }, [fetchPost]);
+    }, [id]);
 
     return (
         <>
@@ -216,7 +233,12 @@ function PostDetail() {
                                 <DateFormatter datetime={post.lastModifiedDate} />
 
                                 {isAuthenticated && post && (
-                                    <button className="ms-2" onClick={handleToggleFollowPost}>
+                                    <Button
+                                        type="primary"
+                                        size="small"
+                                        className="ms-2"
+                                        onClick={handleToggleFollowPost}
+                                    >
                                         {post.followed ? (
                                             <>
                                                 <FontAwesomeIcon icon={faBellSlash} />
@@ -228,7 +250,7 @@ function PostDetail() {
                                                 {' Theo dõi'}
                                             </>
                                         )}
-                                    </button>
+                                    </Button>
                                 )}
                             </div>
                         </div>
@@ -268,10 +290,12 @@ function PostDetail() {
                             <div>
                                 {hasRequiredRole && (
                                     <>
-                                        <button onClick={handleToggleLockPost}>
+                                        <Button type="default" size="small" onClick={handleToggleLockPost}>
                                             {post.locked ? 'Mở khóa' : 'Khóa'}
-                                        </button>
-                                        <button onClick={handleDeleteButtonClick}>Xóa</button>
+                                        </Button>
+                                        <Button danger type="primary" size="small" onClick={handleDeleteButtonClick}>
+                                            Xóa
+                                        </Button>
                                     </>
                                 )}
 
@@ -290,7 +314,13 @@ function PostDetail() {
                 <img src={images.newGif} alt="new" />
             </div>
 
-            {comments.length > 0 && (
+            {isCommentsLoading ? (
+                <div>Loading comments...</div>
+            ) : commentErrorMessage ? (
+                <div className="alert alert-danger m-2 p-2" role="alert">
+                    Lỗi khi tải bình luận: {commentErrorMessage.message}
+                </div>
+            ) : comments.length > 0 ? (
                 <div className={cx('comment-list')}>
                     {comments.map((comment) => (
                         <Comment
@@ -302,6 +332,8 @@ function PostDetail() {
                         />
                     ))}
                 </div>
+            ) : (
+                <div>No comments found.</div>
             )}
 
             {post &&

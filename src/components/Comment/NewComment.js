@@ -25,7 +25,7 @@ function NewComment({ postId, onCommentSubmit }) {
                 onCommentSubmit(response.data.data);
                 setNewComment('');
             }
-        } catch (err) {
+        } catch (error) {
             console.log('Failed to submit comment');
         }
     };

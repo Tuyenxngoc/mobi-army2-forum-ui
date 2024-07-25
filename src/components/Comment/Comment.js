@@ -20,6 +20,7 @@ const allowedRoles = {
 
 function Comment({ data, onUpdateComment, onDeleteComment, message }) {
     const { player } = useAuth();
+
     const [isEditing, setIsEditing] = useState(false);
     const [editedContent, setEditedContent] = useState(data.content);
 
@@ -37,8 +38,8 @@ function Comment({ data, onUpdateComment, onDeleteComment, message }) {
             const response = await updateComment(data.id, values);
             onUpdateComment(response.data.data);
             message.success(`Đã cập nhật bình luận có id: ${data.id}`);
-        } catch (err) {
-            console.error('Failed to update comment:', err);
+        } catch (error) {
+            console.error('Failed to update comment:', error);
         } finally {
             setIsEditing(false);
         }
@@ -49,8 +50,8 @@ function Comment({ data, onUpdateComment, onDeleteComment, message }) {
             await deleteComment(data.id);
             onDeleteComment(data.id);
             message.success(`Đã xóa bình luận có id: ${data.id}`);
-        } catch (err) {
-            console.error('Failed to delete comment:', err);
+        } catch (error) {
+            console.error('Failed to delete comment:', error);
         }
     };
 

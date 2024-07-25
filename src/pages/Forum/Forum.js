@@ -23,7 +23,7 @@ function Forum() {
     const [posts, setPosts] = useState([]);
     const [categories, setCategories] = useState([]);
 
-    const [isLoadingPosts, setIsLoadingPosts] = useState(true);
+    const [isPostsLoading, setIsPostsLoading] = useState(true);
     const [postErrorMessage, setPostErrorMessage] = useState(null);
 
     const [isCategoriesLoading, setIsCategoriesLoading] = useState(true);
@@ -64,7 +64,7 @@ function Forum() {
 
     useEffect(() => {
         const fetchPosts = async () => {
-            setIsLoadingPosts(true);
+            setIsPostsLoading(true);
             setPostErrorMessage(null);
             try {
                 const params = queryString.stringify(filters);
@@ -75,7 +75,7 @@ function Forum() {
             } catch (error) {
                 setPostErrorMessage(error);
             } finally {
-                setIsLoadingPosts(false);
+                setIsPostsLoading(false);
             }
         };
 
@@ -106,7 +106,7 @@ function Forum() {
                 </ul>
             )}
 
-            {isLoadingPosts ? (
+            {isPostsLoading ? (
                 Array.from({ length: 5 }).map((_, index) => (
                     <div key={index} className="d-flex align-items-center p-1">
                         <div>
