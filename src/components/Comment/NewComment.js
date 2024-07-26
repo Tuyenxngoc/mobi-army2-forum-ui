@@ -1,16 +1,20 @@
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import { useState } from 'react';
+
+import TextArea from 'antd/es/input/TextArea';
+import { Button } from 'antd';
 
 import classNames from 'classnames/bind';
 import Style from './Comment.module.scss';
-import { createComment } from '~/services/commentService';
+
 import images from '~/assets';
-import TextArea from 'antd/es/input/TextArea';
+import { createComment } from '~/services/commentService';
 
 const cx = classNames.bind(Style);
 
-function NewComment({ postId, onCommentSubmit }) {
+function NewComment({ postId, onCommentSubmit, message }) {
     const [newComment, setNewComment] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleCommentChange = (e) => {
         setNewComment(e.target.value);
@@ -18,7 +22,7 @@ function NewComment({ postId, onCommentSubmit }) {
 
     const handleCommentSubmit = async (e) => {
         e.preventDefault();
-
+        setIsLoading(true);
         try {
             const response = await createComment({ postId, content: newComment });
             if (response.status === 200) {
@@ -26,22 +30,31 @@ function NewComment({ postId, onCommentSubmit }) {
                 setNewComment('');
             }
         } catch (error) {
-            console.log('Failed to submit comment');
+            message.error(`Lỗi khi tạo bình luận: ${error.message}`);
+        } finally {
+            setIsLoading(false);
         }
     };
 
     return (
-        <div className={cx('comment-item')} style={{ padding: '5px' }}>
-            <div className="text-center">
-                <img src={images.plGif} alt="status" />
+        <div className={cx('item')}>
+            <div className={cx('player')}>
+                <img src={images.plGif} alt="avt" />
                 <div>Bài: 1</div>
             </div>
 
-            <form onSubmit={handleCommentSubmit} className={cx('comment-body')}>
-                <TextArea rows={2} value={newComment} onChange={handleCommentChange} maxLength={255} required />
-                <button type="submit" className="p-x mt-2">
+            <form className={cx('container')} onSubmit={handleCommentSubmit}>
+                <TextArea
+                    required
+                    rows={2}
+                    maxLength={255}
+                    disabled={isLoading}
+                    value={newComment}
+                    onChange={handleCommentChange}
+                />
+                <Button htmlType="submit" type="primary" className="mt-2" loading={isLoading}>
                     Gửi
-                </button>
+                </Button>
             </form>
         </div>
     );
@@ -50,6 +63,7 @@ function NewComment({ postId, onCommentSubmit }) {
 NewComment.propTypes = {
     postId: PropTypes.string.isRequired,
     onCommentSubmit: PropTypes.func.isRequired,
+    message: PropTypes.object.isRequired,
 };
 
 export default NewComment;

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Skeleton, message } from 'antd';
 import queryString from 'query-string';
 import classNames from 'classnames/bind';
@@ -15,18 +16,28 @@ const cx = classNames.bind(Style);
 function CommentsSection({ postId, postLocked = false }) {
     const [meta, setMeta] = useState(INITIAL_META);
     const [filters, setFilters] = useState(INITIAL_FILTERS);
+
     const [comments, setComments] = useState([]);
+
     const [isCommentsLoading, setIsCommentsLoading] = useState(true);
     const [commentErrorMessage, setCommentErrorMessage] = useState(null);
-    const [messageApi] = message.useMessage();
+
+    const [messageApi, contextHolder] = message.useMessage();
     const { isAuthenticated } = useAuth();
+
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const handleChangePage = (newPage) => {
         setFilters((prev) => ({ ...prev, pageNum: newPage + 1 }));
     };
 
     const handleChangeRowsPerPage = (event) => {
-        setFilters({ pageNum: 1, pageSize: parseInt(event.target.value, 10) });
+        setFilters((prev) => ({
+            ...prev,
+            pageNum: 1,
+            pageSize: parseInt(event.target.value, 10),
+        }));
     };
 
     const handleCommentSubmit = (newComment) => {
@@ -43,6 +54,10 @@ function CommentsSection({ postId, postLocked = false }) {
 
     const handleDeleteComment = (deletedCommentId) => {
         setComments((prev) => prev.filter((comment) => comment.id !== deletedCommentId));
+    };
+
+    const handleLoginButtonClick = () => {
+        navigate('/login', { state: { from: location } });
     };
 
     useEffect(() => {
@@ -66,6 +81,8 @@ function CommentsSection({ postId, postLocked = false }) {
 
     return (
         <>
+            {contextHolder}
+
             {isCommentsLoading ? (
                 <div className={cx('comment-list')}>
                     {Array.from({ length: 5 }).map((_, index) => (
@@ -88,16 +105,23 @@ function CommentsSection({ postId, postLocked = false }) {
                                 message={messageApi}
                             />
                         ))}
+
+                        {!postLocked &&
+                            (isAuthenticated ? (
+                                <NewComment
+                                    postId={postId}
+                                    onCommentSubmit={handleCommentSubmit}
+                                    message={messageApi}
+                                />
+                            ) : (
+                                <div className={cx('login-session')}>
+                                    Đăng nhập để bình luận
+                                    <span onClick={handleLoginButtonClick}>Đăng nhập</span>
+                                </div>
+                            ))}
                     </div>
                 )
             )}
-
-            {!postLocked &&
-                (isAuthenticated ? (
-                    <NewComment postId={postId} onCommentSubmit={handleCommentSubmit} />
-                ) : (
-                    <div className={cx('login-session')}>Đăng nhập để bình luận</div>
-                ))}
 
             <Pagination
                 totalPages={meta.totalPages || 1}

@@ -1,16 +1,16 @@
 import { useState } from 'react';
 
-import images from '~/assets';
+import TextArea from 'antd/es/input/TextArea';
+import { Button } from 'antd';
 
 import Style from './Comment.module.scss';
 import classNames from 'classnames/bind';
 
+import images from '~/assets';
 import useAuth from '~/hooks/useAuth';
 import { ROLES } from '~/common/contans';
 import { deleteComment, updateComment } from '~/services/commentService';
 import DateFormatter from '../DateFormatter/DateFormatter';
-import TextArea from 'antd/es/input/TextArea';
-import { Button } from 'antd';
 
 const cx = classNames.bind(Style);
 
@@ -20,12 +20,12 @@ const allowedRoles = {
 };
 
 function Comment({ data, onUpdateComment, onDeleteComment, message }) {
-    const { player } = useAuth();
-
     const [isLoading, setIsLoading] = useState(false);
 
     const [isEditing, setIsEditing] = useState(false);
     const [editedContent, setEditedContent] = useState(data.content);
+
+    const { player } = useAuth();
 
     const canEditOrDelete = allowedRoles[player.roleName];
 
@@ -75,25 +75,25 @@ function Comment({ data, onUpdateComment, onDeleteComment, message }) {
     };
 
     return (
-        <div className={cx('comment-item')}>
-            <div className="text-center">
-                <img src={images.plGif} alt="status" />
+        <div className={cx('item')}>
+            <div className={cx('player')}>
+                <img src={images.plGif} alt="avt" />
                 <div>Bài: 1</div>
             </div>
 
-            <div className={cx('comment-body')}>
-                <div className={cx('comment-header')}>
+            <div className={cx('container')}>
+                <div className={cx('header')}>
                     <div>
                         <img src={data.player.isOnline ? images.online : images.offline} alt="status" />
                         <span className={cx('username')}>{data.player.name}</span>
                     </div>
 
-                    <div className={cx('comment-metadata')}>
+                    <div className={cx('metadata')}>
                         <span className={cx('time')}>
                             <DateFormatter datetime={data.lastModifiedDate} />
                         </span>
                         {canEditOrDelete && (
-                            <div className={cx('comment-actions', 'ms-2')}>
+                            <div className={cx('actions')}>
                                 {isEditing ? (
                                     <Button
                                         size="small"
@@ -122,12 +122,13 @@ function Comment({ data, onUpdateComment, onDeleteComment, message }) {
                     </div>
                 </div>
 
-                <div className={cx('comment-content')}>
+                <div className={cx('content')}>
                     {isEditing ? (
                         <TextArea
                             required
                             rows={2}
                             maxLength={255}
+                            disabled={isLoading}
                             value={editedContent}
                             onChange={handleInputChange}
                         />

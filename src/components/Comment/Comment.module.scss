@@ -1,13 +1,17 @@
-.comment-item {
+.item {
     display: flex;
     align-items: flex-start;
 }
 
-.comment-item + .comment-item {
+.item + .item {
     margin-top: 5px;
 }
 
-.comment-body {
+.player {
+    text-align: center;
+}
+
+.container {
     background-color: white;
     padding: 5px 4px;
     border-radius: 5px;
@@ -24,33 +28,34 @@
     }
 }
 
-.comment-header {
+.header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid #e1e1e1;
-
-    .username {
-        color: #013481;
-        font-weight: bold;
-    }
-
-    .comment-metadata {
-        display: flex;
-        align-items: center;
-    }
-
-    .comment-actions {
-        display: flex;
-        align-items: center;
-    }
-
-    .time {
-        color: black;
-        font-style: italic;
-    }
 }
 
-.comment-content {
+.username {
+    color: #013481;
+    font-weight: bold;
+}
+
+.metadata {
+    display: flex;
+    align-items: center;
+}
+
+.time {
+    color: black;
+    font-style: italic;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    margin-left: 8px;
+}
+
+.content {
     color: black;
 }
