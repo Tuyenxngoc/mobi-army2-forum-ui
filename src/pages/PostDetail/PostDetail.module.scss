@@ -1,18 +1,3 @@
-.ads {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 10px 0;
-
-    a {
-        margin: 0 5px;
-
-        &:hover {
-            text-decoration: underline;
-        }
-    }
-}
-
 .container {
     display: flex;
     align-items: flex-start;
@@ -85,6 +70,21 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+.ads {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0;
+
+    a {
+        margin: 0 5px;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
 }
 
 // CommentsSection.js

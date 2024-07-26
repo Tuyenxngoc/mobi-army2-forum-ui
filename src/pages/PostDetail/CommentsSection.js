@@ -13,7 +13,7 @@ import useAuth from '~/hooks/useAuth';
 
 const cx = classNames.bind(Style);
 
-function CommentsSection({ postId, postLocked = false }) {
+function CommentsSection({ postId, postLocked }) {
     const [meta, setMeta] = useState(INITIAL_META);
     const [filters, setFilters] = useState(INITIAL_FILTERS);
 
@@ -94,33 +94,27 @@ function CommentsSection({ postId, postLocked = false }) {
                     Lỗi khi tải bình luận: {commentErrorMessage.message}
                 </div>
             ) : (
-                comments.length > 0 && (
-                    <div className={cx('comment-list')}>
-                        {comments.map((comment) => (
-                            <Comment
-                                key={comment.id}
-                                data={comment}
-                                onUpdateComment={handleUpdateComment}
-                                onDeleteComment={handleDeleteComment}
-                                message={messageApi}
-                            />
-                        ))}
+                <div className={cx('comment-list')}>
+                    {comments.map((comment) => (
+                        <Comment
+                            key={comment.id}
+                            data={comment}
+                            onUpdateComment={handleUpdateComment}
+                            onDeleteComment={handleDeleteComment}
+                            message={messageApi}
+                        />
+                    ))}
 
-                        {!postLocked &&
-                            (isAuthenticated ? (
-                                <NewComment
-                                    postId={postId}
-                                    onCommentSubmit={handleCommentSubmit}
-                                    message={messageApi}
-                                />
-                            ) : (
-                                <div className={cx('login-session')}>
-                                    Đăng nhập để bình luận
-                                    <span onClick={handleLoginButtonClick}>Đăng nhập</span>
-                                </div>
-                            ))}
-                    </div>
-                )
+                    {!postLocked &&
+                        (isAuthenticated ? (
+                            <NewComment postId={postId} onCommentSubmit={handleCommentSubmit} message={messageApi} />
+                        ) : (
+                            <div className={cx('login-session')}>
+                                Đăng nhập để bình luận
+                                <span onClick={handleLoginButtonClick}>Đăng nhập</span>
+                            </div>
+                        ))}
+                </div>
             )}
 
             <Pagination
