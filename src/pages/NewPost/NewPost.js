@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -6,7 +6,6 @@ import { Button, message } from 'antd';
 
 import useAuth from '~/hooks/useAuth';
 import { ROLES } from '~/common/contans';
-import { checkUserHasRequiredRole } from '~/utils/helper';
 import { getAllCategories } from '~/services/categoryService';
 import { createPost } from '~/services/postService';
 
@@ -31,17 +30,18 @@ const validationSchema = yup.object({
         .min(0, 'Số thứ tự không được nhỏ hơn 0'),
 });
 
-const allowedRoles = [ROLES.Admin, ROLES.SuperAdmin];
+const allowedRoles = {
+    [ROLES.SuperAdmin]: true,
+    [ROLES.Admin]: true,
+};
 
 function NewPost() {
     const [categories, setCategories] = useState([]);
 
     const [messageApi, contextHolder] = message.useMessage();
-    const {
-        player: { roleName },
-    } = useAuth();
+    const { player } = useAuth();
 
-    const hasRequiredRole = useMemo(() => checkUserHasRequiredRole(roleName, allowedRoles), [roleName]);
+    const hasRequiredRole = allowedRoles[player.roleName];
 
     const formik = useFormik({
         initialValues: {

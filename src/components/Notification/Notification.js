@@ -145,15 +145,24 @@ const Notification = ({ data, onNotificationUpdate, onNotificationDelete, canEdi
                                 <Tooltip title="Hủy">
                                     <div
                                         className="me-2"
-                                        style={{ cursor: 'pointer' }}
-                                        onClick={handleCloseEditButtonClick}
+                                        style={{
+                                            cursor: formik.isSubmitting ? 'not-allowed' : 'pointer',
+                                            opacity: formik.isSubmitting ? 0.5 : 1,
+                                        }}
+                                        onClick={formik.isSubmitting ? null : handleCloseEditButtonClick}
                                     >
                                         <FontAwesomeIcon icon={faXmark} />
                                     </div>
                                 </Tooltip>
 
                                 <Tooltip title="Lưu">
-                                    <div style={{ cursor: 'pointer' }} onClick={formik.handleSubmit}>
+                                    <div
+                                        style={{
+                                            cursor: formik.isSubmitting ? 'not-allowed' : 'pointer',
+                                            opacity: formik.isSubmitting ? 0.5 : 1,
+                                        }}
+                                        onClick={formik.isSubmitting ? null : formik.handleSubmit}
+                                    >
                                         <FontAwesomeIcon icon={faFloppyDisk} />
                                     </div>
                                 </Tooltip>
@@ -178,13 +187,25 @@ const Notification = ({ data, onNotificationUpdate, onNotificationDelete, canEdi
                                     <div className="d-flex align-items-center">
                                         <h4 className="me-2">{data.title}</h4>
                                         <Tooltip title="Sửa">
-                                            <div style={{ cursor: 'pointer' }} onClick={handleEditButtonClick}>
+                                            <div
+                                                style={{
+                                                    cursor: isDeleteConfirmLoading ? 'not-allowed' : 'pointer',
+                                                    opacity: isDeleteConfirmLoading ? 0.5 : 1,
+                                                }}
+                                                onClick={isDeleteConfirmLoading ? null : handleEditButtonClick}
+                                            >
                                                 <FontAwesomeIcon icon={faPen} />
                                             </div>
                                         </Tooltip>
                                     </div>
                                     <Tooltip title="Xóa">
-                                        <div style={{ cursor: 'pointer' }} onClick={handleDeleteButtonClick}>
+                                        <div
+                                            style={{
+                                                cursor: isDeleteConfirmLoading ? 'not-allowed' : 'pointer',
+                                                opacity: isDeleteConfirmLoading ? 0.5 : 1,
+                                            }}
+                                            onClick={isDeleteConfirmLoading ? null : handleDeleteButtonClick}
+                                        >
                                             <FontAwesomeIcon icon={faTrash} />
                                         </div>
                                     </Tooltip>

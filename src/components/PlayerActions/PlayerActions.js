@@ -1,20 +1,21 @@
-import { useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import useAuth from '~/hooks/useAuth';
 import images from '~/assets';
 
 import { ROLES } from '~/common/contans';
-import { checkUserHasRequiredRole } from '~/utils/helper';
 import { Button } from 'antd';
 
-const allowedRoles = [ROLES.Admin, ROLES.SuperAdmin];
+const allowedRoles = {
+    [ROLES.SuperAdmin]: true,
+    [ROLES.Admin]: true,
+};
 
 function PlayerActions() {
     const navigate = useNavigate();
     const { isAuthenticated, player, logout } = useAuth();
 
-    const hasRequiredRole = useMemo(() => checkUserHasRequiredRole(player.roleName, allowedRoles), [player.roleName]);
+    const hasRequiredRole = allowedRoles[player.roleName];
 
     const handleLoginClick = () => {
         navigate('/login');

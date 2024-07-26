@@ -7,10 +7,22 @@ import 'react-quill/dist/quill.core.css';
 
 import { createNotification } from '~/services/NotificationService';
 import { formats, modules } from '~/common/editorConfig';
+import { Button } from 'antd';
 
 const validationSchema = yup.object({
-    title: yup.string().trim().required('Tiêu đề là bắt buộc'),
-    content: yup.string().trim().required('Nội dung là bắt buộc'),
+    title: yup
+        .string()
+        .trim()
+        .min(3, 'Tiêu đề phải có ít nhất 3 ký tự')
+        .max(50, 'Tiêu đề chỉ được tối đa 50 ký tự')
+        .required('Tiêu đề là bắt buộc'),
+
+    content: yup
+        .string()
+        .trim()
+        .min(10, 'Nội dung có ít nhất 10 ký tự')
+        .max(2000, 'Nội dung chỉ được tối đa 2000 ký tự')
+        .required('Nội dung là bắt buộc'),
 });
 
 const defaultValue = {
@@ -62,19 +74,24 @@ function CreateNotification({ onAddNotification, messageApi }) {
                     <label htmlFor="inputContent">Nội dung</label>
                     <ReactQuill
                         id="inputContent"
+                        name="content"
                         className="custom-quill"
+                        placeholder="Nhập nội dung thông báo"
                         value={formik.values.content}
                         modules={modules}
                         formats={formats}
                         onChange={(value) => formik.setFieldValue('content', value)}
+                        onBlur={() => formik.setFieldTouched('content', true)}
                     />
-                    {formik.errors.content ? <div className="invalid-feedback">{formik.errors.content}</div> : null}
+                    {formik.touched.content && formik.errors.content ? (
+                        <div className="text-danger">{formik.errors.content}</div>
+                    ) : null}
                 </div>
 
                 <div className="text-center">
-                    <button type="submit" className="btn btn-primary" disabled={formik.isSubmitting}>
+                    <Button htmlType="submit" type="primary" loading={formik.isSubmitting}>
                         Thêm mới
-                    </button>
+                    </Button>
                 </div>
             </form>
         </div>
