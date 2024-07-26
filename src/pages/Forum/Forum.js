@@ -40,8 +40,7 @@ function Forum() {
     const handleCategorySelection = (categoryId) => {
         setFilters({
             ...INITIAL_FILTERS,
-            keyword: categoryId,
-            searchBy: 'category',
+            categoryId,
         });
     };
 

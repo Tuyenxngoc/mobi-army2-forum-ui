@@ -1,6 +1,6 @@
 import axios, { axiosPrivate } from '~/apis/configHttp';
 
-export const getPost = (postId) => {
+export const getPostById = (postId) => {
     return axiosPrivate.get(`posts/${postId}`);
 };
 
@@ -20,10 +20,6 @@ export const deletePost = (postId) => {
     return axiosPrivate.delete(`posts/${postId}`);
 };
 
-export const getPostsForReview = (params) => {
-    return axiosPrivate.get(`posts/review?${params}`);
-};
-
 export const approvePost = (postId) => {
     return axiosPrivate.post(`posts/${postId}/approve`);
 };
@@ -34,4 +30,12 @@ export const toggleLock = (postId) => {
 
 export const toggleFollow = (postId) => {
     return axiosPrivate.post(`posts/${postId}/follow`);
+};
+
+export const getPostsForAdmin = (params) => {
+    return axiosPrivate.get(`admin/posts?${params}`);
+};
+
+export const getPostForAdminById = (postId) => {
+    return axiosPrivate.get(`admin/posts/${postId}`);
 };

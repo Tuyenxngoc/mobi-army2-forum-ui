@@ -5,7 +5,7 @@ import * as yup from 'yup';
 import { Button, message } from 'antd';
 
 import { getAllCategories } from '~/services/categoryService';
-import { getPost, updatePost } from '~/services/postService';
+import { getPostForAdminById, updatePost } from '~/services/postService';
 
 import ReactQuill from 'react-quill';
 import { formats, modules } from '~/common/editorConfig';
@@ -73,7 +73,7 @@ function UpdatePost() {
                     throw new Error('ID không hợp lệ. Vui lòng kiểm tra lại.');
                 }
 
-                const response = await getPost(postId);
+                const response = await getPostForAdminById(postId);
                 const post = response.data.data;
                 formik.setValues({
                     title: post.title,

@@ -51,9 +51,6 @@ function PlayerActions() {
                     {hasRequiredRole && (
                         <>
                             <div>
-                                <Link to={'/admin/post/review'}>Duyệt bài viết</Link>
-                            </div>
-                            <div>
                                 <Link to={'/admin/notification/new'}>Thêm thông báo</Link>
                             </div>
                             <div>

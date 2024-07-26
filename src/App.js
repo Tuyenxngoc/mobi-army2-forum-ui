@@ -7,7 +7,6 @@ import Forum from './pages/Forum/Forum';
 import Register from './pages/Register/Register';
 import NotFound from './pages/NotFound/NotFound';
 import NewPost from './pages/NewPost/NewPost';
-import ReviewPosts from './pages/ReviewPosts/ReviewPosts';
 import PostDetail from './pages/PostDetail/PostDetail';
 import RequireAuth from './utils/RequireAuth';
 import { ROLES } from './common/contans';
@@ -54,7 +53,6 @@ function App() {
                             <Route path="player" element={<PlayerManagement />} />
                             <Route path="post" element={<PostManagement />} />
                             <Route path="post/:postId" element={<UpdatePost />} />
-                            <Route path="post/review" element={<ReviewPosts />} />
                         </Route>
                     </Route>
 

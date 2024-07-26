@@ -10,7 +10,7 @@ import classNames from 'classnames/bind';
 import Style from './PostDetail.module.scss';
 
 import images from '~/assets';
-import { getPost, toggleFollow } from '~/services/postService';
+import { getPostById, toggleFollow } from '~/services/postService';
 import { toggleLike } from '~/services/likeService';
 import useAuth from '~/hooks/useAuth';
 import DateFormatter from '~/components/DateFormatter/DateFormatter';
@@ -69,7 +69,7 @@ function PostDetail() {
                     throw new Error('ID không hợp lệ. Vui lòng kiểm tra lại.');
                 }
 
-                const response = await getPost(postId);
+                const response = await getPostById(postId);
                 setPost(response.data.data);
             } catch (error) {
                 if (error.response && error.response.data) {

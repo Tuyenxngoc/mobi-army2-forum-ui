@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Input, Select, Space, Table } from 'antd';
+import { Button, Input, message, Select, Space, Table } from 'antd';
 import queryString from 'query-string';
 import { INITIAL_FILTERS, INITIAL_META } from '~/common/contans';
 import Pagination from '~/components/Pagination';
-import { deletePost, getPosts, toggleLock } from '~/services/postService';
+import { approvePost, deletePost, getPostsForAdmin, toggleLock } from '~/services/postService';
 
 const options = [
     {
@@ -12,12 +12,20 @@ const options = [
         label: 'Tiêu đề',
     },
     {
+        value: 'id',
+        label: 'ID',
+    },
+    {
         value: 'player',
         label: 'Tác giả',
     },
     {
-        value: 'category',
-        label: 'ID Danh mục',
+        value: 'categoryName',
+        label: 'Tên danh mục',
+    },
+    {
+        value: 'approvedBy',
+        label: 'Người duyệt',
     },
 ];
 
@@ -28,10 +36,14 @@ function PostManagement() {
     const [posts, setPosts] = useState([]);
 
     const [searchInput, setSearchInput] = useState('');
-    const [selectedFilter, setSelectedFilter] = useState(options[0].value);
+    const [activeFilterOption, setActiveFilterOption] = useState(options[0]);
 
     const [isLoading, setIsLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState(null);
+
+    const [loadingAction, setLoadingAction] = useState(false);
+
+    const [messageApi, contextHolder] = message.useMessage();
 
     const handleChangePage = (newPage) => {
         setFilters((prev) => ({ ...prev, pageNum: newPage + 1 }));
@@ -49,12 +61,13 @@ function PostManagement() {
         setFilters((prev) => ({
             ...prev,
             pageNum: 1,
-            searchBy: selectedFilter,
+            searchBy: activeFilterOption.value,
             keyword: searchInput,
         }));
     };
 
     const handleToggleLockPost = async (postId) => {
+        setLoadingAction(true);
         try {
             const response = await toggleLock(postId);
 
@@ -72,11 +85,38 @@ function PostManagement() {
                 setPosts(updatedPosts);
             }
         } catch (error) {
-            console.error(error.message);
+            messageApi.error(error.message);
+        } finally {
+            setLoadingAction(false);
+        }
+    };
+
+    const handleApprovePost = async (postId) => {
+        setLoadingAction(true);
+        try {
+            const response = await approvePost(postId);
+            if (response.status === 200) {
+                const updatedPosts = posts.map((post) => {
+                    if (post.id === postId) {
+                        return {
+                            ...post,
+                            approved: true,
+                        };
+                    }
+                    return post;
+                });
+
+                setPosts(updatedPosts);
+            }
+        } catch (error) {
+            messageApi.error(error.message);
+        } finally {
+            setLoadingAction(false);
         }
     };
 
     const handleDeletePost = async (postId) => {
+        setLoadingAction(true);
         try {
             const response = await deletePost(postId);
 
@@ -85,7 +125,9 @@ function PostManagement() {
                 setPosts(updatedPosts);
             }
         } catch (error) {
-            console.error(error.message);
+            messageApi.error(error.message);
+        } finally {
+            setLoadingAction(false);
         }
     };
 
@@ -95,7 +137,7 @@ function PostManagement() {
             setErrorMessage(null);
             try {
                 const params = queryString.stringify(filters);
-                const response = await getPosts(params);
+                const response = await getPostsForAdmin(params);
                 const { meta, items } = response.data.data;
                 setPosts(items);
                 setMeta(meta);
@@ -114,6 +156,7 @@ function PostManagement() {
             title: 'ID',
             dataIndex: 'id',
             key: 'id',
+            responsive: ['lg', 'md'],
         },
         {
             title: 'Tiêu đề',
@@ -125,6 +168,7 @@ function PostManagement() {
             title: 'Tác giả',
             dataIndex: 'author',
             key: 'author',
+            responsive: ['lg'],
         },
         {
             title: 'Hành động',
@@ -132,17 +176,43 @@ function PostManagement() {
             render: (_, record) => (
                 <Space size="middle">
                     {record.locked ? (
-                        <Button type="default" size="small" onClick={() => handleToggleLockPost(record.id)}>
+                        <Button
+                            type="default"
+                            size="small"
+                            loading={loadingAction}
+                            onClick={() => handleToggleLockPost(record.id)}
+                        >
                             Mở Khóa
                         </Button>
                     ) : (
-                        <Button type="default" size="small" onClick={() => handleToggleLockPost(record.id)}>
+                        <Button
+                            type="default"
+                            size="small"
+                            loading={loadingAction}
+                            onClick={() => handleToggleLockPost(record.id)}
+                        >
                             Khóa
                         </Button>
                     )}
-                    <Button danger type="primary" size="small" onClick={() => handleDeletePost(record.id)}>
+                    <Button
+                        danger
+                        type="primary"
+                        size="small"
+                        loading={loadingAction}
+                        onClick={() => handleDeletePost(record.id)}
+                    >
                         Xóa
                     </Button>
+                    {!record.approved && (
+                        <Button
+                            type="primary"
+                            size="small"
+                            loading={loadingAction}
+                            onClick={() => handleApprovePost(record.id)}
+                        >
+                            Duyệt
+                        </Button>
+                    )}
                 </Space>
             ),
         },
@@ -173,16 +243,21 @@ function PostManagement() {
 
     return (
         <>
+            {contextHolder}
+
             <h3 className="p-2 pb-0"> Quản lý bài viết </h3>
 
             <Space.Compact className="p-2">
                 <Select
                     options={options}
                     disabled={isLoading}
-                    value={selectedFilter}
-                    onChange={(value) => setSelectedFilter(value)}
+                    value={activeFilterOption}
+                    onChange={(_, option) => {
+                        setActiveFilterOption(option);
+                    }}
                 />
                 <Input
+                    allowClear
                     placeholder="Nhập từ cần tìm..."
                     value={searchInput}
                     disabled={isLoading}
