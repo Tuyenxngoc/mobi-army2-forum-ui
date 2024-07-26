@@ -65,10 +65,18 @@ function PostDetail() {
         const fetchPost = async () => {
             setIsPostLoading(true);
             try {
+                if (isNaN(id)) {
+                    throw new Error('ID không hợp lệ. Vui lòng kiểm tra lại.');
+                }
+
                 const response = await getPost(id);
                 setPost(response.data.data);
             } catch (error) {
-                setPostErrorMessage(error);
+                if (error.response && error.response.data) {
+                    setPostErrorMessage(error.response.data.message);
+                } else {
+                    setPostErrorMessage(error.message);
+                }
             } finally {
                 setIsPostLoading(false);
             }
@@ -81,7 +89,7 @@ function PostDetail() {
         <>
             {isPostLoading ? (
                 <>
-                    <div className={cx('post-detail')}>
+                    <div className={cx('container')}>
                         <Skeleton active avatar />
                     </div>
                     <div className={cx('ads')}>
@@ -90,57 +98,51 @@ function PostDetail() {
                 </>
             ) : postErrorMessage ? (
                 <div className="alert alert-danger m-2 p-2" role="alert">
-                    Lỗi khi tải bài viết: {postErrorMessage.message}
+                    Lỗi khi tải bài viết: {postErrorMessage}
                 </div>
             ) : (
                 post && (
                     <>
-                        <div className={cx('post-detail')}>
-                            <div className="text-center">
-                                <img src={images.plGif} alt="status" />
+                        <div className={cx('container')}>
+                            <div className={cx('player')}>
+                                <img src={images.plGif} alt="avt" />
                                 <div>Bài: {post.player.points}</div>
                             </div>
 
-                            <div className={cx('post-wrapper')}>
-                                <div className={cx('post-header')}>
+                            <div className={cx('wrapper')}>
+                                <div className={cx('header')}>
                                     <div>
-                                        <img
-                                            className="me-1"
-                                            src={post.player.isOnline ? images.online : images.offline}
-                                            alt="status"
-                                        />
+                                        <img src={post.player.isOnline ? images.online : images.offline} alt="status" />
                                         <Link to={`/player/${post.player.id}`} className={cx('username')}>
                                             {post.player.name}
                                         </Link>
                                     </div>
 
-                                    <div className={cx('time')}>
-                                        <DateFormatter datetime={post.lastModifiedDate} />
-
-                                        {isAuthenticated && post && (
-                                            <Button
-                                                type="primary"
-                                                size="small"
-                                                className="ms-2"
-                                                onClick={handleToggleFollowPost}
-                                            >
-                                                {post.followed ? (
-                                                    <>
-                                                        <FontAwesomeIcon icon={faBellSlash} />
-                                                        {' Bỏ theo dõi'}
-                                                    </>
-                                                ) : (
-                                                    <>
-                                                        <FontAwesomeIcon icon={faBell} />
-                                                        {' Theo dõi'}
-                                                    </>
-                                                )}
-                                            </Button>
+                                    <div className={cx('metadata')}>
+                                        <span className={cx('time')}>
+                                            <DateFormatter datetime={post.lastModifiedDate} />
+                                        </span>
+                                        {isAuthenticated && (
+                                            <div className={cx('actions')}>
+                                                <Button type="primary" size="small" onClick={handleToggleFollowPost}>
+                                                    {post.followed ? (
+                                                        <>
+                                                            <FontAwesomeIcon icon={faBellSlash} />
+                                                            {' Bỏ theo dõi'}
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <FontAwesomeIcon icon={faBell} />
+                                                            {' Theo dõi'}
+                                                        </>
+                                                    )}
+                                                </Button>
+                                            </div>
                                         )}
                                     </div>
                                 </div>
 
-                                <div className={cx('post-body')}>
+                                <div className={cx('body')}>
                                     <div className={cx('title')}>{post.title}</div>
                                     <div
                                         className={cx('ql-snow', 'ql-editor', 'content')}

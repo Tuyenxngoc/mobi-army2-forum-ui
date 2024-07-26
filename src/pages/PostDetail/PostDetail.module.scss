@@ -13,13 +13,17 @@
     }
 }
 
-.post-detail {
+.container {
     display: flex;
     align-items: flex-start;
-    padding: 5px;
+    padding: 8px;
 }
 
-.post-wrapper {
+.player {
+    text-align: center;
+}
+
+.wrapper {
     background-color: white;
     padding: 5px 4px;
     border-radius: 5px;
@@ -36,50 +40,56 @@
     }
 }
 
-.post-header {
+.header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid #e1e1e1;
-
-    .username {
-        color: #013481;
-        font-weight: bold;
-    }
-
-    .time {
-        color: black;
-        font-style: italic;
-    }
 }
 
-.post-body {
+.username {
+    color: #013481;
+    font-weight: bold;
+}
+
+.metadata {
+    display: flex;
+    align-items: center;
+}
+
+.time {
     color: black;
-
-    .title {
-        font-weight: bold;
-        color: var(--text-color);
-    }
-
-    .content {
-        padding: 0;
-    }
-
-    .approved-by {
-        font-weight: normal;
-        font-style: italic;
-        color: black;
-    }
-
-    .like-session {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
+    font-style: italic;
 }
 
+.actions {
+    display: flex;
+    align-items: center;
+    margin-left: 8px;
+}
+
+.body {
+    color: black;
+}
+
+.title {
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.content {
+    padding: 0;
+}
+
+.like-session {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+// CommentsSection.js
 .comment-list {
-    padding: 5px;
+    padding: 8px;
 }
 
 .login-session {

@@ -4,7 +4,7 @@
 }
 
 .item + .item {
-    margin-top: 5px;
+    margin-top: 8px;
 }
 
 .player {
@@ -21,7 +21,7 @@
     &::before {
         content: '';
         position: absolute;
-        top: 10%;
+        top: 19px;
         left: -19px;
         border: 10px solid transparent;
         border-right-color: white;

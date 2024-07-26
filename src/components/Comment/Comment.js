@@ -11,6 +11,7 @@ import useAuth from '~/hooks/useAuth';
 import { ROLES } from '~/common/contans';
 import { deleteComment, updateComment } from '~/services/commentService';
 import DateFormatter from '../DateFormatter/DateFormatter';
+import { Link } from 'react-router-dom';
 
 const cx = classNames.bind(Style);
 
@@ -85,7 +86,9 @@ function Comment({ data, onUpdateComment, onDeleteComment, message }) {
                 <div className={cx('header')}>
                     <div>
                         <img src={data.player.isOnline ? images.online : images.offline} alt="status" />
-                        <span className={cx('username')}>{data.player.name}</span>
+                        <Link to={`/player/${data.player.id}`} className={cx('username')}>
+                            {data.player.name}
+                        </Link>
                     </div>
 
                     <div className={cx('metadata')}>
