@@ -42,7 +42,7 @@ function FollowingPosts() {
                 setPosts(items);
                 setMeta(meta);
             } catch (error) {
-                setErrorMessage(error);
+                setErrorMessage(error.message);
             } finally {
                 setIsLoading(false);
             }
@@ -63,7 +63,7 @@ function FollowingPosts() {
         if (errorMessage) {
             return (
                 <div className="alert alert-danger m-2 p-2" role="alert">
-                    Lỗi: {errorMessage.message}
+                    Lỗi: {errorMessage}
                 </div>
             );
         }

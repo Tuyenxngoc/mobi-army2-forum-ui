@@ -19,7 +19,7 @@ import CommentsSection from './CommentsSection';
 const cx = classNames.bind(Style);
 
 function PostDetail() {
-    const { id } = useParams();
+    const { postId } = useParams();
 
     const [post, setPost] = useState(null);
 
@@ -30,7 +30,7 @@ function PostDetail() {
 
     const handleToggleLikePost = async () => {
         try {
-            const response = await toggleLike(id);
+            const response = await toggleLike(postId);
             if (response.status === 200) {
                 setPost((prev) => ({
                     ...prev,
@@ -49,7 +49,7 @@ function PostDetail() {
 
     const handleToggleFollowPost = async () => {
         try {
-            const response = await toggleFollow(id);
+            const response = await toggleFollow(postId);
             if (response.status === 200) {
                 setPost((prev) => ({
                     ...prev,
@@ -65,11 +65,11 @@ function PostDetail() {
         const fetchPost = async () => {
             setIsPostLoading(true);
             try {
-                if (isNaN(id)) {
+                if (isNaN(postId)) {
                     throw new Error('ID không hợp lệ. Vui lòng kiểm tra lại.');
                 }
 
-                const response = await getPost(id);
+                const response = await getPost(postId);
                 setPost(response.data.data);
             } catch (error) {
                 if (error.response && error.response.data) {
@@ -83,7 +83,7 @@ function PostDetail() {
         };
 
         fetchPost();
-    }, [id]);
+    }, [postId]);
 
     return (
         <>
@@ -182,7 +182,7 @@ function PostDetail() {
                     </>
                 )
             )}
-            {post && <CommentsSection postId={id} postLocked={post.locked} />}
+            {post && <CommentsSection postId={postId} postLocked={post.locked} />}
         </>
     );
 }

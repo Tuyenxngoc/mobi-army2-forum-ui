@@ -110,7 +110,7 @@ function Login() {
                         Đăng ký
                     </Link>
                 </div>
-                <Link className={cx('link')} to={'/forgot-password'}>
+                <Link className={cx('link')} to={'/forget-password'}>
                     Quên mật khẩu
                 </Link>
             </div>

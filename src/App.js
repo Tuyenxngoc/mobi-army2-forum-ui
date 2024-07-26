@@ -20,6 +20,8 @@ import NewNotification from './pages/NewNotification/NewNotification';
 import ForumLayout from './layouts/ForumLayout';
 import PlayerManagement from './pages/PlayerManagement/PlayerManagement';
 import ForgetPassword from './pages/ForgetPassword/ForgetPassword';
+import PostManagement from './pages/PostManagement/PostManagement';
+import UpdatePost from './pages/NewPost/UpdatePost';
 
 function App() {
     return (
@@ -31,11 +33,11 @@ function App() {
                     <Route path="forum" element={<Forum />} />
                     <Route path="login" element={<Login />} />
                     <Route path="register" element={<Register />} />
-                    <Route path="forgot-password" element={<ForgetPassword />} />
+                    <Route path="forget-password" element={<ForgetPassword />} />
                     <Route path="terms" element={<Terms />} />
 
                     <Route element={<ForumLayout />}>
-                        <Route path="post/:id" element={<PostDetail />} />
+                        <Route path="post/:postId" element={<PostDetail />} />
                     </Route>
 
                     <Route element={<RequireAuth />}>
@@ -46,11 +48,13 @@ function App() {
                         </Route>
                     </Route>
 
-                    <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.SuperAdmin]} />}>
+                    <Route path="admin" element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.SuperAdmin]} />}>
                         <Route element={<ForumLayout />}>
-                            <Route path="post/review" element={<ReviewPosts />} />
                             <Route path="notification/new" element={<NewNotification />} />
                             <Route path="player" element={<PlayerManagement />} />
+                            <Route path="post" element={<PostManagement />} />
+                            <Route path="post/:postId" element={<UpdatePost />} />
+                            <Route path="post/review" element={<ReviewPosts />} />
                         </Route>
                     </Route>
 
