@@ -12,6 +12,10 @@ export const createPost = (values) => {
     return axiosPrivate.post('posts', values);
 };
 
+export const updatePost = (postId, values) => {
+    return axiosPrivate.put(`posts/${postId}`, values);
+};
+
 export const deletePost = (postId) => {
     return axiosPrivate.delete(`posts/${postId}`);
 };

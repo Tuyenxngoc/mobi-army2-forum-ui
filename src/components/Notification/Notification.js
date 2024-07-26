@@ -17,8 +17,19 @@ import { formats, modules } from '~/common/editorConfig';
 const cx = classNames.bind(Style);
 
 const validationSchema = yup.object({
-    title: yup.string().trim().required('Tiêu đề là bắt buộc'),
-    content: yup.string().trim().required('Nội dung là bắt buộc'),
+    title: yup
+        .string()
+        .trim()
+        .min(3, 'Tiêu đề phải có ít nhất 3 ký tự')
+        .max(50, 'Tiêu đề chỉ được tối đa 50 ký tự')
+        .required('Tiêu đề là bắt buộc'),
+
+    content: yup
+        .string()
+        .trim()
+        .min(10, 'Nội dung có ít nhất 10 ký tự')
+        .max(2000, 'Nội dung chỉ được tối đa 2000 ký tự')
+        .required('Nội dung là bắt buộc'),
 });
 
 const defaultValue = {
