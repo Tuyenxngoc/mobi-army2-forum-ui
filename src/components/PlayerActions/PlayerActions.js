@@ -61,6 +61,9 @@ function PlayerActions() {
                             <div>
                                 <Link to={'/admin/post'}>Quản lý bài viết</Link>
                             </div>
+                            <div>
+                                <Link to={'/admin/category'}>Quản lý danh mục</Link>
+                            </div>
                         </>
                     )}
                 </>

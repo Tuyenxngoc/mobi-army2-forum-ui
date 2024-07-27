@@ -21,6 +21,9 @@ import PlayerManagement from './pages/PlayerManagement/PlayerManagement';
 import ForgetPassword from './pages/ForgetPassword/ForgetPassword';
 import PostManagement from './pages/PostManagement/PostManagement';
 import UpdatePost from './pages/NewPost/UpdatePost';
+import CategoryManagement from './pages/CategoryManagement/CategoryManagement';
+import EditCategory from './pages/CategoryManagement/EditCategory';
+import AddCategory from './pages/CategoryManagement/AddCategory';
 
 function App() {
     return (
@@ -51,8 +54,13 @@ function App() {
                         <Route element={<ForumLayout />}>
                             <Route path="notification/new" element={<NewNotification />} />
                             <Route path="player" element={<PlayerManagement />} />
+
                             <Route path="post" element={<PostManagement />} />
                             <Route path="post/:postId" element={<UpdatePost />} />
+
+                            <Route path="category" element={<CategoryManagement />} />
+                            <Route path="category/new" element={<AddCategory />} />
+                            <Route path="category/:categoryId" element={<EditCategory />} />
                         </Route>
                     </Route>
 
