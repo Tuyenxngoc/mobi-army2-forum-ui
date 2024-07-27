@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBellSlash, faBell, faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
 import { faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons';
-import { Button, message, Skeleton, Tooltip } from 'antd';
+import { Badge, Button, message, Skeleton, Tooltip } from 'antd';
 import 'react-quill/dist/quill.snow.css';
 import 'react-quill/dist/quill.core.css';
 import classNames from 'classnames/bind';
@@ -112,7 +112,7 @@ function PostDetail() {
                             <div className={cx('wrapper')}>
                                 <div className={cx('header')}>
                                     <div>
-                                        <img src={post.player.isOnline ? images.online : images.offline} alt="status" />
+                                        {post.player.isOnline ? <Badge status="success" /> : <Badge status="default" />}
                                         <Link to={`/player/${post.player.id}`} className={cx('username')}>
                                             {post.player.name}
                                         </Link>

@@ -1,33 +1,33 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Input, message, Select, Space, Table } from 'antd';
+
+import { Button, Input, message, Select, Space, Table, Tag } from 'antd';
 import queryString from 'query-string';
+
 import { INITIAL_FILTERS, INITIAL_META } from '~/common/contans';
 import Pagination from '~/components/Pagination';
 import { approvePost, deletePost, getPostsForAdmin, toggleLock } from '~/services/postService';
 
 const options = [
-    {
-        value: 'title',
-        label: 'Tiêu đề',
-    },
-    {
-        value: 'id',
-        label: 'ID',
-    },
-    {
-        value: 'player',
-        label: 'Tác giả',
-    },
-    {
-        value: 'categoryName',
-        label: 'Tên danh mục',
-    },
-    {
-        value: 'approvedBy',
-        label: 'Người duyệt',
-    },
+    { value: 'title', label: 'Tiêu đề' },
+    { value: 'id', label: 'ID' },
+    { value: 'player', label: 'Tác giả' },
+    { value: 'categoryName', label: 'Tên danh mục' },
+    { value: 'approvedBy', label: 'Người duyệt' },
 ];
+
+const getTagColor = (categoryName) => {
+    switch (categoryName) {
+        case 'Báo lỗi':
+            return 'red';
+        case 'Tố cáo':
+            return 'gold';
+        case 'Góp ý':
+            return 'green';
+        default:
+            return 'default';
+    }
+};
 
 function PostManagement() {
     const [meta, setMeta] = useState(INITIAL_META);
@@ -36,7 +36,7 @@ function PostManagement() {
     const [posts, setPosts] = useState([]);
 
     const [searchInput, setSearchInput] = useState('');
-    const [activeFilterOption, setActiveFilterOption] = useState(options[0]);
+    const [activeFilterOption, setActiveFilterOption] = useState(options[0].value);
 
     const [isLoading, setIsLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState(null);
@@ -57,12 +57,21 @@ function PostManagement() {
         }));
     };
 
-    const handleSearch = () => {
+    const handleSearch = (searchBy, keyword) => {
         setFilters((prev) => ({
             ...prev,
             pageNum: 1,
-            searchBy: activeFilterOption.value,
-            keyword: searchInput,
+            searchBy: searchBy || activeFilterOption,
+            keyword: keyword || searchInput,
+        }));
+    };
+
+    const handleSortChange = (pagination, filters, sorter) => {
+        const sortOrder = sorter.order === 'ascend' ? true : sorter.order === 'descend' ? false : undefined;
+        setFilters((prev) => ({
+            ...prev,
+            sortBy: sorter.field,
+            isAscending: sortOrder,
         }));
     };
 
@@ -70,19 +79,15 @@ function PostManagement() {
         setLoadingAction(true);
         try {
             const response = await toggleLock(postId);
-
             if (response.status === 200) {
-                const updatedPosts = posts.map((post) => {
-                    if (post.id === postId) {
-                        return {
-                            ...post,
-                            locked: !post.locked,
-                        };
-                    }
-                    return post;
-                });
-
-                setPosts(updatedPosts);
+                setPosts((prevPosts) =>
+                    prevPosts.map((post) => {
+                        if (post.id === postId) {
+                            return { ...post, locked: !post.locked };
+                        }
+                        return post;
+                    }),
+                );
             }
         } catch (error) {
             messageApi.error(error.message);
@@ -96,17 +101,14 @@ function PostManagement() {
         try {
             const response = await approvePost(postId);
             if (response.status === 200) {
-                const updatedPosts = posts.map((post) => {
-                    if (post.id === postId) {
-                        return {
-                            ...post,
-                            approved: true,
-                        };
-                    }
-                    return post;
-                });
-
-                setPosts(updatedPosts);
+                setPosts((prevPosts) =>
+                    prevPosts.map((post) => {
+                        if (post.id === postId) {
+                            return { ...post, approved: true };
+                        }
+                        return post;
+                    }),
+                );
             }
         } catch (error) {
             messageApi.error(error.message);
@@ -119,10 +121,8 @@ function PostManagement() {
         setLoadingAction(true);
         try {
             const response = await deletePost(postId);
-
             if (response.status === 200) {
-                const updatedPosts = posts.filter((post) => post.id !== postId);
-                setPosts(updatedPosts);
+                setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
             }
         } catch (error) {
             messageApi.error(error.message);
@@ -156,26 +156,103 @@ function PostManagement() {
             title: 'ID',
             dataIndex: 'id',
             key: 'id',
-            responsive: ['lg', 'md'],
+            sorter: true,
+            showSorterTooltip: false,
         },
         {
             title: 'Tiêu đề',
             dataIndex: 'title',
             key: 'title',
+            sorter: true,
+            showSorterTooltip: false,
             render: (text, record) => <Link to={`/admin/post/${record.id}`}>{text}</Link>,
         },
         {
+            title: 'Danh mục',
+            dataIndex: 'category',
+            key: 'category',
+            sorter: true,
+            showSorterTooltip: false,
+            render: (category) =>
+                category ? (
+                    <Tag color={getTagColor(category.name)}>{category.name}</Tag>
+                ) : (
+                    <Tag color="default">Chưa có</Tag>
+                ),
+        },
+        {
             title: 'Tác giả',
-            dataIndex: 'author',
-            key: 'author',
-            responsive: ['lg'],
+            dataIndex: 'createdBy',
+            key: 'createdBy',
+            sorter: true,
+            showSorterTooltip: false,
+        },
+        {
+            title: 'Người sửa đổi',
+            dataIndex: 'lastModifiedBy',
+            key: 'lastModifiedBy',
+        },
+        {
+            title: 'Ngày tạo',
+            dataIndex: 'createdDate',
+            key: 'createdDate',
+            sorter: true,
+            showSorterTooltip: false,
+        },
+        {
+            title: 'Ngày sửa đổi',
+            dataIndex: 'lastModifiedDate',
+            key: 'lastModifiedDate',
+            sorter: true,
+            showSorterTooltip: false,
+        },
+
+        {
+            title: 'Số bình luận',
+            dataIndex: 'comments',
+            key: 'comments',
+        },
+        {
+            title: 'Số yêu thích',
+            dataIndex: 'favorites',
+            key: 'favorites',
+        },
+        {
+            title: 'Số lượt xem',
+            dataIndex: 'views',
+            key: 'views',
+        },
+        {
+            title: 'Ưu tiên',
+            dataIndex: 'priority',
+            key: 'priority',
+            sorter: true,
+            showSorterTooltip: false,
         },
         {
             title: 'Hành động',
             key: 'action',
             render: (_, record) => (
-                <Space size="middle">
-                    {record.locked ? (
+                <Space size="small">
+                    <Button
+                        danger
+                        type="primary"
+                        size="small"
+                        loading={loadingAction}
+                        onClick={() => handleDeletePost(record.id)}
+                    >
+                        Xóa
+                    </Button>
+                    {!record.approved ? (
+                        <Button
+                            type="primary"
+                            size="small"
+                            loading={loadingAction}
+                            onClick={() => handleApprovePost(record.id)}
+                        >
+                            Duyệt
+                        </Button>
+                    ) : record.locked ? (
                         <Button
                             type="default"
                             size="small"
@@ -192,25 +269,6 @@ function PostManagement() {
                             onClick={() => handleToggleLockPost(record.id)}
                         >
                             Khóa
-                        </Button>
-                    )}
-                    <Button
-                        danger
-                        type="primary"
-                        size="small"
-                        loading={loadingAction}
-                        onClick={() => handleDeletePost(record.id)}
-                    >
-                        Xóa
-                    </Button>
-                    {!record.approved && (
-                        <Button
-                            type="primary"
-                            size="small"
-                            loading={loadingAction}
-                            onClick={() => handleApprovePost(record.id)}
-                        >
-                            Duyệt
                         </Button>
                     )}
                 </Space>
@@ -236,6 +294,10 @@ function PostManagement() {
                     pagination={false}
                     rowKey="id"
                     loading={isLoading}
+                    onChange={handleSortChange}
+                    scroll={{
+                        x: 1500,
+                    }}
                 />
             </div>
         );
@@ -247,14 +309,25 @@ function PostManagement() {
 
             <h3 className="p-2 pb-0"> Quản lý bài viết </h3>
 
+            <div className="p-2">
+                <label className="me-2">Trạng thái bài viết</label>
+                <Button size="small" disabled={isLoading} onClick={() => handleSearch()}>
+                    Tất cả
+                </Button>
+                <Button size="small" disabled={isLoading} onClick={() => handleSearch('isLocked', 'true')}>
+                    Đã khóa
+                </Button>
+                <Button size="small" disabled={isLoading} onClick={() => handleSearch('isApproved', 'false')}>
+                    Chưa duyệt
+                </Button>
+            </div>
+
             <Space.Compact className="p-2">
                 <Select
                     options={options}
                     disabled={isLoading}
                     value={activeFilterOption}
-                    onChange={(_, option) => {
-                        setActiveFilterOption(option);
-                    }}
+                    onChange={(value) => setActiveFilterOption(value)}
                 />
                 <Input
                     allowClear
@@ -263,7 +336,7 @@ function PostManagement() {
                     disabled={isLoading}
                     onChange={(e) => setSearchInput(e.target.value)}
                 />
-                <Button type="primary" loading={isLoading} onClick={handleSearch}>
+                <Button type="primary" loading={isLoading} onClick={() => handleSearch()}>
                     Tìm
                 </Button>
             </Space.Compact>
