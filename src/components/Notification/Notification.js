@@ -4,7 +4,7 @@ import * as yup from 'yup';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFloppyDisk, faPen, faTrash, faXmark } from '@fortawesome/free-solid-svg-icons';
-import { Modal, Tooltip } from 'antd';
+import { Modal } from 'antd';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import 'react-quill/dist/quill.core.css';
@@ -153,30 +153,25 @@ const Notification = ({ data, onNotificationUpdate, onNotificationDelete, canEdi
                             </div>
 
                             <div className={cx('edit-action')}>
-                                <Tooltip title="Hủy">
-                                    <div
-                                        className="me-2"
-                                        style={{
-                                            cursor: formik.isSubmitting ? 'not-allowed' : 'pointer',
-                                            opacity: formik.isSubmitting ? 0.5 : 1,
-                                        }}
-                                        onClick={formik.isSubmitting ? null : handleCloseEditButtonClick}
-                                    >
-                                        <FontAwesomeIcon icon={faXmark} />
-                                    </div>
-                                </Tooltip>
-
-                                <Tooltip title="Lưu">
-                                    <div
-                                        style={{
-                                            cursor: formik.isSubmitting ? 'not-allowed' : 'pointer',
-                                            opacity: formik.isSubmitting ? 0.5 : 1,
-                                        }}
-                                        onClick={formik.isSubmitting ? null : formik.handleSubmit}
-                                    >
-                                        <FontAwesomeIcon icon={faFloppyDisk} />
-                                    </div>
-                                </Tooltip>
+                                <div
+                                    className="me-2"
+                                    style={{
+                                        cursor: formik.isSubmitting ? 'not-allowed' : 'pointer',
+                                        opacity: formik.isSubmitting ? 0.5 : 1,
+                                    }}
+                                    onClick={formik.isSubmitting ? null : handleCloseEditButtonClick}
+                                >
+                                    <FontAwesomeIcon icon={faXmark} />
+                                </div>
+                                <div
+                                    style={{
+                                        cursor: formik.isSubmitting ? 'not-allowed' : 'pointer',
+                                        opacity: formik.isSubmitting ? 0.5 : 1,
+                                    }}
+                                    onClick={formik.isSubmitting ? null : formik.handleSubmit}
+                                >
+                                    <FontAwesomeIcon icon={faFloppyDisk} />
+                                </div>
                             </div>
                         </div>
                         <div className={cx('content')}>
@@ -197,29 +192,25 @@ const Notification = ({ data, onNotificationUpdate, onNotificationDelete, canEdi
                                 <>
                                     <div className="d-flex align-items-center">
                                         <h4 className="me-2">{data.title}</h4>
-                                        <Tooltip title="Sửa">
-                                            <div
-                                                style={{
-                                                    cursor: isDeleteConfirmLoading ? 'not-allowed' : 'pointer',
-                                                    opacity: isDeleteConfirmLoading ? 0.5 : 1,
-                                                }}
-                                                onClick={isDeleteConfirmLoading ? null : handleEditButtonClick}
-                                            >
-                                                <FontAwesomeIcon icon={faPen} />
-                                            </div>
-                                        </Tooltip>
-                                    </div>
-                                    <Tooltip title="Xóa">
                                         <div
                                             style={{
                                                 cursor: isDeleteConfirmLoading ? 'not-allowed' : 'pointer',
                                                 opacity: isDeleteConfirmLoading ? 0.5 : 1,
                                             }}
-                                            onClick={isDeleteConfirmLoading ? null : handleDeleteButtonClick}
+                                            onClick={isDeleteConfirmLoading ? null : handleEditButtonClick}
                                         >
-                                            <FontAwesomeIcon icon={faTrash} />
+                                            <FontAwesomeIcon icon={faPen} />
                                         </div>
-                                    </Tooltip>
+                                    </div>
+                                    <div
+                                        style={{
+                                            cursor: isDeleteConfirmLoading ? 'not-allowed' : 'pointer',
+                                            opacity: isDeleteConfirmLoading ? 0.5 : 1,
+                                        }}
+                                        onClick={isDeleteConfirmLoading ? null : handleDeleteButtonClick}
+                                    >
+                                        <FontAwesomeIcon icon={faTrash} />
+                                    </div>
                                 </>
                             ) : (
                                 <h4>{data.title}</h4>

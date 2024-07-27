@@ -61,6 +61,7 @@ function CreateNotification({ onAddNotification, messageApi }) {
                         className={`form-control ${formik.touched.title && formik.errors.title ? 'is-invalid' : ''}`}
                         type="text"
                         name="title"
+                        placeholder="Nhập tiêu đề thông báo"
                         value={formik.values.title}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}

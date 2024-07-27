@@ -34,7 +34,9 @@ function PlayerActions() {
             {isAuthenticated ? (
                 <>
                     <div>Xin chào {player.username}</div>
-                    <button onClick={handleLogoutClick}>Đăng xuất</button>
+                    <Button size="small" onClick={handleLogoutClick}>
+                        Đăng xuất
+                    </Button>
 
                     <div>
                         <Link to={'/post/new'}>Bài viết mới</Link>
@@ -64,16 +66,16 @@ function PlayerActions() {
                 </>
             ) : (
                 <>
-                    <Button type="primary" onClick={handleLoginClick}>
+                    <Button size="small" type="primary" onClick={handleLoginClick}>
                         Đăng nhập
                     </Button>
-                    <Button type="primary" onClick={handleRegisterClick}>
+                    <Button size="small" type="primary" onClick={handleRegisterClick}>
                         Đăng ký
                     </Button>
                 </>
             )}
 
-            <div>
+            <div className="p-2">
                 <Link to="/">
                     <img src={images.army} alt="nap the" />
                 </Link>

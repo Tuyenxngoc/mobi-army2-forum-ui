@@ -79,7 +79,8 @@
     margin: 10px 0;
 
     a {
-        margin: 0 5px;
+        padding: 0 5px;
+        white-space: nowrap;
 
         &:hover {
             text-decoration: underline;
