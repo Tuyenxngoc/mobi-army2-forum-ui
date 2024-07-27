@@ -24,7 +24,7 @@ function NewComment({ postId, onCommentSubmit, message }) {
         e.preventDefault();
         setIsLoading(true);
         try {
-            const response = await createComment({ postId, content: newComment });
+            const response = await createComment(postId, { content: newComment });
             if (response.status === 200) {
                 onCommentSubmit(response.data.data);
                 setNewComment('');

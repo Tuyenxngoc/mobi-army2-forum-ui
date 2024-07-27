@@ -1,11 +1,11 @@
 import axios, { axiosPrivate } from '~/apis/configHttp';
 
 export const getCommentByPostId = (postId, params) => {
-    return axios.get(`comments/by-post/${postId}?${params}`);
+    return axios.get(`posts/${postId}/comments?${params}`);
 };
 
-export const createComment = (values) => {
-    return axiosPrivate.post('comments', values);
+export const createComment = (postId, values) => {
+    return axiosPrivate.post(`posts/${postId}/comments`, values);
 };
 
 export const updateComment = (id, values) => {
