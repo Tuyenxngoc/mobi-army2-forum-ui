@@ -78,7 +78,7 @@ function UpdatePost() {
                 formik.setValues({
                     title: post.title,
                     content: post.content,
-                    categoryId: post.categoryId,
+                    categoryId: post?.category?.id,
                     priority: post.priority,
                 });
             } catch (error) {

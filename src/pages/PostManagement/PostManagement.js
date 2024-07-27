@@ -206,7 +206,11 @@ function PostManagement() {
             sorter: true,
             showSorterTooltip: false,
         },
-
+        {
+            title: 'Số người theo dõi',
+            dataIndex: 'followers',
+            key: 'followers',
+        },
         {
             title: 'Số bình luận',
             dataIndex: 'comments',
