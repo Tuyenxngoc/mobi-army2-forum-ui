@@ -1,5 +1,6 @@
 .list {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
 }
 
@@ -9,6 +10,7 @@
     text-align: center;
     cursor: pointer;
     flex: 1;
+    min-width: calc(20% - 4px);
 
     div {
         color: white;

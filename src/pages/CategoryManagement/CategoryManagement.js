@@ -65,9 +65,14 @@ function CategoryManagement() {
             const response = await deleteCategory(categoryId);
             if (response.status === 200) {
                 setCategories((prevCates) => prevCates.filter((cate) => cate.id !== categoryId));
+                messageApi.success(response.data.data.message);
             }
         } catch (error) {
-            messageApi.error(error.message);
+            if (error?.response?.data?.message) {
+                messageApi.error(error.response.data.message);
+            } else {
+                messageApi.error(error.message);
+            }
         } finally {
             setLoadingAction(false);
         }

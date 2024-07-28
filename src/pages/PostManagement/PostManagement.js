@@ -88,6 +88,8 @@ function PostManagement() {
                         return post;
                     }),
                 );
+
+                messageApi.success(response.data.data.message);
             }
         } catch (error) {
             messageApi.error(error.message);
@@ -109,6 +111,8 @@ function PostManagement() {
                         return post;
                     }),
                 );
+
+                messageApi.success(response.data.data.message);
             }
         } catch (error) {
             messageApi.error(error.message);
@@ -123,6 +127,8 @@ function PostManagement() {
             const response = await deletePost(postId);
             if (response.status === 200) {
                 setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
+
+                messageApi.success(response.data.data.message);
             }
         } catch (error) {
             messageApi.error(error.message);
