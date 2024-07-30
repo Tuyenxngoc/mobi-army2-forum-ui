@@ -15,6 +15,7 @@ import { toggleLike } from '~/services/likeService';
 import useAuth from '~/hooks/useAuth';
 import DateFormatter from '~/components/DateFormatter/DateFormatter';
 import CommentsSection from './CommentsSection';
+import { BASE_RESOURCE_URL } from '~/common/contans';
 
 const cx = classNames.bind(Style);
 
@@ -105,7 +106,7 @@ function PostDetail() {
                     <>
                         <div className={cx('container')}>
                             <div className={cx('player')}>
-                                <img src={images.plGif} alt="avt" />
+                                <img src={BASE_RESOURCE_URL + post.player.avatar} alt="avt" />
                                 <div>Bài: {post.player.points}</div>
                             </div>
 

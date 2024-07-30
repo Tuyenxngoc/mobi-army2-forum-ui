@@ -7,14 +7,17 @@ import { Button } from 'antd';
 import classNames from 'classnames/bind';
 import Style from './Comment.module.scss';
 
-import images from '~/assets';
 import { createComment } from '~/services/commentService';
+import { BASE_RESOURCE_URL } from '~/common/contans';
+import useAuth from '~/hooks/useAuth';
 
 const cx = classNames.bind(Style);
 
 function NewComment({ postId, onCommentSubmit, message }) {
     const [newComment, setNewComment] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+
+    const { player } = useAuth();
 
     const handleCommentChange = (e) => {
         setNewComment(e.target.value);
@@ -39,8 +42,8 @@ function NewComment({ postId, onCommentSubmit, message }) {
     return (
         <div className={cx('item')}>
             <div className={cx('player')}>
-                <img src={images.plGif} alt="avt" />
-                <div>Bài: 1</div>
+                <img src={BASE_RESOURCE_URL + player.avatar} alt="avt" />
+                <div>Bài: {player.points}</div>
             </div>
 
             <form className={cx('container')} onSubmit={handleCommentSubmit}>

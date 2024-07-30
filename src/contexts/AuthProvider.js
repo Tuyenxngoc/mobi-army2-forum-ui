@@ -13,6 +13,9 @@ const defaultAuth = {
     player: {
         username: '',
         roleName: '',
+        avatar: '',
+        points: 1,
+        online: false,
     },
 };
 
@@ -36,12 +39,19 @@ const AuthProvider = ({ children }) => {
             }
             const response = await getCurrentUserLogin();
             if (response.status === 200) {
-                const { username, roleName } = response.data.data;
+                const {
+                    username,
+                    roleName,
+                    player: { avatar, points, online },
+                } = response.data.data;
                 setAuthData({
                     isAuthenticated: true,
                     player: {
                         username,
                         roleName,
+                        avatar,
+                        points,
+                        online,
                     },
                 });
             } else {

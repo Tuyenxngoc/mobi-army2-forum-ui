@@ -10,6 +10,13 @@ import { getPostForAdminById, updatePost } from '~/services/postService';
 import ReactQuill from 'react-quill';
 import { formats, modules } from '~/common/editorConfig';
 
+const defaultValue = {
+    title: '',
+    content: '',
+    categoryId: '',
+    priority: 0,
+};
+
 const validationSchema = yup.object({
     title: yup
         .string('Nhập tiêu đề')
@@ -52,6 +59,11 @@ function UpdatePost() {
         }
     };
 
+    const handleCategoryChange = (event) => {
+        const { value } = event.target;
+        formik.setFieldValue('categoryId', value === '' ? null : value);
+    };
+
     useEffect(() => {
         const fetchCategories = async () => {
             try {
@@ -78,7 +90,7 @@ function UpdatePost() {
                 formik.setValues({
                     title: post.title,
                     content: post.content,
-                    categoryId: post?.category?.id,
+                    categoryId: post?.category?.id || '',
                     priority: post.priority,
                 });
             } catch (error) {
@@ -91,12 +103,7 @@ function UpdatePost() {
     }, [postId]);
 
     const formik = useFormik({
-        initialValues: {
-            title: '',
-            content: '',
-            categoryId: undefined,
-            priority: 0,
-        },
+        initialValues: defaultValue,
         validationSchema: validationSchema,
         onSubmit: handleSubmit,
     });
@@ -134,12 +141,12 @@ function UpdatePost() {
                     <select
                         className="form-control"
                         id="categorySelect"
-                        value={formik.values.categoryId}
-                        onChange={formik.handleChange}
+                        value={formik.values.categoryId || ''}
+                        onChange={handleCategoryChange}
                         onBlur={formik.handleBlur}
                         name="categoryId"
                     >
-                        <option value={undefined}>Chọn danh mục</option>
+                        <option value="">Chọn danh mục</option>
                         {categories.map((category) => (
                             <option key={category.id} value={category.id}>
                                 {category.name}

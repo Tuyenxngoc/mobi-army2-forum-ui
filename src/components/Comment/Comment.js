@@ -1,14 +1,13 @@
 import { useState } from 'react';
 
 import TextArea from 'antd/es/input/TextArea';
-import { Button } from 'antd';
+import { Badge, Button } from 'antd';
 
 import Style from './Comment.module.scss';
 import classNames from 'classnames/bind';
 
-import images from '~/assets';
 import useAuth from '~/hooks/useAuth';
-import { ROLES } from '~/common/contans';
+import { BASE_RESOURCE_URL, ROLES } from '~/common/contans';
 import { deleteComment, updateComment } from '~/services/commentService';
 import DateFormatter from '../DateFormatter/DateFormatter';
 import { Link } from 'react-router-dom';
@@ -78,14 +77,14 @@ function Comment({ data, onUpdateComment, onDeleteComment, message }) {
     return (
         <div className={cx('item')}>
             <div className={cx('player')}>
-                <img src={images.plGif} alt="avt" />
-                <div>Bài: 1</div>
+                <img src={BASE_RESOURCE_URL + data.player.avatar} alt="avt" />
+                <div>Bài: {data.player.points}</div>
             </div>
 
             <div className={cx('container')}>
                 <div className={cx('header')}>
                     <div>
-                        <img src={data.player.isOnline ? images.online : images.offline} alt="status" />
+                        {data.player.isOnline ? <Badge status="success" /> : <Badge status="default" />}
                         <Link to={`/player/${data.player.id}`} className={cx('username')}>
                             {data.player.name}
                         </Link>
