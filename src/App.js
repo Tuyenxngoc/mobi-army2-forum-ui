@@ -24,6 +24,7 @@ import UpdatePost from './pages/NewPost/UpdatePost';
 import CategoryManagement from './pages/CategoryManagement/CategoryManagement';
 import EditCategory from './pages/CategoryManagement/EditCategory';
 import AddCategory from './pages/CategoryManagement/AddCategory';
+import PlayerInfo from './pages/PlayerInfo/PlayerInfo';
 
 function App() {
     return (
@@ -47,6 +48,7 @@ function App() {
                             <Route path="post/new" element={<NewPost />} />
                             <Route path="notification" element={<Notification />} />
                             <Route path="following-post" element={<FollowingPosts />} />
+                            <Route path="player/info" element={<PlayerInfo />} />
                         </Route>
                     </Route>
 

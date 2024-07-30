@@ -15,3 +15,7 @@ export const deletePlayerNotificationById = (id) => {
 export const createPlayerNotification = (values) => {
     return axiosPrivate.post('player-notifications', values);
 };
+
+export const getPlayerInfo = () => {
+    return axiosPrivate.get('players/info');
+};

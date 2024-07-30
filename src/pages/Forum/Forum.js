@@ -86,7 +86,7 @@ function Forum() {
             <PlayerActions />
 
             {isCategoriesLoading ? (
-                <div className={cx('list')}>
+                <div className="d-flex align-items-center">
                     <Skeleton.Button active block size="small" className="pe-1" />
                     <Skeleton.Button active block size="small" className="pe-1" />
                     <Skeleton.Button active block size="small" />

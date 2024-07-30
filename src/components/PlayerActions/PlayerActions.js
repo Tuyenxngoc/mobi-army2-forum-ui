@@ -39,6 +39,10 @@ function PlayerActions() {
                     </Button>
 
                     <div>
+                        <Link to={'/player/info'}>Hồ Sơ Của Tôi</Link>
+                    </div>
+
+                    <div>
                         <Link to={'/post/new'}>Bài viết mới</Link>
                     </div>
 
