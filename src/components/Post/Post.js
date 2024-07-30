@@ -3,14 +3,14 @@ import { Link } from 'react-router-dom';
 import Style from './Post.module.scss';
 import classNames from 'classnames/bind';
 import images from '~/assets';
-import { BASE_RESOURCE_URL } from '~/common/contans';
+import { BASE_URL } from '~/common/contans';
 
 const cx = classNames.bind(Style);
 function Post({ data }) {
     return (
         <div className={cx('post-wrapper', { admin: data.priority })}>
             <div className={cx('avatar-container')}>
-                <img src={BASE_RESOURCE_URL + data.player.avatar} alt="avatar" />
+                <img src={BASE_URL + data.player.avatar} alt="avatar" />
             </div>
             <div className={cx('post-details')}>
                 <div className={cx('post-title')}>

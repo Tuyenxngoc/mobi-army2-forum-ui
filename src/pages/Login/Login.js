@@ -10,6 +10,7 @@ import classNames from 'classnames/bind';
 
 import { loginUser } from '~/services/authService';
 import useAuth from '~/hooks/useAuth';
+import { BASE_URL } from '~/common/contans';
 
 const cx = classNames.bind(Style);
 
@@ -102,6 +103,8 @@ function Login() {
                     </Button>
                 </div>
             </form>
+
+            <a href={BASE_URL + '/oauth2/authorization/google'}>Đăng nhập với Google</a>
 
             <div className={cx('footer')}>
                 <div className={cx('register')}>

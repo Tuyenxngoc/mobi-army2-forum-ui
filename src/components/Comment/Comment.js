@@ -7,7 +7,7 @@ import Style from './Comment.module.scss';
 import classNames from 'classnames/bind';
 
 import useAuth from '~/hooks/useAuth';
-import { BASE_RESOURCE_URL, ROLES } from '~/common/contans';
+import { BASE_URL, ROLES } from '~/common/contans';
 import { deleteComment, updateComment } from '~/services/commentService';
 import DateFormatter from '../DateFormatter/DateFormatter';
 import { Link } from 'react-router-dom';
@@ -77,7 +77,7 @@ function Comment({ data, onUpdateComment, onDeleteComment, message }) {
     return (
         <div className={cx('item')}>
             <div className={cx('player')}>
-                <img src={BASE_RESOURCE_URL + data.player.avatar} alt="avt" />
+                <img src={BASE_URL + data.player.avatar} alt="avt" />
                 <div>Bài: {data.player.points}</div>
             </div>
 

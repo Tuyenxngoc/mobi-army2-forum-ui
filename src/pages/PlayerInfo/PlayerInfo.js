@@ -1,6 +1,6 @@
 import { Badge, Spin } from 'antd';
 import { useEffect, useState } from 'react';
-import { BASE_RESOURCE_URL } from '~/common/contans';
+import { BASE_URL } from '~/common/contans';
 import { getPlayerInfo } from '~/services/playerNotificationService';
 
 function PlayerInfo() {

@@ -8,7 +8,7 @@ import classNames from 'classnames/bind';
 import Style from './Comment.module.scss';
 
 import { createComment } from '~/services/commentService';
-import { BASE_RESOURCE_URL } from '~/common/contans';
+import { BASE_URL } from '~/common/contans';
 import useAuth from '~/hooks/useAuth';
 
 const cx = classNames.bind(Style);
@@ -42,7 +42,7 @@ function NewComment({ postId, onCommentSubmit, message }) {
     return (
         <div className={cx('item')}>
             <div className={cx('player')}>
-                <img src={BASE_RESOURCE_URL + player.avatar} alt="avt" />
+                <img src={BASE_URL + player.avatar} alt="avt" />
                 <div>Bài: {player.points}</div>
             </div>
 
