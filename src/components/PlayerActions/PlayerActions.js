@@ -54,6 +54,10 @@ function PlayerActions() {
                         <Link to={'/following-post'}>Theo giõi</Link>
                     </div>
 
+                    <div>
+                        <Link to={'/clan'}>Biệt đội</Link>
+                    </div>
+
                     {hasRequiredRole && (
                         <>
                             <div>

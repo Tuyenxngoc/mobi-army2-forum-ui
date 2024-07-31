@@ -25,6 +25,9 @@ import CategoryManagement from './pages/CategoryManagement/CategoryManagement';
 import EditCategory from './pages/CategoryManagement/EditCategory';
 import AddCategory from './pages/CategoryManagement/AddCategory';
 import PlayerInfo from './pages/PlayerInfo/PlayerInfo';
+import Clan from './pages/Clan/Clan';
+import CreateClan from './pages/Clan/CreateClan';
+import ClanInfo from './pages/Clan/ClanInfo';
 
 function App() {
     return (
@@ -49,6 +52,9 @@ function App() {
                             <Route path="notification" element={<Notification />} />
                             <Route path="following-post" element={<FollowingPosts />} />
                             <Route path="player/info" element={<PlayerInfo />} />
+                            <Route path="clan" element={<Clan />} />
+                            <Route path="clan/:clanId" element={<ClanInfo />} />
+                            <Route path="clan/new" element={<CreateClan />} />
                         </Route>
                     </Route>
 
