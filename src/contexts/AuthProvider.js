@@ -16,6 +16,7 @@ const defaultAuth = {
         avatar: '',
         points: 1,
         online: false,
+        clan: null,
     },
 };
 
@@ -43,6 +44,7 @@ const AuthProvider = ({ children }) => {
                     username,
                     roleName,
                     player: { avatar, points, online },
+                    clan,
                 } = response.data.data;
                 setAuthData({
                     isAuthenticated: true,
@@ -52,6 +54,7 @@ const AuthProvider = ({ children }) => {
                         avatar,
                         points,
                         online,
+                        clan,
                     },
                 });
             } else {

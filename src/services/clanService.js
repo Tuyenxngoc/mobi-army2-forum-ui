@@ -23,3 +23,11 @@ export const updateClan = (clanId, values) => {
 export const deleteClan = (clanId) => {
     return axiosPrivate.delete(`clans/${clanId}`);
 };
+
+export const joinClan = (clanId) => {
+    return axiosPrivate.post(`clans/${clanId}/join`);
+};
+
+export const leaveClan = (clanId) => {
+    return axiosPrivate.post(`clans/${clanId}/leave`);
+};
