@@ -12,11 +12,14 @@ import { getAllCategories } from '~/services/categoryService';
 import { getPosts } from '~/services/postService';
 import PlayerActions from '~/components/PlayerActions/PlayerActions';
 import { INITIAL_FILTERS, INITIAL_META } from '~/common/contans';
-import { Skeleton } from 'antd';
+import { Button, Skeleton } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
 const cx = classNames.bind(Style);
 
 function Forum() {
+    const navigate = useNavigate();
+
     const [meta, setMeta] = useState(INITIAL_META);
     const [filters, setFilters] = useState(INITIAL_FILTERS);
 
@@ -42,6 +45,14 @@ function Forum() {
             ...INITIAL_FILTERS,
             categoryId,
         });
+    };
+
+    const handleNewPostClick = () => {
+        navigate('/post/new');
+    };
+
+    const handleFollowClick = () => {
+        navigate('/following-post');
     };
 
     useEffect(() => {
@@ -82,59 +93,74 @@ function Forum() {
     }, [filters]);
 
     return (
-        <main className="box-container">
+        <div className={cx('wrapper')}>
             <PlayerActions />
 
-            {isCategoriesLoading ? (
-                <div className="d-flex align-items-center">
-                    <Skeleton.Button active block size="small" className="pe-1" />
-                    <Skeleton.Button active block size="small" className="pe-1" />
-                    <Skeleton.Button active block size="small" />
-                </div>
-            ) : categoryErrorMessage ? (
-                <div className="alert alert-danger m-2 p-2" role="alert">
-                    Lỗi khi tải danh mục: {categoryErrorMessage.message}
-                </div>
-            ) : (
-                <ul className={cx('list')}>
-                    {categories.map((category, index) => (
-                        <li key={index} className={cx('item')}>
-                            <div onClick={() => handleCategorySelection(category.id)}>{category.name}</div>
-                        </li>
-                    ))}
-                </ul>
-            )}
+            <div className="box-container p-2 mb-1">
+                <Button type="default" onClick={handleNewPostClick}>
+                    Bài viết mới
+                </Button>
+                <Button type="default" onClick={handleFollowClick}>
+                    Theo giõi
+                </Button>
+            </div>
 
-            {isPostsLoading ? (
-                Array.from({ length: 5 }).map((_, index) => (
-                    <div key={index} className="d-flex align-items-center p-1">
-                        <div>
-                            <Skeleton active title={false} avatar={{ shape: 'square' }} paragraph={false} />
-                        </div>
-                        <div className="w-100">
-                            <Skeleton active title={false} paragraph={{ rows: 1, width: '50%' }} className="mb-1" />
-                            <Skeleton active title={false} paragraph={{ rows: 1, width: '75%' }} />
-                        </div>
+            <main className={cx('content')}>
+                {isCategoriesLoading ? (
+                    <div className="d-flex align-items-center">
+                        <Skeleton.Button active block size="small" className="pe-1" />
+                        <Skeleton.Button active block size="small" className="pe-1" />
+                        <Skeleton.Button active block size="small" />
                     </div>
-                ))
-            ) : postErrorMessage ? (
-                <div className="alert alert-danger m-2 p-2" role="alert">
-                    Lỗi khi tải bài viết: {postErrorMessage.message}
-                </div>
-            ) : posts.length > 0 ? (
-                posts.map((item, i) => <Post key={i} data={item} />)
-            ) : (
-                <div className={cx('empty-box', 'p-2')}>Box hiện chưa có bài viết nào ... !</div>
-            )}
+                ) : categoryErrorMessage ? (
+                    <div className="alert alert-danger m-2 p-2" role="alert">
+                        Lỗi khi tải danh mục: {categoryErrorMessage.message}
+                    </div>
+                ) : (
+                    <ul className={cx('category-list')}>
+                        <li className={cx('item')}>
+                            <div onClick={() => handleCategorySelection(null)}>Tất cả</div>
+                        </li>
+                        {categories.map((category, index) => (
+                            <li key={index} className={cx('item')}>
+                                <div onClick={() => handleCategorySelection(category.id)}>{category.name}</div>
+                            </li>
+                        ))}
+                    </ul>
+                )}
 
-            <Pagination
-                totalPages={meta.totalPages || 1}
-                currentPage={filters.pageNum - 1}
-                rowsPerPage={meta.pageSize}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-        </main>
+                {isPostsLoading ? (
+                    Array.from({ length: 5 }).map((_, index) => (
+                        <div key={index} className="d-flex align-items-center p-1">
+                            <div>
+                                <Skeleton active title={false} avatar={{ shape: 'square' }} paragraph={false} />
+                            </div>
+                            <div className="w-100">
+                                <Skeleton active title={false} paragraph={{ rows: 1, width: '50%' }} className="mb-1" />
+                                <Skeleton active title={false} paragraph={{ rows: 1, width: '75%' }} />
+                            </div>
+                        </div>
+                    ))
+                ) : postErrorMessage ? (
+                    <div className="alert alert-danger m-2 p-2" role="alert">
+                        Lỗi khi tải bài viết: {postErrorMessage.message}
+                    </div>
+                ) : posts.length > 0 ? (
+                    posts.map((item, i) => <Post key={i} data={item} />)
+                ) : (
+                    <div className={cx('empty-box', 'p-2')}>Box hiện chưa có bài viết nào ... !</div>
+                )}
+
+                <Pagination
+                    totalPages={meta.totalPages || 1}
+                    currentPage={filters.pageNum - 1}
+                    rowsPerPage={meta.pageSize}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                    isLoading={isPostsLoading}
+                />
+            </main>
+        </div>
     );
 }
 

@@ -28,7 +28,7 @@ function PlayerActions() {
     };
 
     return (
-        <div className="text-center p-2">
+        <div className={cx('content')}>
             {isAuthenticated ? (
                 <ul className="nav">
                     <li className="me-2">

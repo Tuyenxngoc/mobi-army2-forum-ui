@@ -1,5 +1,14 @@
+.content {
+    margin-bottom: 4px;
+    padding: 8px;
+    background-color: var(--background-color);
+    border: 2px solid #004679;
+    border-top: none;
+    text-align: center;
+}
+
 .player-info {
     display: flex;
-    align-items: center;
     justify-content: flex-end;
+    align-items: center;
 }

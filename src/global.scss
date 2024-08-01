@@ -1,24 +1,24 @@
 @import 'normalize.css';
 
 :root {
-    --primary: #456ad4;
     --text-color: #456ad4;
     --link-color: #1757a6;
-    --back-ground: #c4ddfb;
-
+    --background-color: #c4ddfb;
+    --body-color: #009cdf;
+    --border-color: #004679;
     --default-layout-header-height: 100px;
 }
 
 * {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
 
 body {
-    font-family: Arial;
-    font-size: 14px;
     background: #b3afaf;
+    font-size: 14px;
+    font-family: Arial;
     color: var(--text-color);
 }
 
@@ -49,13 +49,13 @@ ol {
 }
 
 .box-container {
-    background: var(--back-ground);
-    border: 2px solid #004679;
+    background: var(--background-color);
+    border: 2px solid var(--border-color);
     color: var(--text-color);
 }
 
 .custom-quill {
     background-color: white;
-    color: black;
     border-radius: 0.375rem;
+    color: black;
 }
