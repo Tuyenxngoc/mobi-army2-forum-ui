@@ -11,13 +11,23 @@ import Pagination from '~/components/Pagination';
 import { getAllCategories } from '~/services/categoryService';
 import { getPosts } from '~/services/postService';
 import PlayerActions from '~/components/PlayerActions/PlayerActions';
-import { INITIAL_FILTERS, INITIAL_META } from '~/common/contans';
+import { INITIAL_FILTERS, INITIAL_META, ROLES } from '~/common/contans';
 import { Button, Skeleton } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import useAuth from '~/hooks/useAuth';
 
 const cx = classNames.bind(Style);
 
+const allowedRoles = {
+    [ROLES.SuperAdmin]: true,
+    [ROLES.Admin]: true,
+};
+
 function Forum() {
+    const { isAuthenticated, player } = useAuth();
+
+    const hasRequiredRole = allowedRoles[player.roleName];
+
     const navigate = useNavigate();
 
     const [meta, setMeta] = useState(INITIAL_META);
@@ -53,6 +63,22 @@ function Forum() {
 
     const handleFollowClick = () => {
         navigate('/following-post');
+    };
+
+    const handleManagePostsClick = () => {
+        navigate('/admin/post');
+    };
+
+    const handleManageCategoriesClick = () => {
+        navigate('/admin/category');
+    };
+
+    const handleManageMembersClick = () => {
+        navigate('/admin/player');
+    };
+
+    const handleAddNotificationClick = () => {
+        navigate('/admin/notification/new');
     };
 
     useEffect(() => {
@@ -96,14 +122,33 @@ function Forum() {
         <div className={cx('wrapper')}>
             <PlayerActions />
 
-            <div className="box-container p-2 mb-1">
-                <Button type="default" onClick={handleNewPostClick}>
-                    Bài viết mới
-                </Button>
-                <Button type="default" onClick={handleFollowClick}>
-                    Theo giõi
-                </Button>
-            </div>
+            {isAuthenticated && (
+                <div className="box-container p-2 mb-1">
+                    <Button size="small" type="default" onClick={handleNewPostClick}>
+                        Bài viết mới
+                    </Button>
+                    <Button size="small" type="default" onClick={handleFollowClick}>
+                        Theo giõi
+                    </Button>
+                </div>
+            )}
+
+            {hasRequiredRole && (
+                <div className={cx('box-container', 'admin', 'p-2', 'mb-1')}>
+                    <Button size="small" type="primary" onClick={handleManagePostsClick}>
+                        Quản lý bài viết
+                    </Button>
+                    <Button size="small" type="primary" onClick={handleManageCategoriesClick}>
+                        Quản lý danh mục
+                    </Button>
+                    <Button size="small" type="primary" onClick={handleManageMembersClick}>
+                        Quản lý thành viên
+                    </Button>
+                    <Button size="small" type="primary" onClick={handleAddNotificationClick}>
+                        Thêm thông báo
+                    </Button>
+                </div>
+            )}
 
             <main className={cx('content')}>
                 {isCategoriesLoading ? (
