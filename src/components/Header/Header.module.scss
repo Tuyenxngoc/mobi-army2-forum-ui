@@ -3,33 +3,31 @@
     justify-content: start;
     align-items: center;
     height: 17px;
-
     img {
         height: 12px;
         margin-right: 4px;
     }
 
     span {
-        line-height: 12px;
         font-size: 10px;
+        line-height: 12px;
         color: black;
     }
 }
 
 .logoContainer {
-    background-image: url('../../assets/images/topbanner.png');
-    background-size: cover; // Chọn kích thước phù hợp để che kín phần nền
-    background-position: center; // Đặt hình ảnh ở giữa
-    background-repeat: no-repeat; // Không lặp lại hình ảnh
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
     height: var(--default-layout-header-height);
+    background-image: url('../../assets/images/topbanner.png');
+    background-repeat: no-repeat; // Không lặp lại hình ảnh;
+    background-position: center; // Đặt hình ảnh ở giữa;
+    background-size: cover; // Chọn kích thước phù hợp để che kín phần nền;
 }
 
 .logoLink {
     display: block;
-
     img {
         height: 75px;
     }

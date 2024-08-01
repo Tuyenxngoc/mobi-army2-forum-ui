@@ -1,16 +1,16 @@
 .copyright {
     background-image: url('../../assets/images/bottom.png');
-    background-size: cover;
-    background-position: center;
     background-repeat: no-repeat;
-    text-align: center;
+    background-position: center;
+    background-size: cover;
     color: white;
+    text-align: center;
 }
 
 .name {
+    padding-top: 5px;
     font-size: 15px;
     font-weight: bold;
-    padding-top: 5px;
 }
 
 .des {
@@ -22,7 +22,7 @@
     a {
         font-size: 10px;
         line-height: 10px;
-        text-decoration: none;
         color: white;
+        text-decoration: none;
     }
 }

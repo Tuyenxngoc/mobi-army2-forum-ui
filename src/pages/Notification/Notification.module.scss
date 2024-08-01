@@ -8,10 +8,9 @@
 
 .notification-content {
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
     border-bottom: 1px #65a5ac solid;
-
     &:last-child {
         border-bottom: none;
     }

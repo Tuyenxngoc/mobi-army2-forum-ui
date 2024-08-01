@@ -12,12 +12,11 @@
 }
 
 .container {
-    background-color: white;
-    padding: 5px 4px;
-    border-radius: 5px;
     flex: 1;
     position: relative;
-
+    padding: 5px 4px;
+    background-color: white;
+    border-radius: 5px;
     &::before {
         content: '';
         position: absolute;
@@ -30,14 +29,14 @@
 
 .header {
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
     border-bottom: 1px solid #e1e1e1;
 }
 
 .username {
-    color: #013481;
     font-weight: bold;
+    color: #013481;
 }
 
 .metadata {
@@ -46,8 +45,8 @@
 }
 
 .time {
-    color: black;
     font-style: italic;
+    color: black;
 }
 
 .actions {
