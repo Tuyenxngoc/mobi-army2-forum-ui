@@ -25,6 +25,7 @@ const images = {
     online: require('~/assets/images/online.png'),
     offline: require('~/assets/images/offline.png'),
     lock: require('~/assets/images/lock_red.gif'),
+    google: require('~/assets/images/google.png'),
 };
 
 const items = {

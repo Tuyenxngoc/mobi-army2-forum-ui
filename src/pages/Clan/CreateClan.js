@@ -103,9 +103,9 @@ function CreateClan() {
             {contextHolder}
 
             <h3>Đăng ký thành lập đội</h3>
-            <span>Lưu ý: cần điền thông tin chính xác để lấy lại mật khẩu.</span>
+            <small className="form-text text-muted">Lưu ý: cần điền thông tin chính xác để lấy lại mật khẩu.</small>
 
-            <form onSubmit={formik.handleSubmit}>
+            <form className="mt-4" onSubmit={formik.handleSubmit}>
                 <div className="form-group mb-2">
                     <label htmlFor="name">Tên đội</label>
                     <input
@@ -145,7 +145,11 @@ function CreateClan() {
 
                     {formik.touched.description && formik.errors.description ? (
                         <div className="text-danger">{formik.errors.description}</div>
-                    ) : null}
+                    ) : (
+                        <small id="descriptionHelp" className="form-text text-muted">
+                            Mô tải biệt đội tối đa 255 kí tự
+                        </small>
+                    )}
                 </div>
 
                 <div className="form-group mb-2">
@@ -164,7 +168,11 @@ function CreateClan() {
                     />
                     {formik.touched.phoneNumber && formik.errors.phoneNumber ? (
                         <div className="text-danger">{formik.errors.phoneNumber}</div>
-                    ) : null}
+                    ) : (
+                        <small id="phoneNumberHelp" className="form-text text-muted">
+                            Số điện thoại tối đa 20 kí tự
+                        </small>
+                    )}
                 </div>
 
                 <div className="form-group mb-2">
@@ -181,12 +189,16 @@ function CreateClan() {
                     />
                     {formik.touched.email && formik.errors.email ? (
                         <div className="text-danger">{formik.errors.email}</div>
-                    ) : null}
+                    ) : (
+                        <small id="emailHelp" className="form-text text-muted">
+                            Ví dụ: abc@gmail.com
+                        </small>
+                    )}
                 </div>
 
                 <div className="form-group mb-2">
                     <label>Hãy lựa chọn ảnh đại diện cho đội:</label>
-                    <table className="table table-bordered align-middle">
+                    <table className="table table-bordered align-middle bg-white">
                         <tbody>
                             {rows.map((row, rowIndex) => (
                                 <tr key={rowIndex}>

@@ -11,6 +11,7 @@ import classNames from 'classnames/bind';
 import { loginUser } from '~/services/authService';
 import useAuth from '~/hooks/useAuth';
 import { BASE_URL } from '~/common/contans';
+import images from '~/assets';
 
 const cx = classNames.bind(Style);
 
@@ -104,7 +105,10 @@ function Login() {
                 </div>
             </form>
 
-            <a href={BASE_URL + '/oauth2/authorization/google'}>Đăng nhập với Google</a>
+            <Button type="default" href={BASE_URL + '/oauth2/authorization/google'}>
+                <img width={16} src={images.google} alt="Google" />
+                Đăng nhập với Google
+            </Button>
 
             <div className={cx('footer')}>
                 <div className={cx('register')}>

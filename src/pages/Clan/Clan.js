@@ -1,10 +1,16 @@
-import { Button, Spin } from 'antd';
+import { Button, Input, Select, Space, Spin } from 'antd';
 import queryString from 'query-string';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { BASE_URL, INITIAL_FILTERS, INITIAL_META } from '~/common/contans';
 import Pagination from '~/components/Pagination';
 import { getclans } from '~/services/clanService';
+
+const options = [
+    { value: 'name', label: 'Tên đội' },
+    { value: 'id', label: 'ID' },
+    { value: 'master', label: 'Tên đội trưởng' },
+];
 
 function Clan() {
     const [meta, setMeta] = useState(INITIAL_META);
@@ -13,6 +19,9 @@ function Clan() {
     const navigate = useNavigate();
 
     const [clans, setClans] = useState([]);
+
+    const [searchInput, setSearchInput] = useState('');
+    const [activeFilterOption, setActiveFilterOption] = useState(options[0].value);
 
     const [isLoading, setIsLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState(null);
@@ -26,6 +35,15 @@ function Clan() {
             ...prev,
             pageNum: 1,
             pageSize: parseInt(event.target.value, 10),
+        }));
+    };
+
+    const handleSearch = () => {
+        setFilters((prev) => ({
+            ...prev,
+            pageNum: 1,
+            searchBy: activeFilterOption,
+            keyword: searchInput,
         }));
     };
 
@@ -71,10 +89,11 @@ function Clan() {
         }
 
         return (
-            <div className="p-2">
+            <main className="p-2">
                 <table className="table">
                     <thead>
                         <tr>
+                            <th scope="col">ID</th>
                             <th scope="col">Icon</th>
                             <th scope="col">Tên</th>
                             <th scope="col">Đội trưởng</th>
@@ -82,23 +101,32 @@ function Clan() {
                         </tr>
                     </thead>
                     <tbody>
-                        {clans.map((clan, index) => (
-                            <tr key={index}>
-                                <th scope="row">
-                                    <img src={BASE_URL + clan.icon} alt="Icon clan" />
-                                </th>
-                                <td>
-                                    <Link to={`/clan/${clan.id}`}>{clan.name}</Link>
-                                </td>
-                                <td>{clan.masterName}</td>
-                                <td>
-                                    {clan.memberCount}/{clan.memberMax}
+                        {clans.length === 0 ? (
+                            <tr>
+                                <td colSpan="5" className="text-center">
+                                    Không có clan nào
                                 </td>
                             </tr>
-                        ))}
+                        ) : (
+                            clans.map((clan, index) => (
+                                <tr key={index}>
+                                    <th scope="row">{clan.id}</th>
+                                    <th>
+                                        <img src={BASE_URL + clan.icon} alt="Icon clan" />
+                                    </th>
+                                    <td>
+                                        <Link to={`/clan/${clan.id}`}>{clan.name}</Link>
+                                    </td>
+                                    <td>{clan.masterName}</td>
+                                    <td>
+                                        {clan.memberCount}/{clan.memberMax}
+                                    </td>
+                                </tr>
+                            ))
+                        )}
                     </tbody>
                 </table>
-            </div>
+            </main>
         );
     };
 
@@ -111,6 +139,25 @@ function Clan() {
                     Thành lập biệt đội
                 </Button>
             </div>
+
+            <Space.Compact className="p-2">
+                <Select
+                    options={options}
+                    disabled={isLoading}
+                    value={activeFilterOption}
+                    onChange={(value) => setActiveFilterOption(value)}
+                />
+                <Input
+                    allowClear
+                    placeholder="Nhập từ cần tìm..."
+                    value={searchInput}
+                    disabled={isLoading}
+                    onChange={(e) => setSearchInput(e.target.value)}
+                />
+                <Button type="primary" loading={isLoading} onClick={() => handleSearch()}>
+                    Tìm
+                </Button>
+            </Space.Compact>
 
             {renderContent()}
 
