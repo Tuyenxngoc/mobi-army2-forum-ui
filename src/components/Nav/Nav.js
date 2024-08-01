@@ -8,7 +8,11 @@ const cx = classNames.bind(Style);
 const navItems = [
     { path: '/', text: 'Trang Chủ' },
     { path: '/info', text: 'Giới Thiệu' },
-    { path: '/forum', text: 'Diễn Đàn' },
+    {
+        path: '/forum',
+        text: 'Diễn Đàn',
+        subPaths: ['/admin', '/post', '/player', '/notification', '/following-post', '/clan'],
+    },
 ];
 
 function Nav() {
@@ -19,7 +23,10 @@ function Nav() {
         const currentPath = location.pathname;
         let index = -1;
         for (let i = navItems.length - 1; i >= 0; i--) {
-            if (currentPath.startsWith(navItems[i].path)) {
+            if (
+                currentPath.startsWith(navItems[i].path) ||
+                (navItems[i].subPaths && navItems[i].subPaths.some((subPath) => currentPath.startsWith(subPath)))
+            ) {
                 index = i;
                 break;
             }

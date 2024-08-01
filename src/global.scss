@@ -43,19 +43,32 @@ ol {
     list-style: none;
 }
 
-.custom-width-630 {
-    max-width: 630px;
-    padding: 0;
-}
-
 .box-container {
     background: var(--background-color);
     border: 2px solid var(--border-color);
     color: var(--text-color);
 }
 
+.custom-width-630 {
+    max-width: 630px;
+    padding: 0;
+}
+
 .custom-quill {
     background-color: white;
     border-radius: 0.375rem;
     color: black;
+}
+
+.custom-bg-primary {
+    background-color: var(--body-color);
+}
+
+.forum-header {
+    padding: 2px 5px;
+    background-color: #1d78b6;
+    border-bottom: 2px solid var(--border-color);
+    a {
+        color: white;
+    }
 }

@@ -119,7 +119,7 @@ function Forum() {
     }, [filters]);
 
     return (
-        <div className={cx('wrapper')}>
+        <div className="custom-bg-primary">
             <PlayerActions />
 
             {isAuthenticated && (
