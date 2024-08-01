@@ -314,7 +314,7 @@ function PostManagement() {
     };
 
     return (
-        <>
+        <div className="box-container">
             {contextHolder}
 
             <h3 className="p-2 pb-0"> Quản lý bài viết </h3>
@@ -361,7 +361,7 @@ function PostManagement() {
                 onRowsPerPageChange={handleChangeRowsPerPage}
                 isLoading={isLoading}
             />
-        </>
+        </div>
     );
 }
 

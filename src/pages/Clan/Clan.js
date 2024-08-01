@@ -131,7 +131,7 @@ function Clan() {
     };
 
     return (
-        <>
+        <div className="box-container">
             <h3 className="p-2 pb-0">Danh sách biệt đội</h3>
 
             <div className="p-2">
@@ -169,7 +169,7 @@ function Clan() {
                 onRowsPerPageChange={handleChangeRowsPerPage}
                 isLoading={isLoading}
             />
-        </>
+        </div>
     );
 }
 

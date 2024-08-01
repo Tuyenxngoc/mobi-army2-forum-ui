@@ -56,11 +56,11 @@ function PlayerInfo() {
     };
 
     return (
-        <>
+        <div className="box-container">
             <h3 className="p-2 pb-0">Hồ Sơ Của Tôi</h3>
 
             {renderContent()}
-        </>
+        </div>
     );
 }
 

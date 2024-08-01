@@ -27,6 +27,7 @@ import PlayerInfo from './pages/Player/PlayerInfo';
 import Clan from './pages/Clan/Clan';
 import CreateClan from './pages/Clan/CreateClan';
 import ClanInfo from './pages/Clan/ClanInfo';
+import ForumLayout from './layouts/ForumLayout';
 
 function App() {
     return (
@@ -35,32 +36,35 @@ function App() {
                 <Route path="/" element={<DefaultLayout />}>
                     <Route index element={<Home />} />
                     <Route path="info" element={<Info />} />
-                    <Route path="forum" element={<Forum />} />
                     <Route path="login" element={<Login />} />
                     <Route path="register" element={<Register />} />
                     <Route path="forget-password" element={<ForgetPassword />} />
                     <Route path="terms" element={<Terms />} />
                     <Route path="/verify" element={<ConfirmEmail />} />
-                    <Route path="post/:postId" element={<PostDetail />} />
 
-                    <Route element={<RequireAuth />}>
-                        <Route path="post/new" element={<NewPost />} />
-                        <Route path="notification" element={<Notification />} />
-                        <Route path="following-post" element={<FollowingPosts />} />
-                        <Route path="player/info" element={<PlayerInfo />} />
-                        <Route path="clan" element={<Clan />} />
-                        <Route path="clan/:clanId" element={<ClanInfo />} />
-                        <Route path="clan/new" element={<CreateClan />} />
-                    </Route>
+                    <Route element={<ForumLayout />}>
+                        <Route path="forum" element={<Forum />} />
+                        <Route path="post/:postId" element={<PostDetail />} />
 
-                    <Route path="admin" element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.SuperAdmin]} />}>
-                        <Route path="notification/new" element={<NewNotification />} />
-                        <Route path="player" element={<PlayerManagement />} />
-                        <Route path="post" element={<PostManagement />} />
-                        <Route path="post/:postId" element={<UpdatePost />} />
-                        <Route path="category" element={<CategoryManagement />} />
-                        <Route path="category/new" element={<AddCategory />} />
-                        <Route path="category/:categoryId" element={<EditCategory />} />
+                        <Route element={<RequireAuth />}>
+                            <Route path="post/new" element={<NewPost />} />
+                            <Route path="notification" element={<Notification />} />
+                            <Route path="following-post" element={<FollowingPosts />} />
+                            <Route path="player/info" element={<PlayerInfo />} />
+                            <Route path="clan" element={<Clan />} />
+                            <Route path="clan/:clanId" element={<ClanInfo />} />
+                            <Route path="clan/new" element={<CreateClan />} />
+                        </Route>
+
+                        <Route path="admin" element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.SuperAdmin]} />}>
+                            <Route path="notification/new" element={<NewNotification />} />
+                            <Route path="player" element={<PlayerManagement />} />
+                            <Route path="post" element={<PostManagement />} />
+                            <Route path="post/:postId" element={<UpdatePost />} />
+                            <Route path="category" element={<CategoryManagement />} />
+                            <Route path="category/new" element={<AddCategory />} />
+                            <Route path="category/:categoryId" element={<EditCategory />} />
+                        </Route>
                     </Route>
 
                     <Route path="access-denied" element={<AccessDenied />} />

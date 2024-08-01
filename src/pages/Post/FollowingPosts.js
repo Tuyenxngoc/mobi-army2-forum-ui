@@ -89,7 +89,7 @@ function FollowingPosts() {
     };
 
     return (
-        <>
+        <div className="box-container">
             <h3 className="p-2 pb-0">Các bài viết đang theo dõi</h3>
 
             {renderContent()}
@@ -102,7 +102,7 @@ function FollowingPosts() {
                 onRowsPerPageChange={handleChangeRowsPerPage}
                 isLoading={isLoading}
             />
-        </>
+        </div>
     );
 }
 

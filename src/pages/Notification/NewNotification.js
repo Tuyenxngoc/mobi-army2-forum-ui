@@ -56,7 +56,7 @@ function NewNotification() {
     }
 
     return (
-        <>
+        <div className="box-container">
             {contextHolder}
 
             <h3 className="p-2 pb-0">Thêm thông báo mới</h3>
@@ -122,7 +122,7 @@ function NewNotification() {
                     </Button>
                 </div>
             </form>
-        </>
+        </div>
     );
 }
 

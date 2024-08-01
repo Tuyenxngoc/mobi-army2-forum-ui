@@ -94,7 +94,7 @@ function NewPost() {
     }, []);
 
     return (
-        <div className="p-2">
+        <div className="box-container p-2">
             {contextHolder}
 
             <h3>Tạo bài viết</h3>

@@ -132,7 +132,7 @@ function Notification() {
         );
     };
     return (
-        <>
+        <div className="box-container">
             {contextHolder}
 
             <Modal
@@ -181,7 +181,7 @@ function Notification() {
                 onRowsPerPageChange={handleChangeRowsPerPage}
                 isLoading={isLoading}
             />
-        </>
+        </div>
     );
 }
 

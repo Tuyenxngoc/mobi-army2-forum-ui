@@ -44,7 +44,7 @@ function AddCategory() {
     });
 
     return (
-        <div className="p-2">
+        <div className="box-container p-2">
             {contextHolder}
 
             <h3>Tạo danh mục</h3>

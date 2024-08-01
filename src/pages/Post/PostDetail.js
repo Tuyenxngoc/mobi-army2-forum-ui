@@ -87,7 +87,7 @@ function PostDetail() {
     }, [postId]);
 
     return (
-        <>
+        <div className="box-container">
             {isPostLoading ? (
                 <>
                     <div className={cx('container')}>
@@ -184,7 +184,7 @@ function PostDetail() {
                 )
             )}
             {post && <CommentsSection postId={postId} postLocked={post.locked} />}
-        </>
+        </div>
     );
 }
 

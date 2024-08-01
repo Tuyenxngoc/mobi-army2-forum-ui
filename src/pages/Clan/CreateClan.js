@@ -99,7 +99,7 @@ function CreateClan() {
     }, []);
 
     return (
-        <div className="p-2">
+        <div className="box-container p-2">
             {contextHolder}
 
             <h3>Đăng ký thành lập đội</h3>

@@ -10,7 +10,6 @@ import Pagination from '~/components/Pagination';
 
 import { getAllCategories } from '~/services/categoryService';
 import { getPosts } from '~/services/postService';
-import PlayerActions from '~/components/PlayerActions/PlayerActions';
 import { INITIAL_FILTERS, INITIAL_META, ROLES } from '~/common/contans';
 import { Button, Skeleton } from 'antd';
 import { useNavigate } from 'react-router-dom';
@@ -119,9 +118,7 @@ function Forum() {
     }, [filters]);
 
     return (
-        <div className="custom-bg-primary">
-            <PlayerActions />
-
+        <>
             {isAuthenticated && (
                 <div className="box-container p-2 mb-1">
                     <Button size="small" type="default" onClick={handleNewPostClick}>
@@ -205,7 +202,7 @@ function Forum() {
                     isLoading={isPostsLoading}
                 />
             </main>
-        </div>
+        </>
     );
 }
 

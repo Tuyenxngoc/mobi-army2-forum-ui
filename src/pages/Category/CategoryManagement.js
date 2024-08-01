@@ -192,7 +192,7 @@ function CategoryManagement() {
     };
 
     return (
-        <>
+        <div className="box-container">
             {contextHolder}
 
             <h3 className="p-2 pb-0"> Quản lý danh mục </h3>
@@ -230,7 +230,7 @@ function CategoryManagement() {
                 onRowsPerPageChange={handleChangeRowsPerPage}
                 isLoading={isLoading}
             />
-        </>
+        </div>
     );
 }
 

@@ -109,7 +109,7 @@ function UpdatePost() {
     });
 
     return (
-        <div className="p-2">
+        <div className="box-container p-2">
             {contextHolder}
 
             <h3>Sửa bài viết</h3>
