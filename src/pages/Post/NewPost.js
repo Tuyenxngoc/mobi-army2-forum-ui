@@ -94,11 +94,15 @@ function NewPost() {
     }, []);
 
     return (
-        <div className="box-container p-2">
+        <div className="box-container">
             {contextHolder}
 
-            <h3>Tạo bài viết</h3>
-            <form onSubmit={formik.handleSubmit}>
+            <div className="forum-header">
+                <Link to="/forum">Quay lại</Link>
+            </div>
+
+            <h3 className="p-2 pb-0">Tạo bài viết</h3>
+            <form className="p-2" onSubmit={formik.handleSubmit}>
                 <div className="form-group mb-2">
                     <label htmlFor="title">Tiêu đề</label>
                     <input

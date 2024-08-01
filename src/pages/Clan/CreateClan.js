@@ -5,6 +5,7 @@ import { Button, message } from 'antd';
 
 import { createClan, getclanIcons } from '~/services/clanService';
 import { BASE_URL } from '~/common/contans';
+import { Link } from 'react-router-dom';
 
 const defaultValue = {
     name: '',
@@ -99,13 +100,17 @@ function CreateClan() {
     }, []);
 
     return (
-        <div className="box-container p-2">
+        <div className="box-container">
             {contextHolder}
 
-            <h3>Đăng ký thành lập đội</h3>
-            <small className="form-text text-muted">Lưu ý: cần điền thông tin chính xác để lấy lại mật khẩu.</small>
+            <div className="forum-header">
+                <Link to="/forum">Quay lại</Link>
+            </div>
 
-            <form className="mt-4" onSubmit={formik.handleSubmit}>
+            <h3 className="p-2 pb-0">Đăng ký thành lập đội</h3>
+            <small className="form-text text-muted p-2">Lưu ý: cần điền thông tin chính xác để lấy lại mật khẩu.</small>
+
+            <form className="p-2 mt-4" onSubmit={formik.handleSubmit}>
                 <div className="form-group mb-2">
                     <label htmlFor="name">Tên đội</label>
                     <input

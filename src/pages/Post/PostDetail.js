@@ -88,6 +88,10 @@ function PostDetail() {
 
     return (
         <div className="box-container">
+            <div className="forum-header">
+                <Link to="/forum">Quay lại</Link>
+            </div>
+
             {isPostLoading ? (
                 <>
                     <div className={cx('container')}>

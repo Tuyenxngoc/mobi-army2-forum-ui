@@ -9,6 +9,7 @@ import 'react-quill/dist/quill.core.css';
 
 import { createPlayerNotification } from '~/services/playerNotificationService';
 import { formats, modules } from '~/common/editorConfig';
+import { Link } from 'react-router-dom';
 
 const validationSchema = yup.object({
     title: yup
@@ -58,6 +59,10 @@ function NewNotification() {
     return (
         <div className="box-container">
             {contextHolder}
+
+            <div className="forum-header">
+                <Link to="/forum">Quay lại</Link>
+            </div>
 
             <h3 className="p-2 pb-0">Thêm thông báo mới</h3>
 

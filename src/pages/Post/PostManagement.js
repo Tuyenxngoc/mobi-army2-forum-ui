@@ -317,6 +317,10 @@ function PostManagement() {
         <div className="box-container">
             {contextHolder}
 
+            <div className="forum-header">
+                <Link to="/forum">Quay lại</Link>
+            </div>
+
             <h3 className="p-2 pb-0"> Quản lý bài viết </h3>
 
             <div className="p-2">

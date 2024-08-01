@@ -132,6 +132,10 @@ function Clan() {
 
     return (
         <div className="box-container">
+            <div className="forum-header">
+                <Link to="/forum">Quay lại</Link>
+            </div>
+
             <h3 className="p-2 pb-0">Danh sách biệt đội</h3>
 
             <div className="p-2">

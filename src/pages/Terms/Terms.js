@@ -1,6 +1,6 @@
 function Terms() {
     return (
-        <main className="box-container p-2">
+        <main className="box-container p-2 border-top-0">
             <table border={0} cellSpacing={0} style={{ width: '100%' }}>
                 <tbody>
                     <tr>

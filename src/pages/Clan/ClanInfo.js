@@ -1,6 +1,6 @@
 import { Button, message, Spin } from 'antd';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import useAuth from '~/hooks/useAuth';
 import { getClanById, joinClan } from '~/services/clanService';
 
@@ -78,6 +78,10 @@ function ClanInfo() {
 
     return (
         <div className="box-container">
+            <div className="forum-header">
+                <Link to="/clan">Quay lại</Link>
+            </div>
+
             <h3 className="p-2 pb-0">Thông tin biệt đội</h3>
 
             {contextHolder}

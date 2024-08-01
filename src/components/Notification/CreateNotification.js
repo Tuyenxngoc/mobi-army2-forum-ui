@@ -52,7 +52,8 @@ function CreateNotification({ onAddNotification, messageApi }) {
 
     return (
         <div className="box-container p-2">
-            <h3>Thêm thông báo mới</h3>
+            <h3 className="pb-0">Thêm thông báo mới</h3>
+
             <form onSubmit={formik.handleSubmit}>
                 <div className="form-group mb-2">
                     <label htmlFor="inputTitle">Tiêu đề</label>

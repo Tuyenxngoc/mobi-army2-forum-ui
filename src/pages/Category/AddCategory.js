@@ -4,6 +4,7 @@ import * as yup from 'yup';
 import { Button, message } from 'antd';
 
 import { createCategory } from '~/services/categoryService';
+import { Link } from 'react-router-dom';
 
 const validationSchema = yup.object({
     name: yup
@@ -44,12 +45,16 @@ function AddCategory() {
     });
 
     return (
-        <div className="box-container p-2">
+        <div className="box-container">
             {contextHolder}
 
-            <h3>Tạo danh mục</h3>
+            <div className="forum-header">
+                <Link to="/admin/category">Quay lại</Link>
+            </div>
 
-            <form onSubmit={formik.handleSubmit}>
+            <h3 className="p-2 pb-0">Tạo danh mục</h3>
+
+            <form className="p-2" onSubmit={formik.handleSubmit}>
                 <div className="form-group mb-2">
                     <label htmlFor="name">Tên danh mục</label>
                     <input
