@@ -103,12 +103,14 @@ function Login() {
                         Đăng nhập
                     </Button>
                 </div>
-            </form>
 
-            <Button type="default" href={BASE_URL + '/oauth2/authorization/google'}>
-                <img width={16} src={images.google} alt="Google" />
-                Đăng nhập với Google
-            </Button>
+                <div className={cx('formControl')}>
+                    <Button type="default" href={BASE_URL + '/oauth2/authorization/google'}>
+                        <img width={16} src={images.google} alt="Google" />
+                        Đăng nhập với Google
+                    </Button>
+                </div>
+            </form>
 
             <div className={cx('footer')}>
                 <div className={cx('register')}>

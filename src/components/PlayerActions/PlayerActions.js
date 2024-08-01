@@ -3,19 +3,17 @@ import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '~/hooks/useAuth';
 import images from '~/assets';
 
-import { ROLES } from '~/common/contans';
 import { Button } from 'antd';
 
-const allowedRoles = {
-    [ROLES.SuperAdmin]: true,
-    [ROLES.Admin]: true,
-};
+import Style from './PlayerActions.module.scss';
+import classNames from 'classnames/bind';
+
+const cx = classNames.bind(Style);
 
 function PlayerActions() {
     const navigate = useNavigate();
-    const { isAuthenticated, player, logout } = useAuth();
 
-    const hasRequiredRole = allowedRoles[player.roleName];
+    const { isAuthenticated, player, logout } = useAuth();
 
     const handleLoginClick = () => {
         navigate('/login');
@@ -32,49 +30,28 @@ function PlayerActions() {
     return (
         <div className="text-center p-2">
             {isAuthenticated ? (
-                <>
-                    <div>Xin chào {player.username}</div>
-                    <Button size="small" onClick={handleLogoutClick}>
-                        Đăng xuất
-                    </Button>
+                <ul className="nav">
+                    <li className="me-2">
+                        <Link to="/player/info">Bản thân</Link>
+                    </li>
+                    <li className="me-2">
+                        <Link to="/notification">Thông báo</Link>
+                    </li>
+                    <li>
+                        <Link to="/">Tin nhắn</Link>
+                    </li>
 
-                    <div>
-                        <Link to={'/player/info'}>Hồ Sơ Của Tôi</Link>
-                    </div>
-
-                    <div>
-                        <Link to={'/post/new'}>Bài viết mới</Link>
-                    </div>
-
-                    <div>
-                        <Link to={'/notification'}>Thông báo</Link>
-                    </div>
-
-                    <div>
-                        <Link to={'/following-post'}>Theo giõi</Link>
-                    </div>
-
-                    <div>
-                        <Link to={'/clan'}>Biệt đội</Link>
-                    </div>
-
-                    {hasRequiredRole && (
-                        <>
-                            <div>
-                                <Link to={'/admin/notification/new'}>Thêm thông báo</Link>
+                    <li className="ms-auto">
+                        <div className={cx('player-info')}>
+                            <div className="me-2">
+                                Xin chào <b>{player.username}</b>
                             </div>
-                            <div>
-                                <Link to={'/admin/player'}>Quản lý thành viên</Link>
-                            </div>
-                            <div>
-                                <Link to={'/admin/post'}>Quản lý bài viết</Link>
-                            </div>
-                            <div>
-                                <Link to={'/admin/category'}>Quản lý danh mục</Link>
-                            </div>
-                        </>
-                    )}
-                </>
+                            <Button size="small" onClick={handleLogoutClick}>
+                                Đăng xuất
+                            </Button>
+                        </div>
+                    </li>
+                </ul>
             ) : (
                 <>
                     <Button size="small" type="primary" onClick={handleLoginClick}>
