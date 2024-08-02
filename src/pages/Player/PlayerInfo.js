@@ -60,16 +60,10 @@ function PlayerInfo() {
                     <img width={100} src={BASE_URL + player.avatar} alt="avt" />
                 </div>
                 <ol className={cx('list')}>
-                    <li>
-                        ID: <span className="text-black">{playerProfile.id}</span>
-                    </li>
+                    <li>ID: {playerProfile.id}</li>
                     <li>Online: {playerProfile.online ? <Badge status="success" /> : <Badge status="default" />}</li>
-                    <li>
-                        Xu: <span className="text-black">{playerProfile.xu}</span>
-                    </li>
-                    <li>
-                        X2 EXP Time: <span className="text-black">{playerProfile.x2XpTime || 'Không có'}</span>
-                    </li>
+                    <li>Xu: {playerProfile.xu}</li>
+                    <li>X2 EXP Time: {playerProfile.x2XpTime || 'Không có'}</li>
                     <li>
                         Biệt đội:{' '}
                         {player.clan ? (
@@ -78,18 +72,12 @@ function PlayerInfo() {
                                 [<img src={BASE_URL + player.clan.icon} alt="icon" />]
                             </>
                         ) : (
-                            <span className="text-black">Chưa tham gia biệt đội</span>
+                            'Chưa tham gia biệt đội'
                         )}
                     </li>
-                    <li>
-                        Lượng: <span className="text-black">{playerProfile.luong}</span>
-                    </li>
-                    <li>
-                        Email: <span className="text-black">{playerProfile.email}</span>
-                    </li>
-                    <li>
-                        Số điện thoại: <span className="text-black">{playerProfile.phoneNumber}</span>
-                    </li>
+                    <li>Lượng: {playerProfile.luong}</li>
+                    <li>Email: {playerProfile.email}</li>
+                    <li>Số điện thoại: {playerProfile.phoneNumber}</li>
                 </ol>
 
                 <b>Nhân Vật</b>
@@ -120,29 +108,41 @@ function PlayerInfo() {
                     </tbody>
                 </table>
 
-                <h4 className="forum-border-bottom mb-2">Chức Năng Tài Khoản</h4>
-                <div className="button-group">
-                    <Button>Đổi tên tài khoản</Button>
-                    <Button>Đổi mật khẩu</Button>
-                    <Button>Rương đồ</Button>
-                    <Button>Cộng điểm nâng cấp</Button>
-                </div>
+                <div className="forum-border-bottom">Chức Năng Tài Khoản</div>
+                <ul>
+                    <li className="py-2">
+                        <Button>Đổi tên tài khoản</Button>
+                    </li>
+                    <li className="py-2">
+                        <Button>Đổi mật khẩu</Button>
+                    </li>
+                    <li className="py-2">
+                        <Button>Rương đồ</Button>
+                    </li>
+                    <li className="py-2">
+                        <Button>Cộng điểm nâng cấp</Button>
+                    </li>
+                </ul>
 
-                <h4 className="forum-border-bottom mb-2">Chức Năng Đặc Biệt</h4>
-                <div className="button-group">
-                    <Button>Mở rương đồ</Button>
-                    <small>Mở Rương Đồ: Để Bán Đồ Trong Game</small>
-                </div>
-                <div className="button-group">
-                    <Button>Mở tìm bạn</Button>
-                    <small>Mở Tìm Bạn Chơi: Cho Phép Mọi Người Mời Chơi</small>
-                </div>
+                <div className="forum-border-bottom">Chức Năng Đặc Biệt</div>
+                <ul>
+                    <li className="py-2">
+                        <Button>Mở rương đồ</Button>
+                        <div>Mở Rương Đồ: Để Bán Đồ Trong Game</div>
+                    </li>
+                    <li className="py-2">
+                        <Button>Mở tìm bạn</Button>
+                        <div>Mở Tìm Bạn Chơi: Cho Phép Mọi Người Mời Chơi</div>
+                    </li>
+                </ul>
 
-                <h4 className="forum-border-bottom mb-2">Chức Năng Khác</h4>
-                <div className="button-group">
-                    <Button>Biệt đội</Button>
-                    <small>Biệt Đội - Hãy cùng nhau chung tay làm nên 1 tên tuổi</small>
-                </div>
+                <div className="forum-border-bottom">Chức Năng Khác</div>
+                <ul>
+                    <li className="py-2">
+                        <Button>Biệt đội</Button>
+                        <div>Biệt Đội - Hãy cùng nhau chung tay làm nên 1 tên tuổi</div>
+                    </li>
+                </ul>
             </div>
         );
     };

@@ -1,7 +1,7 @@
 @import 'normalize.css';
 
 :root {
-    --text-color: #456ad4;
+    --text-color: #000000;
     --link-color: #1757a6;
     --background-color: #c4ddfb;
     --body-color: #009cdf;
@@ -37,7 +37,6 @@ ol {
 .box-container {
     background: var(--background-color);
     border: 2px solid var(--border-color);
-    color: var(--text-color);
 }
 
 .custom-width-630 {
