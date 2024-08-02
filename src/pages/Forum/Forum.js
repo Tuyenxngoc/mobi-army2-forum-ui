@@ -121,27 +121,27 @@ function Forum() {
         <>
             {isAuthenticated && (
                 <div className="box-container p-2 mb-1">
-                    <Button size="small" type="default" onClick={handleNewPostClick}>
+                    <Button className="me-2" size="small" type="default" onClick={handleNewPostClick}>
                         Bài viết mới
                     </Button>
-                    <Button size="small" type="default" onClick={handleFollowClick}>
+                    <Button className="me-2" size="small" type="default" onClick={handleFollowClick}>
                         Theo giõi
                     </Button>
                 </div>
             )}
 
             {hasRequiredRole && (
-                <div className={cx('box-container', 'admin', 'p-2', 'mb-1')}>
-                    <Button size="small" type="primary" onClick={handleManagePostsClick}>
+                <div className="box-container admin p-2 mb-1">
+                    <Button className="me-2" size="small" type="primary" onClick={handleManagePostsClick}>
                         Quản lý bài viết
                     </Button>
-                    <Button size="small" type="primary" onClick={handleManageCategoriesClick}>
+                    <Button className="me-2" size="small" type="primary" onClick={handleManageCategoriesClick}>
                         Quản lý danh mục
                     </Button>
-                    <Button size="small" type="primary" onClick={handleManageMembersClick}>
+                    <Button className="me-2" size="small" type="primary" onClick={handleManageMembersClick}>
                         Quản lý thành viên
                     </Button>
-                    <Button size="small" type="primary" onClick={handleAddNotificationClick}>
+                    <Button className="me-2" size="small" type="primary" onClick={handleAddNotificationClick}>
                         Thêm thông báo
                     </Button>
                 </div>

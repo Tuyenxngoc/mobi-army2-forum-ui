@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Skeleton, message } from 'antd';
+import { Button, Skeleton, message } from 'antd';
 import queryString from 'query-string';
 import classNames from 'classnames/bind';
 import Style from './PostDetail.module.scss';
@@ -111,7 +111,9 @@ function CommentsSection({ postId, postLocked }) {
                         ) : (
                             <div className={cx('login-session')}>
                                 Đăng nhập để bình luận
-                                <span onClick={handleLoginButtonClick}>Đăng nhập</span>
+                                <span className="text-primary ms-1" onClick={handleLoginButtonClick}>
+                                    Đăng nhập
+                                </span>
                             </div>
                         ))}
                 </div>

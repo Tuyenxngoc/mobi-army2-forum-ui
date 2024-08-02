@@ -11,7 +11,6 @@
     span {
         font-size: 10px;
         line-height: 12px;
-        color: black;
     }
 }
 
@@ -21,9 +20,9 @@
     align-items: center;
     height: var(--default-layout-header-height);
     background-image: url('../../assets/images/topbanner.png');
-    background-repeat: no-repeat; // Không lặp lại hình ảnh;
-    background-position: center; // Đặt hình ảnh ở giữa;
-    background-size: cover; // Chọn kích thước phù hợp để che kín phần nền;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
 }
 
 .logoLink {

@@ -1,6 +1,6 @@
 import { Badge, Button, Spin } from 'antd';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { BASE_URL } from '~/common/contans';
 import useAuth from '~/hooks/useAuth';
 import { getPlayerInfo } from '~/services/playerNotificationService';
@@ -13,10 +13,16 @@ const cx = classNames.bind(Style);
 function PlayerInfo() {
     const { player } = useAuth();
 
+    const navigate = useNavigate();
+
     const [playerProfile, setPlayerProfile] = useState({});
 
     const [isLoading, setIsLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState(null);
+
+    const handleButtonNavigation = (path) => {
+        navigate(path);
+    };
 
     useEffect(() => {
         const fetchPlayerInfo = async () => {
@@ -54,7 +60,7 @@ function PlayerInfo() {
 
         return (
             <div className="p-2">
-                <h3 className="forum-border-bottom">Hồ Sơ Của Tôi</h3>
+                <h3 className="forum-border-bottom text-primary">Hồ Sơ Của Tôi</h3>
 
                 <div className="text-center">
                     <img width={100} src={BASE_URL + player.avatar} alt="avt" />
@@ -108,39 +114,39 @@ function PlayerInfo() {
                     </tbody>
                 </table>
 
-                <div className="forum-border-bottom">Chức Năng Tài Khoản</div>
+                <div className="forum-border-bottom text-primary">Chức Năng Tài Khoản</div>
                 <ul>
                     <li className="py-2">
-                        <Button>Đổi tên tài khoản</Button>
+                        <Button onClick={() => handleButtonNavigation('/change-username')}>Đổi tên tài khoản</Button>
                     </li>
                     <li className="py-2">
-                        <Button>Đổi mật khẩu</Button>
+                        <Button onClick={() => handleButtonNavigation('/change-password')}>Đổi mật khẩu</Button>
                     </li>
                     <li className="py-2">
-                        <Button>Rương đồ</Button>
+                        <Button onClick={() => handleButtonNavigation('/inventory')}>Rương đồ</Button>
                     </li>
                     <li className="py-2">
-                        <Button>Cộng điểm nâng cấp</Button>
+                        <Button onClick={() => handleButtonNavigation('/upgrade-points')}>Cộng điểm nâng cấp</Button>
                     </li>
                 </ul>
 
-                <div className="forum-border-bottom">Chức Năng Đặc Biệt</div>
+                <div className="forum-border-bottom text-primary mt-2">Chức Năng Đặc Biệt</div>
                 <ul>
                     <li className="py-2">
-                        <Button>Mở rương đồ</Button>
-                        <div>Mở Rương Đồ: Để Bán Đồ Trong Game</div>
+                        <Button onClick={() => handleButtonNavigation('/change-username')}>Mở rương đồ</Button>
+                        <div className="form-text">Mở Rương Đồ: Để Bán Đồ Trong Game</div>
                     </li>
                     <li className="py-2">
-                        <Button>Mở tìm bạn</Button>
-                        <div>Mở Tìm Bạn Chơi: Cho Phép Mọi Người Mời Chơi</div>
+                        <Button onClick={() => handleButtonNavigation('/change-username')}>Mở tìm bạn</Button>
+                        <div className="form-text">Mở Tìm Bạn Chơi: Cho Phép Mọi Người Mời Chơi</div>
                     </li>
                 </ul>
 
-                <div className="forum-border-bottom">Chức Năng Khác</div>
+                <div className="forum-border-bottom text-primary mt-2">Chức Năng Khác</div>
                 <ul>
                     <li className="py-2">
-                        <Button>Biệt đội</Button>
-                        <div>Biệt Đội - Hãy cùng nhau chung tay làm nên 1 tên tuổi</div>
+                        <Button onClick={() => handleButtonNavigation('/clan')}>Biệt đội</Button>
+                        <div className="form-text">Biệt Đội - Hãy cùng nhau chung tay làm nên 1 tên tuổi</div>
                     </li>
                 </ul>
             </div>

@@ -54,7 +54,7 @@ function PlayerActions() {
                 </ul>
             ) : (
                 <>
-                    <Button size="small" type="primary" onClick={handleLoginClick}>
+                    <Button size="small" className="me-2" type="primary" onClick={handleLoginClick}>
                         Đăng nhập
                     </Button>
                     <Button size="small" type="primary" onClick={handleRegisterClick}>
