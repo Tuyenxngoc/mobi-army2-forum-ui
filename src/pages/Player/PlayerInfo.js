@@ -1,12 +1,12 @@
-import { Badge, Button, Spin } from 'antd';
+import { Badge, Button, message, Spin } from 'antd';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { BASE_URL } from '~/common/contans';
 import useAuth from '~/hooks/useAuth';
-import { getPlayerInfo } from '~/services/playerNotificationService';
 
 import Style from './PlayerInfo.module.scss';
 import classNames from 'classnames/bind';
+import { getPlayerInfo, toggleEquipmentChestLock, toggleInvitationLock } from '~/services/playerService';
 
 const cx = classNames.bind(Style);
 
@@ -20,8 +20,40 @@ function PlayerInfo() {
     const [isLoading, setIsLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState(null);
 
+    const [messageApi, contextHolder] = message.useMessage();
+
     const handleButtonNavigation = (path) => {
         navigate(path);
+    };
+
+    const handleToggleChestLock = async () => {
+        try {
+            const response = await toggleEquipmentChestLock();
+            const { message: ms, data } = response.data.data;
+            setPlayerProfile((prevProfile) => ({
+                ...prevProfile,
+                chestLocked: data,
+            }));
+
+            messageApi.success(ms);
+        } catch (error) {
+            messageApi.error('Không thể cập nhật trạng thái rương đồ: ' + error.message);
+        }
+    };
+
+    const handleToggleInvitationLock = async () => {
+        try {
+            const response = await toggleInvitationLock();
+            const { message: ms, data } = response.data.data;
+            setPlayerProfile((prevProfile) => ({
+                ...prevProfile,
+                invitationLocked: data,
+            }));
+
+            messageApi.success(ms);
+        } catch (error) {
+            messageApi.error('Không thể cập nhật trạng thái tìm bạn: ' + error.message);
+        }
     };
 
     useEffect(() => {
@@ -133,11 +165,19 @@ function PlayerInfo() {
                 <div className="forum-border-bottom text-primary mt-2">Chức Năng Đặc Biệt</div>
                 <ul>
                     <li className="py-2">
-                        <Button onClick={() => handleButtonNavigation('/change-username')}>Mở rương đồ</Button>
+                        <Button type="primary" danger={playerProfile.chestLocked} onClick={handleToggleChestLock}>
+                            {playerProfile.chestLocked ? 'Mở rương đồ' : 'Khóa rương đồ'}
+                        </Button>
                         <div className="form-text">Mở Rương Đồ: Để Bán Đồ Trong Game</div>
                     </li>
                     <li className="py-2">
-                        <Button onClick={() => handleButtonNavigation('/change-username')}>Mở tìm bạn</Button>
+                        <Button
+                            type="primary"
+                            danger={playerProfile.invitationLocked}
+                            onClick={handleToggleInvitationLock}
+                        >
+                            {playerProfile.invitationLocked ? 'Mở tìm bạn' : 'Khóa tìm bạn'}
+                        </Button>
                         <div className="form-text">Mở Tìm Bạn Chơi: Cho Phép Mọi Người Mời Chơi</div>
                     </li>
                 </ul>
@@ -155,6 +195,8 @@ function PlayerInfo() {
 
     return (
         <div className="box-container">
+            {contextHolder}
+
             <div className="forum-header">
                 <Link to="/forum">Quay lại</Link>
             </div>
