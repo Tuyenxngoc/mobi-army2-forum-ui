@@ -115,7 +115,7 @@ function Register() {
     );
 
     return (
-        <main className={cx('wrapper')}>
+        <main className={cx('wrapper', 'box-container', 'p-2')}>
             {contextHolder}
 
             <form onSubmit={formik.handleSubmit}>

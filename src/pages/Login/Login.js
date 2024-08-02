@@ -89,7 +89,7 @@ function Login() {
     }, [isAuthenticated, navigate]);
 
     return (
-        <main className={cx('wrapper')}>
+        <main className={cx('wrapper', 'box-container', 'p-2')}>
             {contextHolder}
 
             <div className={cx('title')}>Sử dụng tài khoản Mobi Army 2 để đăng nhập.</div>

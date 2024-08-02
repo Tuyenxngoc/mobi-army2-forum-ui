@@ -68,7 +68,7 @@ function ForgetPassword() {
     );
 
     return (
-        <div className={cx('wrapper')}>
+        <div className={cx('wrapper', 'box-container', 'p-2')}>
             {contextHolder}
 
             <div className={cx('title')}>Quên Mật Khẩu</div>
