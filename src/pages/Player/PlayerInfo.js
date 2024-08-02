@@ -73,7 +73,7 @@ function PlayerInfo() {
                                 [<img src={BASE_URL + player.clan.icon} alt="icon" />]
                             </>
                         ) : (
-                            <Link to="/clan">Tham gia biệt đội</Link>
+                            <span className="text-black">Chưa tham gia biệt đội</span>
                         )}
                     </li>
                     <li>
@@ -86,6 +86,33 @@ function PlayerInfo() {
                         Số điện thoại: <span className="text-black">{playerProfile.phoneNumber}</span>
                     </li>
                 </ol>
+
+                <table className="table align-middle">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Tên</th>
+                            <th scope="col">Level</th>
+                            <th scope="col">Xp</th>
+                            <th scope="col">Điểm đã cộng</th>
+                            <th scope="col">Điểm còn lại</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {playerProfile.characters.map((character, index) => (
+                            <tr key={index}>
+                                <th scope="row">
+                                    <img src={BASE_URL + character.avatar} alt="avt" />
+                                </th>
+                                <td>{character.name}</td>
+                                <td>{character.level}</td>
+                                <td>{character.xp}</td>
+                                <td>{JSON.stringify(character.additionalPoints)}</td>
+                                <td>{character.points}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
         );
     };
