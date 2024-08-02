@@ -1,10 +1,19 @@
 import { Badge, Spin } from 'antd';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { BASE_URL } from '~/common/contans';
+import useAuth from '~/hooks/useAuth';
 import { getPlayerInfo } from '~/services/playerNotificationService';
 
+import Style from './PlayerInfo.module.scss';
+import classNames from 'classnames/bind';
+
+const cx = classNames.bind(Style);
+
 function PlayerInfo() {
-    const [player, setPlayer] = useState({});
+    const { player } = useAuth();
+
+    const [playerProfile, setPlayerProfile] = useState({});
 
     const [isLoading, setIsLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState(null);
@@ -15,7 +24,7 @@ function PlayerInfo() {
             setErrorMessage(null);
             try {
                 const response = await getPlayerInfo();
-                setPlayer(response.data.data);
+                setPlayerProfile(response.data.data);
             } catch (error) {
                 setErrorMessage(error.message);
             } finally {
@@ -45,12 +54,38 @@ function PlayerInfo() {
 
         return (
             <div className="p-2">
-                <div>ID: {player.id}</div>
-                <div>Online: {player.online ? <Badge status="success" /> : <Badge status="default" />}</div>
-                <div>Xu: {player.xu}</div>
-                <div>Lượng: {player.luong}</div>
-                <div>Email: {player.email}</div>
-                <div>Số điện thoại: {player.phoneNumber}</div>
+                <div className="text-center">
+                    <img width={100} src={BASE_URL + player.avatar} alt="avt" />
+                </div>
+                <ol className={cx('list')}>
+                    <li>
+                        ID: <span className="text-black">{playerProfile.id}</span>
+                    </li>
+                    <li>Online: {playerProfile.online ? <Badge status="success" /> : <Badge status="default" />}</li>
+                    <li>
+                        Xu: <span className="text-black">{playerProfile.xu}</span>
+                    </li>
+                    <li>
+                        Biệt đội:{' '}
+                        {player.clan ? (
+                            <>
+                                <Link to={`/clan/${player.clan.id}`}>{player.clan.name}</Link>
+                                [<img src={BASE_URL + player.clan.icon} alt="icon" />]
+                            </>
+                        ) : (
+                            <Link to="/clan">Tham gia biệt đội</Link>
+                        )}
+                    </li>
+                    <li>
+                        Lượng: <span className="text-black">{playerProfile.luong}</span>
+                    </li>
+                    <li>
+                        Email: <span className="text-black">{playerProfile.email}</span>
+                    </li>
+                    <li>
+                        Số điện thoại: <span className="text-black">{playerProfile.phoneNumber}</span>
+                    </li>
+                </ol>
             </div>
         );
     };
