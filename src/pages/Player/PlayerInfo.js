@@ -1,4 +1,4 @@
-import { Badge, Spin } from 'antd';
+import { Badge, Button, Spin } from 'antd';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { BASE_URL } from '~/common/contans';
@@ -54,6 +54,8 @@ function PlayerInfo() {
 
         return (
             <div className="p-2">
+                <h3 className="forum-border-bottom">Hồ Sơ Của Tôi</h3>
+
                 <div className="text-center">
                     <img width={100} src={BASE_URL + player.avatar} alt="avt" />
                 </div>
@@ -64,6 +66,9 @@ function PlayerInfo() {
                     <li>Online: {playerProfile.online ? <Badge status="success" /> : <Badge status="default" />}</li>
                     <li>
                         Xu: <span className="text-black">{playerProfile.xu}</span>
+                    </li>
+                    <li>
+                        X2 EXP Time: <span className="text-black">{playerProfile.x2XpTime || 'Không có'}</span>
                     </li>
                     <li>
                         Biệt đội:{' '}
@@ -87,6 +92,7 @@ function PlayerInfo() {
                     </li>
                 </ol>
 
+                <b>Nhân Vật</b>
                 <table className="table align-middle">
                     <thead>
                         <tr>
@@ -113,6 +119,30 @@ function PlayerInfo() {
                         ))}
                     </tbody>
                 </table>
+
+                <h4 className="forum-border-bottom mb-2">Chức Năng Tài Khoản</h4>
+                <div className="button-group">
+                    <Button>Đổi tên tài khoản</Button>
+                    <Button>Đổi mật khẩu</Button>
+                    <Button>Rương đồ</Button>
+                    <Button>Cộng điểm nâng cấp</Button>
+                </div>
+
+                <h4 className="forum-border-bottom mb-2">Chức Năng Đặc Biệt</h4>
+                <div className="button-group">
+                    <Button>Mở rương đồ</Button>
+                    <small>Mở Rương Đồ: Để Bán Đồ Trong Game</small>
+                </div>
+                <div className="button-group">
+                    <Button>Mở tìm bạn</Button>
+                    <small>Mở Tìm Bạn Chơi: Cho Phép Mọi Người Mời Chơi</small>
+                </div>
+
+                <h4 className="forum-border-bottom mb-2">Chức Năng Khác</h4>
+                <div className="button-group">
+                    <Button>Biệt đội</Button>
+                    <small>Biệt Đội - Hãy cùng nhau chung tay làm nên 1 tên tuổi</small>
+                </div>
             </div>
         );
     };
@@ -122,8 +152,6 @@ function PlayerInfo() {
             <div className="forum-header">
                 <Link to="/forum">Quay lại</Link>
             </div>
-
-            <h3 className="p-2 pb-0">Hồ Sơ Của Tôi</h3>
 
             {renderContent()}
         </div>

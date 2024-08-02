@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { message } from 'antd';
+import { Button, message } from 'antd';
 import { checkEmailConfirmed, confirmEmail, resendConfirmationEmail } from '~/services/authService';
 
 const ConfirmEmail = () => {
@@ -94,9 +94,9 @@ const ConfirmEmail = () => {
                     <p>Vui lòng nhấn vào liên kết xác thực đã được gửi đến địa chỉ Email</p>
                     <p>{email}</p>
                     <span> Bạn vẫn chưa nhận được? </span>
-                    <button onClick={handleResendEmail} disabled={counter > 0}>
+                    <Button onClick={handleResendEmail} disabled={counter > 0}>
                         {counter > 0 ? `Gửi lại sau ${counter} giây` : 'Gửi lại'}
-                    </button>
+                    </Button>
                 </>
             )}
         </div>

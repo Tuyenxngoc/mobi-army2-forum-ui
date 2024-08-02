@@ -7,11 +7,16 @@
 }
 
 .button {
+    padding: 0 4px;
     background-color: white;
     border: #e5e5e5 2px solid;
     border-radius: 0;
     font-size: 12px;
     font-weight: bold;
+}
+
+.button + .button {
+    margin-left: 4px;
 }
 
 .active {
