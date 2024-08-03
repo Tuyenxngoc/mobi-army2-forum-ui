@@ -31,3 +31,7 @@ export const logoutToken = () => {
 export const forgetPassword = (values) => {
     return axios.post('auth/forget-password', values);
 };
+
+export const changeUserName = (values) => {
+    return axiosPrivate.put('user/change-username', values);
+};

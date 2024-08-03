@@ -73,14 +73,17 @@ const AuthProvider = ({ children }) => {
         validateToken();
     };
 
-    const logout = async () => {
-        try {
-            await logoutToken();
-            localStorage.removeItem(ACCESS_TOKEN);
-            localStorage.removeItem(REFRESH_TOKEN);
-            setAuthData(defaultAuth);
-        } catch (error) {
-            console.log(error);
+    const logout = async (isLogoutToken = true) => {
+        setAuthData(defaultAuth);
+        localStorage.removeItem(ACCESS_TOKEN);
+        localStorage.removeItem(REFRESH_TOKEN);
+
+        if (isLogoutToken) {
+            try {
+                await logoutToken();
+            } catch (error) {
+                console.log(error);
+            }
         }
     };
 
