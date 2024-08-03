@@ -15,3 +15,7 @@ export const toggleInvitationLock = () => {
 export const toggleEquipmentChestLock = () => {
     return axiosPrivate.put('players/toggle-chest-lock');
 };
+
+export const getPlayerInventory = () => {
+    return axiosPrivate.get('players/inventory');
+};

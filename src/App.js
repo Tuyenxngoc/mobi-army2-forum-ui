@@ -30,6 +30,7 @@ import ClanInfo from './pages/Clan/ClanInfo';
 import ForumLayout from './layouts/ForumLayout';
 import ChangeUserName from './pages/Player/ChangeUserName';
 import ChangePassword from './pages/Player/ChangePassword';
+import Inventory from './pages/Player/Inventory';
 
 function App() {
     return (
@@ -58,6 +59,7 @@ function App() {
                             <Route path="clan/new" element={<CreateClan />} />
                             <Route path="change-username" element={<ChangeUserName />} />
                             <Route path="change-password" element={<ChangePassword />} />
+                            <Route path="inventory" element={<Inventory />} />
                         </Route>
 
                         <Route path="admin" element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.SuperAdmin]} />}>
