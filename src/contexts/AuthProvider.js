@@ -87,11 +87,16 @@ const AuthProvider = ({ children }) => {
         }
     };
 
+    const loadUserInfo = () => {
+        validateToken();
+    };
+
     const contextValues = {
         isAuthenticated: authData.isAuthenticated,
         player: authData.player,
         login,
         logout,
+        loadUserInfo,
     };
 
     if (loading) {
