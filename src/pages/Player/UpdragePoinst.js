@@ -1,10 +1,14 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, InputNumber, message, Spin } from 'antd';
+import { Button, InputNumber, message, Select } from 'antd';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { handleError } from '~/utils/errorHandler';
-import { useEffect, useState } from 'react';
 import { getPlayerCharacter, getPlayerPoints, updatePoints } from '~/services/playerService';
+import Style from './UpdragePoinst.module.scss';
+import classNames from 'classnames/bind';
+
+const cx = classNames.bind(Style);
 
 const defaultValue = {
     playerCharacterId: 0,
@@ -20,9 +24,9 @@ const validationSchema = yup.object({
 
     health: yup
         .number()
-        .required('Sức khỏe không được để trống')
-        .integer('Sức khỏe phải là số nguyên')
-        .min(0, 'Sức khỏe phải là số không âm'),
+        .required('Sinh lực không được để trống')
+        .integer('Sinh lực phải là số nguyên')
+        .min(0, 'Sinh lực phải là số không âm'),
 
     damage: yup
         .number()
@@ -44,33 +48,23 @@ const validationSchema = yup.object({
 
     teammates: yup
         .number()
-        .required('Số đồng đội không được để trống')
-        .integer('Số đồng đội phải là số nguyên')
-        .min(0, 'Số đồng đội phải là số không âm'),
+        .required('Đồng đội không được để trống')
+        .integer('Đồng đội phải là số nguyên')
+        .min(0, 'Đồng đội phải là số không âm'),
 });
 
 function UpdragePoinst() {
     const [playerPoints, setPlayerPoints] = useState({});
     const [characterList, setCharacterList] = useState([]);
 
-    const [isLoadingCharacters, setIsLoadingCharacters] = useState(true);
-    const [characterError, setCharacterError] = useState(null);
-
-    const [isLoadingPoints, setIsLoadingPoints] = useState(true);
-    const [pointsError, setPointsError] = useState(null);
-
     const [messageApi, contextHolder] = message.useMessage();
-
-    const handleCharacterChange = (event) => {
-        const newCharacterId = event.target.value;
-        formik.setFieldValue('playerCharacterId', newCharacterId);
-    };
 
     const handleSubmit = async (values, { setSubmitting }) => {
         try {
             const response = await updatePoints(values);
             if (response.status === 200) {
-                messageApi.success(response.data.data.message);
+                setPlayerPoints(response.data.data);
+                messageApi.success('Cộng điểm thành công');
             }
         } catch (error) {
             handleError(error, formik, messageApi);
@@ -87,170 +81,173 @@ function UpdragePoinst() {
 
     useEffect(() => {
         const fetchPlayerCharacter = async () => {
-            setIsLoadingCharacters(true);
-            setCharacterError(null);
             try {
                 const response = await getPlayerCharacter();
                 const arr = response.data.data;
                 setCharacterList(arr);
-
-                formik.setFieldValue('playerCharacterId', arr[0].id);
+                formik.setFieldValue('playerCharacterId', arr[0]?.id);
             } catch (error) {
-                setCharacterError(error.message);
-            } finally {
-                setIsLoadingCharacters(false);
+                messageApi.error('Có lỗi xảy ra khi tải nhân vật: ' + error.message);
             }
         };
 
         fetchPlayerCharacter();
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
         const fetchPoints = async () => {
-            setIsLoadingPoints(true);
-            setPointsError(null);
             try {
                 const response = await getPlayerPoints(formik.values.playerCharacterId);
-                const pointsData = response.data.data;
-
-                setPlayerPoints(pointsData);
+                setPlayerPoints(response.data.data);
             } catch (error) {
-                setPointsError(error.message);
-            } finally {
-                setIsLoadingPoints(false);
+                messageApi.error('Có lỗi xảy ra khi tải chỉ số: ' + error.message);
             }
         };
 
         if (formik.values.playerCharacterId) {
             fetchPoints();
         }
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [formik.values.playerCharacterId]);
 
-    const renderContent = () => {
-        if (isLoadingCharacters) {
-            return (
-                <div className="alert alert-primary m-2 p-2" role="alert">
-                    Loading... <Spin />
-                </div>
-            );
-        }
+    return (
+        <div className="box-container">
+            {contextHolder}
 
-        if (characterError) {
-            return (
-                <div className="alert alert-danger m-2 p-2" role="alert">
-                    Lỗi: {characterError}
-                </div>
-            );
-        }
+            <div className="forum-header">
+                <Link to="/player/info">Quay lại</Link>
+            </div>
 
-        if (isLoadingPoints) {
-            return (
-                <div className="alert alert-primary m-2 p-2" role="alert">
-                    Loading... <Spin />
-                </div>
-            );
-        }
-
-        return (
             <div className="p-2">
-                <form onSubmit={formik.handleSubmit}>
-                    <div className="form-group mb-2">
-                        <label htmlFor="playerCharacterId">Nhân vật</label>
-                        <select
-                            className="form-control"
-                            id="playerCharacterId"
-                            value={formik.values.playerCharacterId}
-                            onChange={handleCharacterChange}
-                            onBlur={formik.handleBlur}
-                            name="categoryId"
-                        >
-                            {characterList.map((character) => (
-                                <option key={character.id} value={character.id}>
-                                    {character.name}
-                                </option>
-                            ))}
-                        </select>
-                        {formik.touched.playerCharacterId && formik.errors.playerCharacterId ? (
-                            <div className="text-danger">{formik.errors.playerCharacterId}</div>
-                        ) : null}
-                    </div>
+                <div className="forum-border-bottom text-primary mb-2">Cộng Điểm Nâng Cấp</div>
 
-                    <div className="form-group mb-2">
-                        <label htmlFor="health">Sinh lực: {playerPoints.health}</label>
+                <form onSubmit={formik.handleSubmit}>
+                    <div className={cx('form-group')}>
+                        <label className={cx('form-label')} htmlFor="playerCharacterId">
+                            Nhân vật
+                        </label>
+                        <Select
+                            id="playerCharacterId"
+                            options={characterList}
+                            fieldNames={{ label: 'name', value: 'id' }}
+                            value={formik.values.playerCharacterId}
+                            onChange={(value) => formik.setFieldValue('playerCharacterId', value)}
+                            onBlur={formik.handleBlur}
+                            status={
+                                formik.touched.playerCharacterId && formik.errors.playerCharacterId
+                                    ? 'error'
+                                    : undefined
+                            }
+                        />
+                    </div>
+                    {formik.touched.playerCharacterId && formik.errors.playerCharacterId ? (
+                        <div className="text-danger">{formik.errors.playerCharacterId}</div>
+                    ) : null}
+
+                    <div className={cx('form-group')}>
+                        <label className={cx('form-label')} htmlFor="health">
+                            Sinh lực: {playerPoints.health}
+                        </label>
                         <InputNumber
                             id="health"
+                            name="health"
                             min={0}
                             max={10000}
+                            defaultValue={0}
                             value={formik.values.health}
                             onChange={(value) => formik.setFieldValue('health', value)}
                             onBlur={formik.handleBlur}
+                            status={formik.touched.health && formik.errors.health ? 'error' : undefined}
                         />
-                        {formik.touched.health && formik.errors.health ? (
-                            <div className="text-danger">{formik.errors.health}</div>
-                        ) : null}
                     </div>
+                    {formik.touched.health && formik.errors.health ? (
+                        <div className="text-danger">{formik.errors.health}</div>
+                    ) : null}
 
-                    <div className="form-group mb-2">
-                        <label htmlFor="damage">Sát thương: {playerPoints.damage}</label>
+                    <div className={cx('form-group')}>
+                        <label className={cx('form-label')} htmlFor="damage">
+                            Sát thương: {playerPoints.damage}
+                        </label>
                         <InputNumber
                             id="damage"
+                            name="damage"
                             min={0}
                             max={10000}
+                            defaultValue={0}
                             value={formik.values.damage}
                             onChange={(value) => formik.setFieldValue('damage', value)}
                             onBlur={formik.handleBlur}
+                            status={formik.touched.damage && formik.errors.damage ? 'error' : undefined}
                         />
-                        {formik.touched.damage && formik.errors.damage ? (
-                            <div className="text-danger">{formik.errors.damage}</div>
-                        ) : null}
                     </div>
+                    {formik.touched.damage && formik.errors.damage ? (
+                        <div className="text-danger">{formik.errors.damage}</div>
+                    ) : null}
 
-                    <div className="form-group mb-2">
-                        <label htmlFor="defense">Phòng thủ: {playerPoints.defense}</label>
+                    <div className={cx('form-group')}>
+                        <label className={cx('form-label')} htmlFor="defense">
+                            Phòng thủ: {playerPoints.defense}
+                        </label>
                         <InputNumber
                             id="defense"
+                            name="defense"
                             min={0}
                             max={10000}
+                            defaultValue={0}
                             value={formik.values.defense}
                             onChange={(value) => formik.setFieldValue('defense', value)}
                             onBlur={formik.handleBlur}
+                            status={formik.touched.defense && formik.errors.defense ? 'error' : undefined}
                         />
-                        {formik.touched.defense && formik.errors.defense ? (
-                            <div className="text-danger">{formik.errors.defense}</div>
-                        ) : null}
                     </div>
+                    {formik.touched.defense && formik.errors.defense ? (
+                        <div className="text-danger">{formik.errors.defense}</div>
+                    ) : null}
 
-                    <div className="form-group mb-2">
-                        <label htmlFor="luck">May mắn: {playerPoints.luck}</label>
+                    <div className={cx('form-group')}>
+                        <label className={cx('form-label')} htmlFor="luck">
+                            May mắn: {playerPoints.luck}
+                        </label>
                         <InputNumber
                             id="luck"
+                            name="luck"
                             min={0}
                             max={10000}
+                            defaultValue={0}
                             value={formik.values.luck}
                             onChange={(value) => formik.setFieldValue('luck', value)}
                             onBlur={formik.handleBlur}
+                            status={formik.touched.luck && formik.errors.luck ? 'error' : undefined}
                         />
-                        {formik.touched.luck && formik.errors.luck ? (
-                            <div className="text-danger">{formik.errors.luck}</div>
-                        ) : null}
                     </div>
+                    {formik.touched.luck && formik.errors.luck ? (
+                        <div className="text-danger">{formik.errors.luck}</div>
+                    ) : null}
 
-                    <div className="form-group mb-2">
-                        <label htmlFor="teammates">Đồng đội: {playerPoints.teammates}</label>
+                    <div className={cx('form-group')}>
+                        <label className={cx('form-label')} htmlFor="teammates">
+                            Đồng đội: {playerPoints.teammates}
+                        </label>
                         <InputNumber
                             id="teammates"
+                            name="teammates"
                             min={0}
                             max={10000}
+                            defaultValue={0}
                             value={formik.values.teammates}
                             onChange={(value) => formik.setFieldValue('teammates', value)}
                             onBlur={formik.handleBlur}
+                            status={formik.touched.teammates && formik.errors.teammates ? 'error' : undefined}
                         />
-                        {formik.touched.teammates && formik.errors.teammates ? (
-                            <div className="text-danger">{formik.errors.teammates}</div>
-                        ) : null}
                     </div>
+                    {formik.touched.teammates && formik.errors.teammates ? (
+                        <div className="text-danger">{formik.errors.teammates}</div>
+                    ) : null}
+
+                    <div className="text-center mt-2">Điểm chưa cộng: {playerPoints.totalPoints}</div>
 
                     <div className="text-center">
                         <Button type="primary" htmlType="submit" loading={formik.isSubmitting}>
@@ -259,17 +256,6 @@ function UpdragePoinst() {
                     </div>
                 </form>
             </div>
-        );
-    };
-
-    return (
-        <div className="box-container">
-            {contextHolder}
-            <div className="forum-header">
-                <Link to="/player/info">Quay lại</Link>
-            </div>
-
-            {renderContent()}
         </div>
     );
 }
