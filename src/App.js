@@ -31,6 +31,7 @@ import ForumLayout from './layouts/ForumLayout';
 import ChangeUserName from './pages/Player/ChangeUserName';
 import ChangePassword from './pages/Player/ChangePassword';
 import Inventory from './pages/Player/Inventory';
+import UpdragePoinst from './pages/Player/UpdragePoinst';
 
 function App() {
     return (
@@ -60,6 +61,7 @@ function App() {
                             <Route path="change-username" element={<ChangeUserName />} />
                             <Route path="change-password" element={<ChangePassword />} />
                             <Route path="inventory" element={<Inventory />} />
+                            <Route path="upgrade-points" element={<UpdragePoinst />} />
                         </Route>
 
                         <Route path="admin" element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.SuperAdmin]} />}>

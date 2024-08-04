@@ -19,3 +19,15 @@ export const toggleEquipmentChestLock = () => {
 export const getPlayerInventory = () => {
     return axiosPrivate.get('players/inventory');
 };
+
+export const getPlayerCharacter = () => {
+    return axiosPrivate.get('players/character');
+};
+
+export const getPlayerPoints = (id) => {
+    return axiosPrivate.get(`players/character/${id}/points`);
+};
+
+export const updatePoints = (values) => {
+    return axiosPrivate.put('players/additional-points', values);
+};
