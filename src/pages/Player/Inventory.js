@@ -6,7 +6,7 @@ import { getPlayerInventory } from '~/services/playerService';
 
 function Inventory() {
     const [items, setItems] = useState([]);
-    const [equip, setEquip] = useState([]);
+    const [equips, setEquips] = useState([]);
 
     const [isLoading, setIsLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState(null);
@@ -19,7 +19,7 @@ function Inventory() {
                 const response = await getPlayerInventory();
                 const { equipments, items } = response.data.data;
                 setItems(items);
-                setEquip(equipments);
+                setEquips(equipments);
             } catch (error) {
                 setErrorMessage(error.message);
             } finally {
@@ -86,15 +86,39 @@ function Inventory() {
                 <table className="table align-middle">
                     <thead>
                         <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Item</th>
-                            <th scope="col">Chi tiết</th>
-                            <th scope="col">Số lượng</th>
+                            <th scope="col">STT</th>
+                            <th scope="col">Tên</th>
+                            <th scope="col">Chỉ số</th>
+                            <th scope="col">Ngọc</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {equip.length > 0 ? (
-                            <>hi</>
+                        {equips.length > 0 ? (
+                            equips.map((equip, index) => (
+                                <tr key={index}>
+                                    <td>{index + 1}</td>
+                                    <td>
+                                        <img src={BASE_URL + equip.imageUrl} alt="" />
+                                        <span>&nbsp;{equip.name}</span>
+                                    </td>
+                                    <td>
+                                        {JSON.stringify(equip.points)}
+                                        <br />
+                                        {JSON.stringify(equip.percents)}
+                                    </td>
+                                    <td>
+                                        [
+                                        {equip.slots.map((slot, index) =>
+                                            slot ? (
+                                                <img key={index} src={`${BASE_URL}${slot}`} alt={`Slot ${index}`} />
+                                            ) : (
+                                                <span key={index}>-1</span>
+                                            ),
+                                        )}
+                                        ]
+                                    </td>
+                                </tr>
+                            ))
                         ) : (
                             <tr>
                                 <td colSpan="4" align="center">
