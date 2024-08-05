@@ -19,7 +19,7 @@ const validationSchema = yup.object({
     name: yup
         .string()
         .required('Tên đội là bắt buộc')
-        .max(50, 'Tên đội không được quá 50 kí tự')
+        .max(30, 'Tên đội không được quá 30 kí tự')
         .matches(/^[\p{L}\s\d]*$/u, 'Tên đội không được chứa kí tự đặc biệt'),
 
     description: yup.string().required('Vui lòng thêm mô tả'),
@@ -104,7 +104,7 @@ function CreateClan() {
             {contextHolder}
 
             <div className="forum-header">
-                <Link to="/forum">Quay lại</Link>
+                <Link to="/clan">Quay lại</Link>
             </div>
 
             <h3 className="p-2 pb-0">Đăng ký thành lập đội</h3>
@@ -127,7 +127,7 @@ function CreateClan() {
                         <div className="text-danger">{formik.errors.name}</div>
                     ) : (
                         <small id="nameHelp" className="form-text text-muted">
-                            Tên tối đa 50 kí tự, không chứa kí tự đặc biệt
+                            Tên tối đa 30 kí tự, không chứa kí tự đặc biệt
                         </small>
                     )}
                 </div>
@@ -201,32 +201,34 @@ function CreateClan() {
                     )}
                 </div>
 
-                <div className="form-group mb-2">
+                <div className="form-group mb-2 ">
                     <label>Hãy lựa chọn ảnh đại diện cho đội:</label>
-                    <table className="table table-bordered align-middle bg-white">
-                        <tbody>
-                            {rows.map((row, rowIndex) => (
-                                <tr key={rowIndex}>
-                                    {row.map((icon) => (
-                                        <td key={icon.id}>
-                                            <label className="form-check-label me-2" htmlFor={`icon${icon.id}`}>
-                                                <img src={BASE_URL + icon.src} alt={`Icon ${icon.id}`} />
-                                            </label>
-                                            <input
-                                                type="radio"
-                                                name="icon"
-                                                id={`icon${icon.id}`}
-                                                value={icon.id}
-                                                // eslint-disable-next-line eqeqeq
-                                                checked={formik.values.icon == icon.id}
-                                                onChange={formik.handleChange}
-                                            />
-                                        </td>
-                                    ))}
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                    <div className="table-responsive">
+                        <table className="table table-bordered align-middle bg-white">
+                            <tbody>
+                                {rows.map((row, rowIndex) => (
+                                    <tr key={rowIndex}>
+                                        {row.map((icon) => (
+                                            <td key={icon.id}>
+                                                <label className="form-check-label me-2" htmlFor={`icon${icon.id}`}>
+                                                    <img src={BASE_URL + icon.src} alt={`Icon ${icon.id}`} />
+                                                </label>
+                                                <input
+                                                    type="radio"
+                                                    name="icon"
+                                                    id={`icon${icon.id}`}
+                                                    value={icon.id}
+                                                    // eslint-disable-next-line eqeqeq
+                                                    checked={formik.values.icon == icon.id}
+                                                    onChange={formik.handleChange}
+                                                />
+                                            </td>
+                                        ))}
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 <div className="text-center">

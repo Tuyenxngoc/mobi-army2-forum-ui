@@ -119,32 +119,34 @@ function PlayerInfo() {
                 </ol>
 
                 <b>Nhân Vật</b>
-                <table className="table align-middle">
-                    <thead>
-                        <tr>
-                            <th scope="col"></th>
-                            <th scope="col">Tên</th>
-                            <th scope="col">Level</th>
-                            <th scope="col">Xp</th>
-                            <th scope="col">Điểm đã cộng</th>
-                            <th scope="col">Điểm còn lại</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {playerProfile.characters.map((character, index) => (
-                            <tr key={index}>
-                                <th scope="row">
-                                    <img src={BASE_URL + character.avatar} alt="avt" />
-                                </th>
-                                <td>{character.name}</td>
-                                <td>{character.level}</td>
-                                <td>{character.xp}</td>
-                                <td>{JSON.stringify(character.additionalPoints)}</td>
-                                <td>{character.points}</td>
+                <div className="table-responsive">
+                    <table className="table align-middle table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col">Tên</th>
+                                <th scope="col">Level</th>
+                                <th scope="col">Xp</th>
+                                <th scope="col">Điểm đã cộng</th>
+                                <th scope="col">Điểm còn lại</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {playerProfile.characters.map((character, index) => (
+                                <tr key={index}>
+                                    <th scope="row">
+                                        <img src={BASE_URL + character.avatar} alt="avt" />
+                                    </th>
+                                    <td>{character.name}</td>
+                                    <td>{character.level}</td>
+                                    <td>{character.xp}</td>
+                                    <td>{JSON.stringify(character.additionalPoints)}</td>
+                                    <td>{character.points}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
 
                 <div className="forum-border-bottom text-primary">Chức Năng Tài Khoản</div>
                 <ul>

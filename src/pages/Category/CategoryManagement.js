@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { Button, Input, message, Select, Space, Table } from 'antd';
 import queryString from 'query-string';
@@ -14,6 +14,8 @@ const options = [
 ];
 
 function CategoryManagement() {
+    const navigate = useNavigate();
+
     const [meta, setMeta] = useState(INITIAL_META);
     const [filters, setFilters] = useState(INITIAL_FILTERS);
 
@@ -48,6 +50,10 @@ function CategoryManagement() {
             searchBy: activeFilterOption,
             keyword: searchInput,
         }));
+    };
+
+    const handleBtnCreateClick = () => {
+        navigate('/admin/category/new');
     };
 
     const handleSortChange = (pagination, filters, sorter) => {
@@ -202,7 +208,9 @@ function CategoryManagement() {
             <h3 className="p-2 pb-0"> Quản lý danh mục </h3>
 
             <div className="p-2">
-                <Link to="/admin/category/new">Thêm mới</Link>
+                <Button type="primary" onClick={handleBtnCreateClick}>
+                    Thêm mới
+                </Button>
             </div>
 
             <Space.Compact className="p-2">

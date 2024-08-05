@@ -89,7 +89,7 @@ function Clan() {
         }
 
         return (
-            <main className="p-2">
+            <main className="p-2 table-responsive">
                 <table className="table">
                     <thead>
                         <tr>
@@ -133,7 +133,7 @@ function Clan() {
     return (
         <div className="box-container">
             <div className="forum-header">
-                <Link to="/forum">Quay lại</Link>
+                <Link to="/player/info">Quay lại</Link>
             </div>
 
             <h3 className="p-2 pb-0">Danh sách biệt đội</h3>
