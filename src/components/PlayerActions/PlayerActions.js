@@ -4,6 +4,7 @@ import useAuth from '~/hooks/useAuth';
 import images from '~/assets';
 
 import { Button } from 'antd';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 import Style from './PlayerActions.module.scss';
 import classNames from 'classnames/bind';
@@ -30,37 +31,72 @@ function PlayerActions() {
     return (
         <div className={cx('content')}>
             {isAuthenticated ? (
-                <ul className="nav">
-                    <li className="me-2">
-                        <Link to="/player/info">Bản thân</Link>
-                    </li>
-                    <li className="me-2">
-                        <Link to="/notification">Thông báo</Link>
-                    </li>
-                    <li>
-                        <Link to="/">Tin nhắn</Link>
-                    </li>
+                <nav className="navbar navbar-expand-lg">
+                    <div className="container-fluid">
+                        <Link className="navbar-brand" to="/player/info">
+                            Bản thân
+                        </Link>
 
-                    <li className="ms-auto">
-                        <div className={cx('player-info')}>
-                            <div className="me-2">
-                                Xin chào <b>{player.username}</b>
-                            </div>
-                            <Button size="small" onClick={handleLogoutClick}>
-                                Đăng xuất
-                            </Button>
+                        <button
+                            className="navbar-toggler btn-sm"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#navbarNav"
+                            aria-controls="navbarNav"
+                            aria-expanded="false"
+                            aria-label="Toggle navigation"
+                        >
+                            <span className="navbar-toggler-icon"></span>
+                        </button>
+
+                        <div className="collapse navbar-collapse" id="navbarNav">
+                            <ul className="navbar-nav me-auto">
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/notification">
+                                        Thông báo
+                                    </Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/">
+                                        Tin nhắn
+                                    </Link>
+                                </li>
+                            </ul>
+
+                            <ul className="navbar-nav ms-auto">
+                                <li className="nav-item dropdown">
+                                    {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                                    <a
+                                        className="nav-link dropdown-toggle"
+                                        href="#"
+                                        id="navbarDropdown"
+                                        role="button"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                    >
+                                        Xin chào <b>{player.username}</b>
+                                    </a>
+                                    <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                        <li>
+                                            <button className="dropdown-item" onClick={handleLogoutClick}>
+                                                Đăng xuất
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
                         </div>
-                    </li>
-                </ul>
+                    </div>
+                </nav>
             ) : (
-                <>
+                <div className="p-2">
                     <Button size="small" className="me-2" type="primary" onClick={handleLoginClick}>
                         Đăng nhập
                     </Button>
                     <Button size="small" type="primary" onClick={handleRegisterClick}>
                         Đăng ký
                     </Button>
-                </>
+                </div>
             )}
 
             <div className="p-2">

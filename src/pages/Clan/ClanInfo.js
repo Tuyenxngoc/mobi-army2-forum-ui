@@ -70,7 +70,7 @@ function ClanInfo() {
                 )}
 
                 <ol>
-                    <li>{clan.name}</li>
+                    <li>Tên: {clan.name}</li>
                 </ol>
             </div>
         );
@@ -78,13 +78,13 @@ function ClanInfo() {
 
     return (
         <div className="box-container">
+            {contextHolder}
+
             <div className="forum-header">
                 <Link to="/clan">Quay lại</Link>
             </div>
 
             <h3 className="p-2 pb-0">Thông tin biệt đội</h3>
-
-            {contextHolder}
 
             {renderContent()}
         </div>
