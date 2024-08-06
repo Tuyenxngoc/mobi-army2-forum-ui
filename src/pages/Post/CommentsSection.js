@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Button, Skeleton, message } from 'antd';
+import { Skeleton, message } from 'antd';
 import queryString from 'query-string';
 import classNames from 'classnames/bind';
 import Style from './PostDetail.module.scss';
