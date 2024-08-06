@@ -5,15 +5,11 @@ import { Button, Input, message } from 'antd';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import Style from './Login.module.scss';
-import classNames from 'classnames/bind';
-
 import { loginUser } from '~/services/authService';
 import useAuth from '~/hooks/useAuth';
 import { BASE_URL } from '~/common/contans';
 import images from '~/assets';
-
-const cx = classNames.bind(Style);
+import { handleError } from '~/utils/errorHandler';
 
 const validationSchema = yup.object({
     username: yup.string().trim().required('Vui lòng nhập tên tài khoản'),
@@ -35,13 +31,7 @@ function Login() {
 
     const from = location.state?.from?.pathname || '/';
 
-    const formik = useFormik({
-        initialValues: defaultValue,
-        validationSchema: validationSchema,
-        onSubmit: handleLogin,
-    });
-
-    async function handleLogin(values, { setSubmitting }) {
+    const handleLogin = async (values, { setSubmitting }) => {
         try {
             const response = await loginUser(values);
             if (response.status === 200) {
@@ -50,21 +40,27 @@ function Login() {
                 navigate(from, { replace: true });
             }
         } catch (error) {
-            let message = '';
-            if (!error?.response) {
-                message = 'Máy chủ không phản hồi';
-            } else {
-                message = error?.response?.data?.message || 'Thông tin đăng nhập không đúng';
-            }
-            messageApi.error(message);
+            handleError(error, formik, messageApi);
         } finally {
             setSubmitting(false);
         }
-    }
+    };
+
+    const formik = useFormik({
+        initialValues: defaultValue,
+        validationSchema: validationSchema,
+        onSubmit: handleLogin,
+    });
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate('/', { replace: true });
+        }
+    }, [isAuthenticated, navigate]);
 
     const renderInput = (name, label, type = 'text') => (
-        <div className={cx('formControl')}>
-            <label className={cx('formlabel')} htmlFor={`txt${name}`}>
+        <div className="d-flex justify-content-center align-items-center p-1">
+            <label className="text-start w-25" htmlFor={`txt${name}`}>
                 {label}
             </label>
             <div>
@@ -82,29 +78,23 @@ function Login() {
         </div>
     );
 
-    useEffect(() => {
-        if (isAuthenticated) {
-            navigate('/', { replace: true });
-        }
-    }, [isAuthenticated, navigate]);
-
     return (
-        <main className={cx('wrapper', 'box-container', 'p-2')}>
+        <main className="box-container p-2 text-center border-top-0">
             {contextHolder}
 
-            <div className={cx('title')}>Sử dụng tài khoản Mobi Army 2 để đăng nhập.</div>
+            <div className="p-1 fw-bold">Sử dụng tài khoản Mobi Army 2 để đăng nhập.</div>
 
             <form onSubmit={formik.handleSubmit}>
                 {renderInput('username', 'Tên tài khoản')}
                 {renderInput('password', 'Mật khẩu', 'password')}
 
-                <div className={cx('formControl')}>
+                <div className="p-1">
                     <Button type="primary" htmlType="submit" loading={formik.isSubmitting}>
                         Đăng nhập
                     </Button>
                 </div>
 
-                <div className={cx('formControl')}>
+                <div className="p-1">
                     <Button type="default" href={BASE_URL + '/oauth2/authorization/google'}>
                         <img width={16} src={images.google} alt="Google" />
                         Đăng nhập với Google
@@ -112,14 +102,14 @@ function Login() {
                 </div>
             </form>
 
-            <div className={cx('footer')}>
-                <div className={cx('register')}>
-                    <span>Nếu bạn chưa có tài khoản, vui lòng đăng ký </span>
-                    <Link className={cx('link')} to={'/register'}>
+            <div>
+                <div>
+                    <span> Nếu bạn chưa có tài khoản, vui lòng đăng ký </span>
+                    <Link className="text-primary" to={'/register'}>
                         Đăng ký
                     </Link>
                 </div>
-                <Link className={cx('link')} to={'/forget-password'}>
+                <Link className="text-primary" to={'/forget-password'}>
                     Quên mật khẩu
                 </Link>
             </div>
