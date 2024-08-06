@@ -44,7 +44,7 @@ function CreateNotification({ onAddNotification, messageApi }) {
             resetForm();
             messageApi.success('Thêm thông báo thành công');
         } catch (error) {
-            messageApi.error('Thêm thông báo thất bại', error.message);
+            messageApi.error('Thêm thông báo thất bại: ' + error.message);
         } finally {
             setSubmitting(false);
         }

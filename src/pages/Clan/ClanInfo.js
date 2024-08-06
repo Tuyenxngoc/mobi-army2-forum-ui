@@ -61,7 +61,11 @@ function ClanInfo() {
         const minutes = duration.minutes ?? 0;
         const secs = duration.seconds ?? 0;
 
-        return `${days}n ${hours}:${minutes}:${secs}`;
+        const formattedHours = String(hours).padStart(2, '0');
+        const formattedMinutes = String(minutes).padStart(2, '0');
+        const formattedSecs = String(secs).padStart(2, '0');
+
+        return `${days}n ${formattedHours}:${formattedMinutes}:${formattedSecs}`;
     };
 
     const handleJoinClan = async () => {
@@ -115,16 +119,32 @@ function ClanInfo() {
     const renderContent = () => {
         if (isClanLoading) {
             return (
-                <div className="alert alert-primary m-2 p-2" role="alert">
-                    Loading... <Spin />
+                <div className="box-container">
+                    <div className="forum-header">
+                        <Link to="/clan">Quay lại</Link>
+                    </div>
+                    <div className="p-2">
+                        <h3 className="forum-border-bottom text-primary">Thông tin biệt đội</h3>
+                        <div className="alert alert-primary m-2 p-2" role="alert">
+                            Loading... <Spin />
+                        </div>
+                    </div>
                 </div>
             );
         }
 
         if (clanLoadError) {
             return (
-                <div className="alert alert-danger m-2 p-2" role="alert">
-                    Lỗi: {clanLoadError}
+                <div className="box-container">
+                    <div className="forum-header">
+                        <Link to="/clan">Quay lại</Link>
+                    </div>
+                    <div className="p-2">
+                        <h3 className="forum-border-bottom text-primary">Thông tin biệt đội</h3>
+                        <div className="alert alert-danger m-2 p-2" role="alert">
+                            Lỗi: {clanLoadError}
+                        </div>
+                    </div>
                 </div>
             );
         }
@@ -140,7 +160,7 @@ function ClanInfo() {
                         <h3 className="forum-border-bottom text-primary">Thông tin biệt đội</h3>
 
                         {player.clan === null && (
-                            <Button type="primary" onClick={handleJoinClan}>
+                            <Button type="primary" size="small" onClick={handleJoinClan}>
                                 Tham gia Clan
                             </Button>
                         )}
@@ -218,7 +238,7 @@ function ClanInfo() {
                                     {clanMembers.length > 0 ? (
                                         clanMembers.map((member, index) => (
                                             <tr key={index}>
-                                                <th scope="row">{member.player.name}</th>
+                                                <th scope="row">{member.name}</th>
                                                 <td>{member.joinTime}</td>
                                                 <td>
                                                     <Tag color={getTagColor(member.rights)}>{member.rights}</Tag>

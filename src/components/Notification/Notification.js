@@ -64,7 +64,7 @@ const Notification = ({ data, onNotificationUpdate, onNotificationDelete, canEdi
             onNotificationUpdate(response.data.data);
             setIsEditingNotification(false);
         } catch (error) {
-            messageApi.error('Thêm thông báo thất bại', error.message);
+            messageApi.error('Thêm thông báo thất bại: ' + error.message);
         } finally {
             setSubmitting(false);
         }

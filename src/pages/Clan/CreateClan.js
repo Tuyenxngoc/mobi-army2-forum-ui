@@ -90,7 +90,7 @@ function CreateClan() {
                 const response = await getclanIcons();
                 setIcons(response.data.data);
             } catch (error) {
-                messageApi.error('Lỗi khi tải icons:', error.message);
+                messageApi.error('Lỗi khi tải icons: ' + error.message);
             }
         };
 
