@@ -19,6 +19,25 @@ const getTagColor = (categoryName) => {
     }
 };
 
+const formatTime = (seconds) => {
+    if (typeof seconds !== 'number' || seconds < 0) {
+        return 'Đã hết hạn';
+    }
+
+    const duration = intervalToDuration({ start: 0, end: seconds * 1000 });
+
+    const days = duration.days ?? 0;
+    const hours = duration.hours ?? 0;
+    const minutes = duration.minutes ?? 0;
+    const secs = duration.seconds ?? 0;
+
+    const formattedHours = String(hours).padStart(2, '0');
+    const formattedMinutes = String(minutes).padStart(2, '0');
+    const formattedSecs = String(secs).padStart(2, '0');
+
+    return `${days}n ${formattedHours}:${formattedMinutes}:${formattedSecs}`;
+};
+
 function ClanInfo() {
     const { clanId } = useParams();
     const navigate = useNavigate();
@@ -50,25 +69,6 @@ function ClanInfo() {
         }));
     };
 
-    const formatTime = (seconds) => {
-        if (typeof seconds !== 'number' || seconds < 0) {
-            return 'Đã hết hạn';
-        }
-
-        const duration = intervalToDuration({ start: 0, end: seconds * 1000 });
-
-        const days = duration.days ?? 0;
-        const hours = duration.hours ?? 0;
-        const minutes = duration.minutes ?? 0;
-        const secs = duration.seconds ?? 0;
-
-        const formattedHours = String(hours).padStart(2, '0');
-        const formattedMinutes = String(minutes).padStart(2, '0');
-        const formattedSecs = String(secs).padStart(2, '0');
-
-        return `${days}n ${formattedHours}:${formattedMinutes}:${formattedSecs}`;
-    };
-
     const handleJoinClan = async () => {
         try {
             const response = await joinClan(clanId);
@@ -92,6 +92,10 @@ function ClanInfo() {
     };
 
     const handleManageMembers = () => {
+        navigate(`/clan/${clanId}/manage-members`);
+    };
+
+    const handleUpdateClanInfo = () => {
         navigate(`/clan/${clanId}/manage-members`);
     };
 
@@ -204,12 +208,17 @@ function ClanInfo() {
                                 player.clanMember.clan.id === Number.parseInt(clanId) && (
                                     <>
                                         {player.clanMember.rights > 0 && (
-                                            <Button type="primary" size="small" onClick={handleManageMembers}>
-                                                Quản lý thành viên
-                                            </Button>
+                                            <>
+                                                <Button type="primary" size="small" onClick={handleManageMembers}>
+                                                    Quản lý thành viên
+                                                </Button>
+                                                <Button type="primary" size="small" onClick={handleUpdateClanInfo}>
+                                                    Cập nhật thông tin
+                                                </Button>
+                                            </>
                                         )}
                                         <Button type="primary" size="small" danger onClick={handleLeaveClan}>
-                                            Rời biệt đội (1000 xu)
+                                            Rời biệt đội
                                         </Button>
                                     </>
                                 )

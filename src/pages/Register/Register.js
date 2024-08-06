@@ -2,13 +2,10 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-
-import Style from './Register.module.scss';
-import classNames from 'classnames/bind';
-import { register } from '~/services/authService';
 import { Button, Input, message } from 'antd';
 
-const cx = classNames.bind(Style);
+import { register } from '~/services/authService';
+import { handleError } from '~/utils/errorHandler';
 
 const validationSchema = yup.object({
     fullName: yup
@@ -57,13 +54,7 @@ function Register() {
     const navigate = useNavigate();
     const [messageApi, contextHolder] = message.useMessage();
 
-    const formik = useFormik({
-        initialValues: defaultValue,
-        validationSchema: validationSchema,
-        onSubmit: handleRegister,
-    });
-
-    async function handleRegister(values, { setSubmitting }) {
+    const handleRegister = async (values, { setSubmitting }) => {
         try {
             const currentURL = window.location.origin;
             const response = await register(currentURL, values);
@@ -71,32 +62,22 @@ function Register() {
                 navigate('/verify', { state: { email: values.email } });
             }
         } catch (error) {
-            let message = '';
-            if (!error?.response) {
-                message = 'Máy chủ không phản hồi';
-            } else {
-                if (error.response.status === 409) {
-                    message = error?.response?.data?.message;
-                } else {
-                    message = 'Có lỗi xảy ra, vui lòng thử lại';
-
-                    const errorMessages = error?.response?.data?.message;
-
-                    Object.keys(errorMessages).forEach((field) => {
-                        formik.setFieldError(field, errorMessages[field]);
-                    });
-                }
-            }
-            messageApi.error(message);
+            handleError(error, formik, messageApi);
         } finally {
             setSubmitting(false);
         }
-    }
+    };
+
+    const formik = useFormik({
+        initialValues: defaultValue,
+        validationSchema: validationSchema,
+        onSubmit: handleRegister,
+    });
 
     const renderInput = (name, label, type = 'text') => (
         <>
-            <div className={cx('formControl')}>
-                <label className={cx('formlabel')} htmlFor={`txt${name}`}>
+            <div className="p-1">
+                <label className="text-start w-50" htmlFor={`txt${name}`}>
                     {label}
                 </label>
                 <Input
@@ -115,7 +96,7 @@ function Register() {
     );
 
     return (
-        <main className={cx('wrapper', 'box-container', 'p-2')}>
+        <main className="box-container p-2 border-top-0">
             {contextHolder}
 
             <form onSubmit={formik.handleSubmit}>
@@ -125,6 +106,7 @@ function Register() {
                 {renderInput('username', 'Tên tài khoản')}
                 {renderInput('password', 'Mật khẩu', 'password', true)}
                 {renderInput('repeatPassword', 'Xác nhận mật khẩu', 'password')}
+
                 <p>
                     <span>- Bạn có thể đăng ký tại đây, hoặc ngay trong trò chơi</span>
                     <br />
@@ -145,11 +127,11 @@ function Register() {
                     <span>- Tài khoản đăng ký có thể dùng đăng nhập trong game, và trên diễn đàn Mobi Army 2 này</span>
                     <br />
                 </p>
-                <div className={cx('formControl')}>
-                    <Button type="primary" htmlType="submit" loading={formik.isSubmitting}>
-                        Đăng ký
-                    </Button>
-                </div>
+
+                <Button type="primary" htmlType="submit" loading={formik.isSubmitting}>
+                    Đăng ký
+                </Button>
+
                 <p>
                     Bạn đã có tài khoản? <Link to="/login">Đăng nhập</Link>
                 </p>
