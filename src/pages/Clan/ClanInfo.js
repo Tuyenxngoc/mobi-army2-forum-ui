@@ -1,12 +1,12 @@
-import { Button, message, Spin, Tag } from 'antd';
+import { Button, Flex, message, Spin, Tag } from 'antd';
 import { intervalToDuration } from 'date-fns';
 import queryString from 'query-string';
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { BASE_URL, INITIAL_FILTERS, INITIAL_META } from '~/common/contans';
 import Pagination from '~/components/Pagination';
 import useAuth from '~/hooks/useAuth';
-import { getClanById, getClanMembers, joinClan } from '~/services/clanService';
+import { getClanById, getClanMembers, joinClan, leaveClan } from '~/services/clanService';
 
 const getTagColor = (categoryName) => {
     switch (categoryName) {
@@ -21,6 +21,7 @@ const getTagColor = (categoryName) => {
 
 function ClanInfo() {
     const { clanId } = useParams();
+    const navigate = useNavigate();
 
     const [meta, setMeta] = useState(INITIAL_META);
     const [filters, setFilters] = useState(INITIAL_FILTERS);
@@ -34,7 +35,7 @@ function ClanInfo() {
     const [isClanLoading, setIsClanLoading] = useState(true);
     const [clanLoadError, setClanLoadError] = useState(null);
 
-    const { player } = useAuth();
+    const { player, loadUserInfo } = useAuth();
     const [messageApi, contextHolder] = message.useMessage();
 
     const handleChangePage = (newPage) => {
@@ -72,11 +73,26 @@ function ClanInfo() {
         try {
             const response = await joinClan(clanId);
             if (response.status === 200) {
-                messageApi.success(response.data.data.message);
+                loadUserInfo();
             }
         } catch (error) {
             messageApi.error(`Lỗi: ${error.response?.data?.message || error.message}`);
         }
+    };
+
+    const handleLeaveClan = async () => {
+        try {
+            const response = await leaveClan(clanId);
+            if (response.status === 200) {
+                loadUserInfo();
+            }
+        } catch (error) {
+            messageApi.error(`Lỗi: ${error.response?.data?.message || error.message}`);
+        }
+    };
+
+    const handleManageMembers = () => {
+        navigate(`/clan/${clanId}/manage-members`);
     };
 
     useEffect(() => {
@@ -84,6 +100,9 @@ function ClanInfo() {
             setIsClanLoading(true);
             setClanLoadError(null);
             try {
+                if (isNaN(clanId) || !/^-?\d+$/.test(clanId)) {
+                    throw new Error('ID không hợp lệ. Vui lòng kiểm tra lại.');
+                }
                 const response = await getClanById(clanId);
                 setClan(response.data.data);
             } catch (error) {
@@ -101,6 +120,9 @@ function ClanInfo() {
             setIsMembersLoading(true);
             setMembersError(null);
             try {
+                if (isNaN(clanId) || !/^-?\d+$/.test(clanId)) {
+                    return;
+                }
                 const params = queryString.stringify(filters);
                 const response = await getClanMembers(clanId, params);
                 const { meta, items } = response.data.data;
@@ -159,12 +181,6 @@ function ClanInfo() {
                     <div className="p-2">
                         <h3 className="forum-border-bottom text-primary">Thông tin biệt đội</h3>
 
-                        {player.clan === null && (
-                            <Button type="primary" size="small" onClick={handleJoinClan}>
-                                Tham gia Clan
-                            </Button>
-                        )}
-
                         <ul>
                             <li>Tên: {clan.name}</li>
                             <li>
@@ -178,6 +194,27 @@ function ClanInfo() {
                             <li>Cúp: {clan.cup}</li>
                             <li>Kinh nghiệm: {clan.xp}</li>
                         </ul>
+
+                        <Flex gap="small" align="center" justify="center" wrap>
+                            {!player.clanMember ? (
+                                <Button type="primary" size="small" onClick={handleJoinClan}>
+                                    Tham gia Clan
+                                </Button>
+                            ) : (
+                                player.clanMember.clan.id === Number.parseInt(clanId) && (
+                                    <>
+                                        {player.clanMember.rights > 0 && (
+                                            <Button type="primary" size="small" onClick={handleManageMembers}>
+                                                Quản lý thành viên
+                                            </Button>
+                                        )}
+                                        <Button type="primary" size="small" danger onClick={handleLeaveClan}>
+                                            Rời biệt đội (1000 xu)
+                                        </Button>
+                                    </>
+                                )
+                            )}
+                        </Flex>
                     </div>
                 </div>
 

@@ -104,10 +104,10 @@ function PlayerInfo() {
                     <li>X2 EXP Time: {playerProfile.x2XpTime || 'Không có'}</li>
                     <li>
                         Biệt đội:{' '}
-                        {player.clan ? (
+                        {player.clanMember ? (
                             <>
-                                <Link to={`/clan/${player.clan.id}`}>{player.clan.name}</Link>
-                                [<img src={BASE_URL + player.clan.icon} alt="icon" />]
+                                <Link to={`/clan/${player.clanMember.clan.id}`}>{player.clanMember.clan.name}</Link>
+                                [<img src={BASE_URL + player.clanMember.clan.icon} alt="icon" />]
                             </>
                         ) : (
                             'Chưa tham gia biệt đội'

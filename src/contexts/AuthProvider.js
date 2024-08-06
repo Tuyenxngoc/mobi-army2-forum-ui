@@ -11,12 +11,13 @@ const AuthContext = createContext();
 const defaultAuth = {
     isAuthenticated: false,
     player: {
-        username: '',
+        fullName: '',
         roleName: '',
+        username: '',
         avatar: '',
         points: 1,
         online: false,
-        clan: null,
+        clanMember: null,
     },
 };
 
@@ -40,21 +41,17 @@ const AuthProvider = ({ children }) => {
             }
             const response = await getCurrentUserLogin();
             if (response.status === 200) {
-                const {
-                    username,
-                    roleName,
-                    player: { avatar, points, online },
-                    clan,
-                } = response.data.data;
+                const user = response.data.data;
                 setAuthData({
                     isAuthenticated: true,
                     player: {
-                        username,
-                        roleName,
-                        avatar,
-                        points,
-                        online,
-                        clan,
+                        roleName: user.roleName,
+                        fullName: user.fullName,
+                        username: user.player.name,
+                        avatar: user.player.avatar,
+                        points: user.player.points,
+                        online: user.player.online,
+                        clanMember: user.player.clanMember,
                     },
                 });
             } else {
