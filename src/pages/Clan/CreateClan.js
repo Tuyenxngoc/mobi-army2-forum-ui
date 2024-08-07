@@ -102,6 +102,7 @@ function CreateClan() {
                         className={`form-control ${formik.touched.name && formik.errors.name ? 'is-invalid' : ''}`}
                         id="name"
                         aria-describedby="nameHelp"
+                        autoComplete="off"
                         placeholder="Nhập tên biệt đội"
                         value={formik.values.name}
                         onChange={formik.handleChange}
@@ -171,6 +172,7 @@ function CreateClan() {
                         className={`form-control ${formik.touched.email && formik.errors.email ? 'is-invalid' : ''}`}
                         id="email"
                         aria-describedby="emailHelp"
+                        autoComplete="off"
                         placeholder="Nhập địa chỉ email"
                         value={formik.values.email}
                         onChange={formik.handleChange}
@@ -186,7 +188,7 @@ function CreateClan() {
                 </div>
 
                 <div className="form-group mb-2 ">
-                    <label>Hãy lựa chọn ảnh đại diện cho đội:</label>
+                    <span>Hãy lựa chọn ảnh đại diện cho đội:</span>
                     <div className="table-responsive">
                         <table className="table table-bordered align-middle bg-white">
                             <tbody>

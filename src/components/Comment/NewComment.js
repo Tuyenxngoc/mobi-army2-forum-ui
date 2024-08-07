@@ -48,6 +48,7 @@ function NewComment({ postId, onCommentSubmit, message }) {
 
             <form className={cx('container')} onSubmit={handleCommentSubmit}>
                 <TextArea
+                    name="newComment"
                     required
                     rows={2}
                     maxLength={255}

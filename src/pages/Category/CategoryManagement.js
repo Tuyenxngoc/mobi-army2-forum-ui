@@ -221,6 +221,7 @@ function CategoryManagement() {
                     onChange={(value) => setActiveFilterOption(value)}
                 />
                 <Input
+                    name="searchInput"
                     allowClear
                     placeholder="Nhập từ cần tìm..."
                     value={searchInput}
