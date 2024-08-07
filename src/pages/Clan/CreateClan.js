@@ -6,6 +6,7 @@ import { Button, message } from 'antd';
 import { createClan, getclanIcons } from '~/services/clanService';
 import { BASE_URL } from '~/common/contans';
 import { Link } from 'react-router-dom';
+import { handleError } from '~/utils/errorHandler';
 
 const defaultValue = {
     name: '',
@@ -55,24 +56,7 @@ function CreateClan() {
             }
             resetForm();
         } catch (error) {
-            let message = '';
-            if (!error?.response) {
-                message = 'Máy chủ không phản hồi';
-            } else {
-                const data = error.response?.data?.message;
-                if (typeof data === 'object') {
-                    message = 'Có lỗi xảy ra, vui lòng thử lại';
-
-                    const errorMessages = error?.response?.data?.message;
-
-                    Object.keys(errorMessages).forEach((field) => {
-                        formik.setFieldError(field, errorMessages[field]);
-                    });
-                } else {
-                    message = data;
-                }
-            }
-            messageApi.error(message);
+            handleError(error, formik, messageApi);
         } finally {
             setSubmitting(false);
         }

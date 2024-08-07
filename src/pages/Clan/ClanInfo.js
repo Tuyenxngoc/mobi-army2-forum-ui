@@ -96,7 +96,7 @@ function ClanInfo() {
     };
 
     const handleUpdateClanInfo = () => {
-        navigate(`/clan/${clanId}/manage-members`);
+        navigate(`/clan/${clanId}/update`);
     };
 
     useEffect(() => {
@@ -197,12 +197,13 @@ function ClanInfo() {
                             </li>
                             <li>Cúp: {clan.cup}</li>
                             <li>Kinh nghiệm: {clan.xp}</li>
+                            <li>Mô tả: {clan.description}</li>
                         </ul>
 
                         <Flex gap="small" align="center" justify="center" wrap>
                             {!player.clanMember ? (
                                 <Button type="primary" size="small" onClick={handleJoinClan}>
-                                    Tham gia Clan
+                                    {clan.requireApproval ? 'Gửi đơn gia nhập' : 'Tham gia Clan'}
                                 </Button>
                             ) : (
                                 player.clanMember.clan.id === Number.parseInt(clanId) && (
