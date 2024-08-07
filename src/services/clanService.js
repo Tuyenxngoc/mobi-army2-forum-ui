@@ -16,6 +16,10 @@ export const getClanMembers = (clanId, params) => {
     return axiosPrivate.get(`clans/${clanId}/members?${params}`);
 };
 
+export const getClanMembersForOwner = (clanId, params) => {
+    return axiosPrivate.get(`admin/clans/${clanId}/members?${params}`);
+};
+
 export const createClan = (values) => {
     return axiosPrivate.post('clans', values);
 };

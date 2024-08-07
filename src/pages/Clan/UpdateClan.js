@@ -115,13 +115,13 @@ function UpdateClan() {
                 <Link to="/clan">Quay lại</Link>
             </div>
 
-            {!isPlayerClanOwner ? (
-                <div className="alert alert-danger m-2 p-2" role="alert">
-                    Lỗi: Bạn không có quyền để truy cập trang này
-                </div>
-            ) : !isClanIdValid ? (
+            {!isClanIdValid ? (
                 <div className="alert alert-danger m-2 p-2" role="alert">
                     Lỗi: ID đội không hợp lệ. Vui lòng kiểm tra lại.
+                </div>
+            ) : !isPlayerClanOwner ? (
+                <div className="alert alert-danger m-2 p-2" role="alert">
+                    Lỗi: Bạn không có quyền để truy cập trang này
                 </div>
             ) : (
                 <form className="p-2" onSubmit={formik.handleSubmit}>

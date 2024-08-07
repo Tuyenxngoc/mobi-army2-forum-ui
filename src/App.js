@@ -33,6 +33,7 @@ import ChangePassword from './pages/Player/ChangePassword';
 import Inventory from './pages/Player/Inventory';
 import UpdragePoinst from './pages/Player/UpdragePoinst';
 import UpdateClan from './pages/Clan/UpdateClan';
+import ClanMembers from './pages/Clan/ClanMembers';
 
 function App() {
     return (
@@ -60,6 +61,7 @@ function App() {
                             <Route path="clan/:clanId" element={<ClanInfo />} />
                             <Route path="clan/new" element={<CreateClan />} />
                             <Route path="clan/:clanId/update" element={<UpdateClan />} />
+                            <Route path="clan/:clanId/members" element={<ClanMembers />} />
                             <Route path="change-username" element={<ChangeUserName />} />
                             <Route path="change-password" element={<ChangePassword />} />
                             <Route path="inventory" element={<Inventory />} />

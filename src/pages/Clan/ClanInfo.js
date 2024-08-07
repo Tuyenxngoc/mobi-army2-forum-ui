@@ -92,7 +92,7 @@ function ClanInfo() {
     };
 
     const handleManageMembers = () => {
-        navigate(`/clan/${clanId}/manage-members`);
+        navigate(`/clan/${clanId}/members`);
     };
 
     const handleUpdateClanInfo = () => {
