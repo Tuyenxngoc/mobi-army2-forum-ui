@@ -5,7 +5,7 @@ import { Button, message } from 'antd';
 
 import { getClanById, getclanIcons, updateClan } from '~/services/clanService';
 import { BASE_URL } from '~/common/contans';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { handleError } from '~/utils/errorHandler';
 import useAuth from '~/hooks/useAuth';
 import { checkIdIsNumber } from '~/utils/helper';
@@ -25,12 +25,20 @@ const validationSchema = yup.object({
 
 function UpdateClan() {
     const { clanId } = useParams();
-    const navigate = useNavigate();
+
     const [icons, setIcons] = useState([]);
+
     const { player } = useAuth();
     const [messageApi, contextHolder] = message.useMessage();
 
-    const isClanIdInvalid = useMemo(() => checkIdIsNumber(clanId), [clanId]);
+    const isClanIdValid = useMemo(() => checkIdIsNumber(clanId), [clanId]);
+    const isPlayerClanOwner = useMemo(
+        () =>
+            player.clanMember &&
+            player.clanMember.rights === 2 &&
+            player.clanMember.clan.id === Number.parseInt(clanId),
+        [clanId, player.clanMember],
+    );
 
     const rows = useMemo(() => {
         const organizedRows = [];
@@ -60,16 +68,6 @@ function UpdateClan() {
     });
 
     useEffect(() => {
-        if (
-            !player.clanMember ||
-            player.clanMember.rights !== 2 ||
-            player.clanMember.clan.id !== Number.parseInt(clanId)
-        ) {
-            navigate('/', { replace: true });
-        }
-    }, [clanId, navigate, player.clanMember]);
-
-    useEffect(() => {
         const fetchIcons = async () => {
             try {
                 const response = await getclanIcons();
@@ -79,7 +77,7 @@ function UpdateClan() {
             }
         };
 
-        if (!isClanIdInvalid) {
+        if (isClanIdValid && isPlayerClanOwner) {
             fetchIcons();
         }
 
@@ -102,7 +100,7 @@ function UpdateClan() {
             }
         };
 
-        if (!isClanIdInvalid) {
+        if (isClanIdValid && isPlayerClanOwner) {
             fetchClan();
         }
 
@@ -117,7 +115,11 @@ function UpdateClan() {
                 <Link to="/clan">Quay lại</Link>
             </div>
 
-            {isClanIdInvalid ? (
+            {!isPlayerClanOwner ? (
+                <div className="alert alert-danger m-2 p-2" role="alert">
+                    Lỗi: Bạn không có quyền để truy cập trang này
+                </div>
+            ) : !isClanIdValid ? (
                 <div className="alert alert-danger m-2 p-2" role="alert">
                     Lỗi: ID đội không hợp lệ. Vui lòng kiểm tra lại.
                 </div>

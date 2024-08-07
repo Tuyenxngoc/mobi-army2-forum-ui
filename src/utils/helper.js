@@ -3,5 +3,5 @@ export const checkUserHasRequiredRole = (roleName, allowedRoles) => {
 };
 
 export const checkIdIsNumber = (id) => {
-    return isNaN(id) || !/^-?\d+$/.test(id);
+    return !isNaN(id) && /^-?\d+$/.test(id);
 };
