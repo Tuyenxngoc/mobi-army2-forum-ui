@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { message, Table } from 'antd';
+import { Button, Input, message, Select, Space, Table, Tag } from 'antd';
 
 import { getClanMembersForOwner } from '~/services/clanService';
 import { INITIAL_FILTERS, INITIAL_META } from '~/common/contans';
@@ -9,11 +9,29 @@ import { checkIdIsNumber } from '~/utils/helper';
 import queryString from 'query-string';
 import Pagination from '~/components/Pagination';
 
+const options = [
+    { value: 'username', label: 'Tên' },
+    { value: 'id', label: 'ID' },
+];
+
+const getTagColor = (rights) => {
+    switch (rights) {
+        case 2:
+            return <Tag color="red">Đội trưởng</Tag>;
+        case 1:
+            return <Tag color="green">Đội phó</Tag>;
+        default:
+            return <Tag color="default">Thành viên</Tag>;
+    }
+};
+
 function ClanMembers() {
     const { clanId } = useParams();
 
     const [meta, setMeta] = useState(INITIAL_META);
     const [filters, setFilters] = useState(INITIAL_FILTERS);
+    const [searchInput, setSearchInput] = useState('');
+    const [activeFilterOption, setActiveFilterOption] = useState(options[0].value);
 
     const [clanMembers, setClanMembers] = useState(null);
 
@@ -39,6 +57,24 @@ function ClanMembers() {
             ...prev,
             pageNum: 1,
             pageSize: parseInt(event.target.value, 10),
+        }));
+    };
+
+    const handleSearch = (searchBy, keyword) => {
+        setFilters((prev) => ({
+            ...prev,
+            pageNum: 1,
+            searchBy: searchBy || activeFilterOption,
+            keyword: keyword || searchInput,
+        }));
+    };
+
+    const handleSortChange = (_, __, sorter) => {
+        const sortOrder = sorter.order === 'ascend' ? true : sorter.order === 'descend' ? false : undefined;
+        setFilters((prev) => ({
+            ...prev,
+            sortBy: sorter.field,
+            isAscending: sortOrder,
         }));
     };
 
@@ -71,36 +107,51 @@ function ClanMembers() {
             title: 'ID',
             dataIndex: 'id',
             key: 'id',
+            sorter: true,
+            showSorterTooltip: false,
         },
         {
-            title: 'Quyền',
+            title: 'Chức vụ',
             dataIndex: 'rights',
             key: 'rights',
+            sorter: true,
+            showSorterTooltip: false,
+            render: (text) => getTagColor(text),
         },
         {
             title: 'Xu',
             dataIndex: 'xu',
             key: 'xu',
+            sorter: true,
+            showSorterTooltip: false,
         },
         {
-            title: 'Lương',
+            title: 'Lượng',
             dataIndex: 'luong',
             key: 'luong',
+            sorter: true,
+            showSorterTooltip: false,
         },
         {
             title: 'XP',
             dataIndex: 'xp',
             key: 'xp',
+            sorter: true,
+            showSorterTooltip: false,
         },
         {
             title: 'Điểm Clan',
             dataIndex: 'clanPoint',
             key: 'clanPoint',
+            sorter: true,
+            showSorterTooltip: false,
         },
         {
             title: 'Số lần đóng góp',
             dataIndex: 'contributeCount',
             key: 'contributeCount',
+            sorter: true,
+            showSorterTooltip: false,
         },
         {
             title: 'Thời gian đóng góp',
@@ -119,6 +170,25 @@ function ClanMembers() {
             dataIndex: 'contributeText',
             key: 'contributeText',
         },
+        {
+            title: 'Hành động',
+            dataIndex: 'rights',
+            key: 'rights',
+            render: (text) => (
+                <Space size="small">
+                    {text < 2 && (
+                        <>
+                            <Button danger type="primary" size="small">
+                                Đuổi
+                            </Button>
+                            <Button type="default" size="small">
+                                Thăng chức
+                            </Button>
+                        </>
+                    )}
+                </Space>
+            ),
+        },
     ];
 
     const renderContent = () => {
@@ -132,6 +202,28 @@ function ClanMembers() {
 
         return (
             <div className="p-2">
+                <h3 className="text-primary forum-border-bottom">Quản lý thành viên</h3>
+
+                <Space.Compact className="mb-2">
+                    <Select
+                        options={options}
+                        disabled={isLoading}
+                        value={activeFilterOption}
+                        onChange={(value) => setActiveFilterOption(value)}
+                    />
+                    <Input
+                        allowClear
+                        name="searchInput"
+                        placeholder="Nhập từ cần tìm..."
+                        value={searchInput}
+                        disabled={isLoading}
+                        onChange={(e) => setSearchInput(e.target.value)}
+                    />
+                    <Button type="primary" loading={isLoading} onClick={() => handleSearch()}>
+                        Tìm
+                    </Button>
+                </Space.Compact>
+
                 <Table
                     dataSource={clanMembers}
                     columns={columns}
@@ -139,6 +231,7 @@ function ClanMembers() {
                     pagination={false}
                     rowKey="id"
                     loading={isLoading}
+                    onChange={handleSortChange}
                     scroll={{
                         x: 1500,
                     }}

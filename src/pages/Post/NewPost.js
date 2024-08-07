@@ -147,11 +147,9 @@ function NewPost() {
                 <div className="form-group mb-2">
                     {hasRequiredRole ? (
                         <>
-                            <label>Nội dung</label>
+                            <span>Nội dung</span>
                             <ReactQuill
-                                id="content"
                                 className="custom-quill"
-                                name="content"
                                 placeholder="Nhập nội dung bài viết"
                                 value={formik.values.content}
                                 modules={modules}

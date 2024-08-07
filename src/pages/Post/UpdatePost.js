@@ -163,11 +163,9 @@ function UpdatePost() {
                 </div>
 
                 <div className="form-group mb-2">
-                    <label>Nội dung</label>
+                    <span>Nội dung</span>
                     <ReactQuill
-                        id="content"
                         className="custom-quill"
-                        name="content"
                         placeholder="Nhập nội dung bài viết"
                         value={formik.values.content}
                         modules={modules}

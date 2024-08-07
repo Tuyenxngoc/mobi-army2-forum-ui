@@ -176,7 +176,6 @@ const Notification = ({ data, onNotificationUpdate, onNotificationDelete, canEdi
                         </div>
                         <div className={cx('content')}>
                             <ReactQuill
-                                id="inputContent"
                                 className="custom-quill"
                                 value={formik.values.content}
                                 modules={modules}

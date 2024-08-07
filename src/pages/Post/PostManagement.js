@@ -345,6 +345,7 @@ function PostManagement() {
                 />
                 <Input
                     allowClear
+                    name="searchInput"
                     placeholder="Nhập từ cần tìm..."
                     value={searchInput}
                     disabled={isLoading}

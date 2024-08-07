@@ -89,11 +89,9 @@ function NewNotification() {
                 </div>
 
                 <div className="form-group mb-2">
-                    <label>Nội dung</label>
+                    <span>Nội dung</span>
                     <ReactQuill
-                        id="message"
                         className="custom-quill"
-                        name="message"
                         placeholder="Nhập nội dung thông báo"
                         value={formik.values.message}
                         modules={modules}

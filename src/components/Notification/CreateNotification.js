@@ -73,10 +73,8 @@ function CreateNotification({ onAddNotification, messageApi }) {
                 </div>
 
                 <div className="form-group mb-2">
-                    <label htmlFor="inputContent">Nội dung</label>
+                    <span>Nội dung</span>
                     <ReactQuill
-                        id="inputContent"
-                        name="content"
                         className="custom-quill"
                         placeholder="Nhập nội dung thông báo"
                         value={formik.values.content}

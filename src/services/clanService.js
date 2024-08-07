@@ -28,14 +28,10 @@ export const updateClan = (clanId, values) => {
     return axiosPrivate.put(`clans/${clanId}`, values);
 };
 
-export const deleteClan = (clanId) => {
-    return axiosPrivate.delete(`clans/${clanId}`);
-};
-
 export const joinClan = (clanId) => {
-    return axiosPrivate.post(`clans/${clanId}/join`);
+    return axiosPrivate.post(`clans/${clanId}/members/join`);
 };
 
 export const leaveClan = (clanId) => {
-    return axiosPrivate.post(`clans/${clanId}/leave`);
+    return axiosPrivate.post(`clans/${clanId}/members/leave`);
 };
