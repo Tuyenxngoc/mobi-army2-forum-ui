@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBellSlash, faBell, faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
 import { faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons';
@@ -16,10 +16,12 @@ import useAuth from '~/hooks/useAuth';
 import DateFormatter from '~/components/DateFormatter/DateFormatter';
 import CommentsSection from './CommentsSection';
 import { BASE_URL } from '~/common/contans';
+import { checkIdIsNumber } from '~/utils/helper';
 
 const cx = classNames.bind(Style);
 
 function PostDetail() {
+    const navigate = useNavigate();
     const { postId } = useParams();
 
     const [post, setPost] = useState(null);
@@ -27,6 +29,7 @@ function PostDetail() {
     const [isPostLoading, setIsPostLoading] = useState(true);
     const [postErrorMessage, setPostErrorMessage] = useState(null);
 
+    const [messageApi, contextHolder] = message.useMessage();
     const { isAuthenticated } = useAuth();
 
     const handleToggleLikePost = async () => {
@@ -44,7 +47,7 @@ function PostDetail() {
                 }));
             }
         } catch (error) {
-            message.error('Đã có lỗi xảy ra, vui lòng thử lại');
+            messageApi.error('Đã có lỗi xảy ra, vui lòng thử lại');
         }
     };
 
@@ -58,26 +61,30 @@ function PostDetail() {
                 }));
             }
         } catch (error) {
-            message.error('Đã có lỗi xảy ra, vui lòng thử lại');
+            messageApi.error('Đã có lỗi xảy ra, vui lòng thử lại');
         }
     };
 
     useEffect(() => {
+        if (!checkIdIsNumber(postId)) {
+            navigate('/forum');
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [postId]);
+
+    useEffect(() => {
         const fetchPost = async () => {
             setIsPostLoading(true);
+            setPostErrorMessage(null);
             try {
-                if (isNaN(postId)) {
-                    throw new Error('ID không hợp lệ. Vui lòng kiểm tra lại.');
+                if (!checkIdIsNumber(postId)) {
+                    return;
                 }
-
                 const response = await getPostById(postId);
                 setPost(response.data.data);
             } catch (error) {
-                if (error.response && error.response.data) {
-                    setPostErrorMessage(error.response.data.message);
-                } else {
-                    setPostErrorMessage(error.message);
-                }
+                setPostErrorMessage(error.response?.data?.message || error.message);
             } finally {
                 setIsPostLoading(false);
             }
@@ -88,6 +95,8 @@ function PostDetail() {
 
     return (
         <div className="box-container">
+            {contextHolder}
+
             <div className="forum-header">
                 <Link to="/forum">Quay lại</Link>
             </div>
@@ -103,7 +112,7 @@ function PostDetail() {
                 </>
             ) : postErrorMessage ? (
                 <div className="alert alert-danger m-2 p-2" role="alert">
-                    Lỗi khi tải bài viết: {postErrorMessage}
+                    Lỗi : {postErrorMessage}
                 </div>
             ) : (
                 post && (
