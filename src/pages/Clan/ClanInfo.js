@@ -95,6 +95,10 @@ function ClanInfo() {
         navigate(`/clan/${clanId}/members`);
     };
 
+    const handleApproveMembers = () => {
+        navigate(`/clan/${clanId}/approve`);
+    };
+
     const handleUpdateClanInfo = () => {
         navigate(`/clan/${clanId}/update`);
     };
@@ -212,6 +216,9 @@ function ClanInfo() {
                                             <>
                                                 <Button type="primary" size="small" onClick={handleManageMembers}>
                                                     Quản lý thành viên
+                                                </Button>
+                                                <Button type="primary" size="small" onClick={handleApproveMembers}>
+                                                    Duyệt thành viên
                                                 </Button>
                                                 <Button type="primary" size="small" onClick={handleUpdateClanInfo}>
                                                     Cập nhật thông tin

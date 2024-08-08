@@ -8,6 +8,7 @@ import useAuth from '~/hooks/useAuth';
 import { checkIdIsNumber } from '~/utils/helper';
 import queryString from 'query-string';
 import Pagination from '~/components/Pagination';
+import { kickClanMember, promoteClanMember } from '~/services/clanMemberService';
 
 const options = [
     { value: 'username', label: 'Tên' },
@@ -78,6 +79,32 @@ function ClanMembers() {
         }));
     };
 
+    const handleKick = async (memberId) => {
+        try {
+            const response = await kickClanMember(clanId, memberId);
+
+            messageApi.success(response.data.data.message);
+
+            // Tải lại danh sách thành viên
+            setFilters((prev) => ({ ...prev, pageNum: 1 }));
+        } catch (error) {
+            messageApi.error(error.message);
+        }
+    };
+
+    const handlePromote = async (memberId) => {
+        try {
+            const response = await promoteClanMember(clanId, memberId);
+
+            messageApi.success(response.data.data.message);
+
+            // Tải lại danh sách thành viên
+            setFilters((prev) => ({ ...prev, pageNum: 1 }));
+        } catch (error) {
+            messageApi.error(error.message);
+        }
+    };
+
     useEffect(() => {
         const fetchClanMembers = async () => {
             setIsLoading(true);
@@ -109,6 +136,11 @@ function ClanMembers() {
             key: 'id',
             sorter: true,
             showSorterTooltip: false,
+        },
+        {
+            title: 'Tên',
+            dataIndex: 'name',
+            key: 'name',
         },
         {
             title: 'Chức vụ',
@@ -174,14 +206,14 @@ function ClanMembers() {
             title: 'Hành động',
             dataIndex: 'rights',
             key: 'rights',
-            render: (text) => (
+            render: (rights, record) => (
                 <Space size="small">
-                    {text < 2 && (
+                    {rights < 2 && (
                         <>
-                            <Button danger type="primary" size="small">
+                            <Button type="primary" size="small" onClick={() => handleKick(record.id)} danger>
                                 Đuổi
                             </Button>
-                            <Button type="default" size="small">
+                            <Button type="default" size="small" onClick={() => handlePromote(record.id)}>
                                 Thăng chức
                             </Button>
                         </>
