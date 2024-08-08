@@ -1,11 +1,13 @@
+import { useEffect, useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Button, Flex, message, Spin, Tag } from 'antd';
 import { intervalToDuration } from 'date-fns';
 import queryString from 'query-string';
-import { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import { BASE_URL, INITIAL_FILTERS, INITIAL_META } from '~/common/contans';
-import Pagination from '~/components/Pagination';
+
 import useAuth from '~/hooks/useAuth';
+import Pagination from '~/components/Pagination';
+import { checkIdIsNumber } from '~/utils/helper';
+import { BASE_URL, INITIAL_FILTERS, INITIAL_META } from '~/common/contans';
 import { getClanById, getClanMembers, joinClan, leaveClan } from '~/services/clanService';
 
 const getTagColor = (categoryName) => {
@@ -91,30 +93,30 @@ function ClanInfo() {
         }
     };
 
-    const handleManageMembers = () => {
-        navigate(`/clan/${clanId}/members`);
+    const handleButtonNavigation = (path) => {
+        navigate(path);
     };
 
-    const handleApproveMembers = () => {
-        navigate(`/clan/${clanId}/approve`);
-    };
+    useEffect(() => {
+        if (!checkIdIsNumber(clanId)) {
+            navigate('/clan');
+        }
 
-    const handleUpdateClanInfo = () => {
-        navigate(`/clan/${clanId}/update`);
-    };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [clanId]);
 
     useEffect(() => {
         const fetchClanInfo = async () => {
             setIsClanLoading(true);
             setClanLoadError(null);
             try {
-                if (isNaN(clanId) || !/^-?\d+$/.test(clanId)) {
-                    throw new Error('ID không hợp lệ. Vui lòng kiểm tra lại.');
+                if (!checkIdIsNumber(clanId)) {
+                    return;
                 }
                 const response = await getClanById(clanId);
                 setClan(response.data.data);
             } catch (error) {
-                setClanLoadError(error.message);
+                setClanLoadError(error.response?.data?.message || error.message);
             } finally {
                 setIsClanLoading(false);
             }
@@ -128,7 +130,7 @@ function ClanInfo() {
             setIsMembersLoading(true);
             setMembersError(null);
             try {
-                if (isNaN(clanId) || !/^-?\d+$/.test(clanId)) {
+                if (!checkIdIsNumber(clanId)) {
                     return;
                 }
                 const params = queryString.stringify(filters);
@@ -155,7 +157,7 @@ function ClanInfo() {
                     </div>
                     <div className="p-2">
                         <h3 className="forum-border-bottom text-primary">Thông tin biệt đội</h3>
-                        <div className="alert alert-primary m-2 p-2" role="alert">
+                        <div className="alert alert-primary p-2" role="alert">
                             Loading... <Spin />
                         </div>
                     </div>
@@ -171,7 +173,7 @@ function ClanInfo() {
                     </div>
                     <div className="p-2">
                         <h3 className="forum-border-bottom text-primary">Thông tin biệt đội</h3>
-                        <div className="alert alert-danger m-2 p-2" role="alert">
+                        <div className="alert alert-danger p-2" role="alert">
                             Lỗi: {clanLoadError}
                         </div>
                     </div>
@@ -219,21 +221,29 @@ function ClanInfo() {
                                                         <Button
                                                             type="primary"
                                                             size="small"
-                                                            onClick={handleManageMembers}
+                                                            onClick={() =>
+                                                                handleButtonNavigation(`/clan/${clanId}/members`)
+                                                            }
                                                         >
                                                             Quản lý thành viên
                                                         </Button>
                                                         <Button
                                                             type="primary"
                                                             size="small"
-                                                            onClick={handleUpdateClanInfo}
+                                                            onClick={() =>
+                                                                handleButtonNavigation(`/clan/${clanId}/update`)
+                                                            }
                                                         >
                                                             Cập nhật thông tin
                                                         </Button>
                                                     </>
                                                 )}
 
-                                                <Button type="primary" size="small" onClick={handleApproveMembers}>
+                                                <Button
+                                                    type="primary"
+                                                    size="small"
+                                                    onClick={() => handleButtonNavigation(`/clan/${clanId}/approve`)}
+                                                >
                                                     Duyệt thành viên
                                                 </Button>
                                             </>
