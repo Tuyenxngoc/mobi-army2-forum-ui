@@ -11,7 +11,7 @@ import Pagination from '~/components/Pagination';
 import { getAllCategories } from '~/services/categoryService';
 import { getPosts } from '~/services/postService';
 import { INITIAL_FILTERS, INITIAL_META, ROLES } from '~/common/contans';
-import { Button, Skeleton } from 'antd';
+import { Button, Skeleton, Flex } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '~/hooks/useAuth';
 
@@ -56,28 +56,8 @@ function Forum() {
         });
     };
 
-    const handleNewPostClick = () => {
-        navigate('/post/new');
-    };
-
-    const handleFollowClick = () => {
-        navigate('/following-post');
-    };
-
-    const handleManagePostsClick = () => {
-        navigate('/admin/post');
-    };
-
-    const handleManageCategoriesClick = () => {
-        navigate('/admin/category');
-    };
-
-    const handleManageMembersClick = () => {
-        navigate('/admin/player');
-    };
-
-    const handleAddNotificationClick = () => {
-        navigate('/admin/notification/new');
+    const handleButtonNavigation = (path) => {
+        navigate(path);
     };
 
     useEffect(() => {
@@ -121,29 +101,37 @@ function Forum() {
         <>
             {isAuthenticated && (
                 <div className="box-container p-2 mb-1">
-                    <Button className="me-2" size="small" type="default" onClick={handleNewPostClick}>
-                        Bài viết mới
-                    </Button>
-                    <Button className="me-2" size="small" type="default" onClick={handleFollowClick}>
-                        Theo giõi
-                    </Button>
+                    <Flex wrap gap="small">
+                        <Button size="small" type="default" onClick={() => handleButtonNavigation('/post/new')}>
+                            Bài viết mới
+                        </Button>
+                        <Button size="small" type="default" onClick={() => handleButtonNavigation('/following-post')}>
+                            Theo giõi
+                        </Button>
+                    </Flex>
                 </div>
             )}
 
             {hasRequiredRole && (
-                <div className="box-container admin p-2 mb-1">
-                    <Button className="me-2" size="small" type="primary" onClick={handleManagePostsClick}>
-                        Quản lý bài viết
-                    </Button>
-                    <Button className="me-2" size="small" type="primary" onClick={handleManageCategoriesClick}>
-                        Quản lý danh mục
-                    </Button>
-                    <Button className="me-2" size="small" type="primary" onClick={handleManageMembersClick}>
-                        Quản lý thành viên
-                    </Button>
-                    <Button className="me-2" size="small" type="primary" onClick={handleAddNotificationClick}>
-                        Thêm thông báo
-                    </Button>
+                <div className="box-container p-2 mb-1 admin">
+                    <Flex wrap gap="small">
+                        <Button size="small" type="primary" onClick={() => handleButtonNavigation('/admin/post')}>
+                            Quản lý bài viết
+                        </Button>
+                        <Button size="small" type="primary" onClick={() => handleButtonNavigation('/admin/category')}>
+                            Quản lý danh mục
+                        </Button>
+                        <Button size="small" type="primary" onClick={() => handleButtonNavigation('/admin/player')}>
+                            Quản lý thành viên
+                        </Button>
+                        <Button
+                            size="small"
+                            type="primary"
+                            onClick={() => handleButtonNavigation('/admin/notification/new')}
+                        >
+                            Thêm thông báo
+                        </Button>
+                    </Flex>
                 </div>
             )}
 

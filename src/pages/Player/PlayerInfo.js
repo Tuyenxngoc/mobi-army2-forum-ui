@@ -1,4 +1,4 @@
-import { Badge, Button, message, Spin } from 'antd';
+import { Badge, Button, message, Spin, Space } from 'antd';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { BASE_URL } from '~/common/contans';
@@ -148,31 +148,23 @@ function PlayerInfo() {
                     </table>
                 </div>
 
-                <div className="forum-border-bottom text-primary">Chức Năng Tài Khoản</div>
-                <ul>
-                    <li className="py-2">
-                        <Button onClick={() => handleButtonNavigation('/change-username')}>Đổi tên tài khoản</Button>
-                    </li>
-                    <li className="py-2">
-                        <Button onClick={() => handleButtonNavigation('/change-password')}>Đổi mật khẩu</Button>
-                    </li>
-                    <li className="py-2">
-                        <Button onClick={() => handleButtonNavigation('/inventory')}>Rương đồ</Button>
-                    </li>
-                    <li className="py-2">
-                        <Button onClick={() => handleButtonNavigation('/upgrade-points')}>Cộng điểm nâng cấp</Button>
-                    </li>
-                </ul>
+                <h4 className="forum-border-bottom text-primary my-2">Chức Năng Tài Khoản</h4>
+                <Space direction="vertical">
+                    <Button onClick={() => handleButtonNavigation('/change-username')}>Đổi tên tài khoản</Button>
+                    <Button onClick={() => handleButtonNavigation('/change-password')}>Đổi mật khẩu</Button>
+                    <Button onClick={() => handleButtonNavigation('/inventory')}>Rương đồ</Button>
+                    <Button onClick={() => handleButtonNavigation('/upgrade-points')}>Cộng điểm nâng cấp</Button>
+                </Space>
 
-                <div className="forum-border-bottom text-primary mt-2">Chức Năng Đặc Biệt</div>
-                <ul>
-                    <li className="py-2">
+                <h4 className="forum-border-bottom text-primary my-2">Chức Năng Đặc Biệt</h4>
+                <Space direction="vertical">
+                    <div>
                         <Button type="primary" danger={playerProfile.chestLocked} onClick={handleToggleChestLock}>
                             {playerProfile.chestLocked ? 'Mở rương đồ' : 'Khóa rương đồ'}
                         </Button>
                         <div className="form-text">Mở Rương Đồ: Để Bán Đồ Trong Game</div>
-                    </li>
-                    <li className="py-2">
+                    </div>
+                    <div>
                         <Button
                             type="primary"
                             danger={playerProfile.invitationLocked}
@@ -181,16 +173,16 @@ function PlayerInfo() {
                             {playerProfile.invitationLocked ? 'Mở tìm bạn' : 'Khóa tìm bạn'}
                         </Button>
                         <div className="form-text">Mở Tìm Bạn Chơi: Cho Phép Mọi Người Mời Chơi</div>
-                    </li>
-                </ul>
+                    </div>
+                </Space>
 
-                <div className="forum-border-bottom text-primary mt-2">Chức Năng Khác</div>
-                <ul>
-                    <li className="py-2">
+                <h4 className="forum-border-bottom text-primary my-2">Chức Năng Khác</h4>
+                <Space direction="vertical">
+                    <div>
                         <Button onClick={() => handleButtonNavigation('/clan')}>Biệt đội</Button>
                         <div className="form-text">Biệt Đội - Hãy cùng nhau chung tay làm nên 1 tên tuổi</div>
-                    </li>
-                </ul>
+                    </div>
+                </Space>
             </div>
         );
     };

@@ -207,7 +207,7 @@ function ClanMembers() {
             dataIndex: 'rights',
             key: 'rights',
             render: (rights, record) => (
-                <Space size="small">
+                <Space>
                     {rights < 2 && (
                         <>
                             <Button type="primary" size="small" onClick={() => handleKick(record.id)} danger>

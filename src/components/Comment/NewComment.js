@@ -56,7 +56,7 @@ function NewComment({ postId, onCommentSubmit, message }) {
                     value={newComment}
                     onChange={handleCommentChange}
                 />
-                <Button htmlType="submit" type="primary" className="mt-2" loading={isLoading}>
+                <Button size="small" htmlType="submit" type="primary" className="mt-2" loading={isLoading}>
                     Gửi
                 </Button>
             </form>

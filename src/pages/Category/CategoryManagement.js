@@ -155,7 +155,7 @@ function CategoryManagement() {
             title: 'Hành động',
             key: 'action',
             render: (_, record) => (
-                <Space size="small">
+                <Space>
                     <Button
                         danger
                         type="primary"

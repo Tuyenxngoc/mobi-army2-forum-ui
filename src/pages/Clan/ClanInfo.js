@@ -214,14 +214,27 @@ function ClanInfo() {
                                     <>
                                         {player.clanMember.rights > 0 && (
                                             <>
-                                                <Button type="primary" size="small" onClick={handleManageMembers}>
-                                                    Quản lý thành viên
-                                                </Button>
+                                                {player.clanMember.rights === 2 && (
+                                                    <>
+                                                        <Button
+                                                            type="primary"
+                                                            size="small"
+                                                            onClick={handleManageMembers}
+                                                        >
+                                                            Quản lý thành viên
+                                                        </Button>
+                                                        <Button
+                                                            type="primary"
+                                                            size="small"
+                                                            onClick={handleUpdateClanInfo}
+                                                        >
+                                                            Cập nhật thông tin
+                                                        </Button>
+                                                    </>
+                                                )}
+
                                                 <Button type="primary" size="small" onClick={handleApproveMembers}>
                                                     Duyệt thành viên
-                                                </Button>
-                                                <Button type="primary" size="small" onClick={handleUpdateClanInfo}>
-                                                    Cập nhật thông tin
                                                 </Button>
                                             </>
                                         )}

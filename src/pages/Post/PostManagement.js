@@ -243,7 +243,7 @@ function PostManagement() {
             title: 'Hành động',
             key: 'action',
             render: (_, record) => (
-                <Space size="small">
+                <Space>
                     <Button
                         danger
                         type="primary"
@@ -324,16 +324,18 @@ function PostManagement() {
             <h3 className="p-2 pb-0"> Quản lý bài viết </h3>
 
             <div className="p-2">
-                <label className="me-2">Trạng thái bài viết</label>
-                <Button size="small" disabled={isLoading} onClick={() => handleSearch()}>
-                    Tất cả
-                </Button>
-                <Button size="small" disabled={isLoading} onClick={() => handleSearch('isLocked', 'true')}>
-                    Đã khóa
-                </Button>
-                <Button size="small" disabled={isLoading} onClick={() => handleSearch('isApproved', 'false')}>
-                    Chưa duyệt
-                </Button>
+                <span className="me-2">Trạng thái bài viết</span>
+                <Space wrap>
+                    <Button size="small" disabled={isLoading} onClick={() => handleSearch()}>
+                        Tất cả
+                    </Button>
+                    <Button size="small" disabled={isLoading} onClick={() => handleSearch('isLocked', 'true')}>
+                        Đã khóa
+                    </Button>
+                    <Button size="small" disabled={isLoading} onClick={() => handleSearch('isApproved', 'false')}>
+                        Chưa duyệt
+                    </Button>
+                </Space>
             </div>
 
             <Space.Compact className="p-2">
