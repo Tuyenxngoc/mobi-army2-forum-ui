@@ -75,7 +75,11 @@ function ClanInfo() {
         try {
             const response = await joinClan(clanId);
             if (response.status === 200) {
-                loadUserInfo();
+                if (!clan.requireApproval) {
+                    loadUserInfo();
+                } else {
+                    messageApi.success(response.data.data.message);
+                }
             }
         } catch (error) {
             messageApi.error(`Lỗi: ${error.response?.data?.message || error.message}`);

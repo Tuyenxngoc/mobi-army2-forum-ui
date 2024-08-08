@@ -182,6 +182,11 @@ function PlayerInfo() {
                         <Button onClick={() => handleButtonNavigation('/clan')}>Biệt đội</Button>
                         <div className="form-text">Biệt Đội - Hãy cùng nhau chung tay làm nên 1 tên tuổi</div>
                     </div>
+
+                    <div>
+                        <Button onClick={() => handleButtonNavigation('/clan')}>Bài viết của bạn</Button>
+                        <div className="form-text">Xem danh sách bài viết đã tạo</div>
+                    </div>
                 </Space>
             </div>
         );
