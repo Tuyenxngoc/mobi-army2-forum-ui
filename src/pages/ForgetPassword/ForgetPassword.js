@@ -3,11 +3,6 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { forgetPassword } from '~/services/authService';
 
-import Style from './ForgetPassword.module.scss';
-import classNames from 'classnames/bind';
-
-const cx = classNames.bind(Style);
-
 const validationSchema = yup.object({
     username: yup.string().trim().required('Vui lòng nhập tên tài khoản'),
 
@@ -47,13 +42,14 @@ function ForgetPassword() {
         onSubmit: handleSubmit,
     });
 
-    const renderInput = (name, label, type = 'text') => (
-        <div className={cx('formControl')}>
-            <label className={cx('formlabel')} htmlFor={`txt${name}`}>
+    const renderInput = (name, label, type = 'text', props = {}) => (
+        <div className="d-flex align-items-center justify-content-center p-1">
+            <label className="w-25" htmlFor={`txt${name}`}>
                 {label}
             </label>
             <div>
                 <Input
+                    {...props}
                     id={`txt${name}`}
                     name={name}
                     type={type}
@@ -68,17 +64,17 @@ function ForgetPassword() {
     );
 
     return (
-        <div className={cx('wrapper', 'box-container', 'p-2')}>
+        <div className="box-container p-2 border-top-0 text-center">
             {contextHolder}
 
-            <div className={cx('title')}>Quên Mật Khẩu</div>
+            <div className="fw-bold">Quên Mật Khẩu</div>
 
             <form onSubmit={formik.handleSubmit}>
-                {renderInput('username', 'Tên tài khoản')}
-                {renderInput('email', 'Email', 'email')}
+                {renderInput('username', 'Tên tài khoản', 'text', { autoComplete: 'on' })}
+                {renderInput('email', 'Email', 'email', { autoComplete: 'on' })}
 
-                <div>
-                    <Button type="primary" htmlType="submit" loading={formik.isSubmitting}>
+                <div className="p-1">
+                    <Button size="small" type="primary" htmlType="submit" loading={formik.isSubmitting}>
                         Gửi Email Khôi Phục
                     </Button>
                 </div>

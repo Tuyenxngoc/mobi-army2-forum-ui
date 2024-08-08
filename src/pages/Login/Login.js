@@ -58,13 +58,14 @@ function Login() {
         }
     }, [isAuthenticated, navigate]);
 
-    const renderInput = (name, label, type = 'text') => (
+    const renderInput = (name, label, type = 'text', props = {}) => (
         <div className="d-flex justify-content-center align-items-center p-1">
             <label className="text-start w-25" htmlFor={`txt${name}`}>
                 {label}
             </label>
             <div>
                 <Input
+                    {...props}
                     id={`txt${name}`}
                     name={name}
                     type={type}
@@ -85,7 +86,7 @@ function Login() {
             <div className="p-1 fw-bold">Sử dụng tài khoản Mobi Army 2 để đăng nhập.</div>
 
             <form onSubmit={formik.handleSubmit}>
-                {renderInput('username', 'Tên tài khoản')}
+                {renderInput('username', 'Tên tài khoản', 'text', { autoComplete: 'on' })}
                 {renderInput('password', 'Mật khẩu', 'password')}
 
                 <div className="p-1">

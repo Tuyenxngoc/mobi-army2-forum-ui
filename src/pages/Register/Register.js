@@ -74,13 +74,14 @@ function Register() {
         onSubmit: handleRegister,
     });
 
-    const renderInput = (name, label, type = 'text') => (
+    const renderInput = (name, label, type = 'text', props = {}) => (
         <>
             <div className="p-1">
                 <label className="text-start w-50" htmlFor={`txt${name}`}>
                     {label}
                 </label>
                 <Input
+                    {...props}
                     id={`txt${name}`}
                     name={name}
                     type={type}
@@ -102,8 +103,8 @@ function Register() {
             <form onSubmit={formik.handleSubmit}>
                 {renderInput('fullName', 'Họ và tên')}
                 {renderInput('phoneNumber', 'Số điện thoại', 'tel')}
-                {renderInput('email', 'Email', 'email')}
-                {renderInput('username', 'Tên tài khoản')}
+                {renderInput('email', 'Email', 'email', { autoComplete: 'on' })}
+                {renderInput('username', 'Tên tài khoản', 'text', { autoComplete: 'on' })}
                 {renderInput('password', 'Mật khẩu', 'password', true)}
                 {renderInput('repeatPassword', 'Xác nhận mật khẩu', 'password')}
 
