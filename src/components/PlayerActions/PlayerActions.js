@@ -8,6 +8,8 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 import Style from './PlayerActions.module.scss';
 import classNames from 'classnames/bind';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(Style);
 
@@ -38,7 +40,7 @@ function PlayerActions() {
                         </Link>
 
                         <button
-                            className="navbar-toggler btn-sm"
+                            className="navbar-toggler"
                             type="button"
                             data-bs-toggle="collapse"
                             data-bs-target="#navbarNav"
@@ -46,7 +48,7 @@ function PlayerActions() {
                             aria-expanded="false"
                             aria-label="Toggle navigation"
                         >
-                            <span className="navbar-toggler-icon"></span>
+                            <FontAwesomeIcon icon={faBars} />
                         </button>
 
                         <div className="collapse navbar-collapse" id="navbarNav">
