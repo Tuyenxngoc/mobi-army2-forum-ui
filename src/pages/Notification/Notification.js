@@ -167,7 +167,7 @@ function Notification() {
                     <div className={cx('modal-content-scrollable')}>
                         <h2>{notificationDetails.title}</h2>
                         <div
-                            className={cx('ql-snow', 'ql-editor', 'content')}
+                            className="ql-snow ql-editor p-0"
                             dangerouslySetInnerHTML={{ __html: notificationDetails.message }}
                         />
                     </div>
