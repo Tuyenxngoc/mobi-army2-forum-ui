@@ -35,6 +35,7 @@ import UpdragePoinst from './pages/Player/UpdragePoinst';
 import UpdateClan from './pages/Clan/UpdateClan';
 import ClanMembers from './pages/Clan/ClanMembers';
 import ApproveClanMembers from './pages/Clan/ApproveClanMembers';
+import PlayerPost from './pages/Player/PlayerPost';
 
 function App() {
     return (
@@ -54,6 +55,8 @@ function App() {
                         <Route path="post/:postId" element={<PostDetail />} />
 
                         <Route element={<RequireAuth />}>
+                            <Route path="player/:playerId/post" element={<PlayerPost />} />
+
                             <Route path="post/new" element={<NewPost />} />
                             <Route path="notification" element={<Notification />} />
                             <Route path="following-post" element={<FollowingPosts />} />

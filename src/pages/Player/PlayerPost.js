@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
-import classNames from 'classnames/bind';
-import Style from './FollowingPosts.module.scss';
 import Pagination from '~/components/Pagination';
 import { INITIAL_FILTERS, INITIAL_META } from '~/common/contans';
 import queryString from 'query-string';
@@ -10,11 +8,13 @@ import { Spin } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faMessage } from '@fortawesome/free-regular-svg-icons';
 import DateFormatter from '~/components/DateFormatter/DateFormatter';
-import { getFollowingPosts } from '~/services/playerService';
+import { getPostsByPlayerId } from '~/services/postService';
+import { checkIdIsNumber } from '~/utils/helper';
 
-const cx = classNames.bind(Style);
+function PlayerPost() {
+    const { playerId } = useParams();
+    const navigate = useNavigate();
 
-function FollowingPosts() {
     const [meta, setMeta] = useState(INITIAL_META);
     const [filters, setFilters] = useState(INITIAL_FILTERS);
 
@@ -28,16 +28,31 @@ function FollowingPosts() {
     };
 
     const handleChangeRowsPerPage = (event) => {
-        setFilters({ pageNum: 1, pageSize: parseInt(event.target.value, 10) });
+        setFilters((prev) => ({
+            ...prev,
+            pageNum: 1,
+            pageSize: parseInt(event.target.value, 10),
+        }));
     };
 
     useEffect(() => {
-        const fetchFollowingPosts = async () => {
+        if (!checkIdIsNumber(playerId)) {
+            navigate('/forum', { replace: true });
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => {
+        const fetchPlayerPosts = async () => {
             setIsLoading(true);
             setErrorMessage(null);
             try {
+                if (!checkIdIsNumber(playerId)) {
+                    return;
+                }
                 const params = queryString.stringify(filters);
-                const response = await getFollowingPosts(params);
+                const response = await getPostsByPlayerId(playerId, params);
                 const { meta, items } = response.data.data;
                 setPosts(items);
                 setMeta(meta);
@@ -48,7 +63,9 @@ function FollowingPosts() {
             }
         };
 
-        fetchFollowingPosts();
+        fetchPlayerPosts();
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filters]);
 
     const renderContent = () => {
@@ -69,10 +86,12 @@ function FollowingPosts() {
         }
 
         return (
-            <div>
+            <div className="p-2">
+                <h3 className="forum-border-bottom text-primary">Danh sách bài viết</h3>
+
                 {posts.length > 0 ? (
                     posts.map((post) => (
-                        <div key={post.id} className={cx('item', 'p-2')}>
+                        <div key={post.id}>
                             <Link to={`/post/${post.id}`}>{post.title}</Link>
                             <div>
                                 bởi {post.player.name} <DateFormatter datetime={post.createdDate} />{' '}
@@ -82,7 +101,7 @@ function FollowingPosts() {
                         </div>
                     ))
                 ) : (
-                    <p className="px-2">Chưa có bài viết nào.</p>
+                    <span>Chưa có bài viết nào.</span>
                 )}
             </div>
         );
@@ -93,8 +112,6 @@ function FollowingPosts() {
             <div className="forum-header">
                 <Link to="/forum">Quay lại</Link>
             </div>
-
-            <h3 className="p-2 pb-0">Các bài viết đang theo dõi</h3>
 
             {renderContent()}
 
@@ -110,4 +127,4 @@ function FollowingPosts() {
     );
 }
 
-export default FollowingPosts;
+export default PlayerPost;

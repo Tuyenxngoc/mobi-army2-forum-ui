@@ -40,6 +40,6 @@ export const getPostForAdminById = (postId) => {
     return axiosPrivate.get(`admin/posts/${postId}`);
 };
 
-export const getPostsByPlayerId = (params) => {
-    return axiosPrivate.get(`posts/my-posts?${params}`);
+export const getPostsByPlayerId = (playerId, params) => {
+    return axiosPrivate.get(`posts/player/${playerId}?${params}`);
 };

@@ -184,7 +184,9 @@ function PlayerInfo() {
                     </div>
 
                     <div>
-                        <Button onClick={() => handleButtonNavigation('/clan')}>Bài viết của bạn</Button>
+                        <Button onClick={() => handleButtonNavigation(`/player/${player.id}/post`)}>
+                            Bài viết của bạn
+                        </Button>
                         <div className="form-text">Xem danh sách bài viết đã tạo</div>
                     </div>
                 </Space>
