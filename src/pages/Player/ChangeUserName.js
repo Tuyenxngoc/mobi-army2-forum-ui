@@ -52,7 +52,7 @@ function ChangeUserName() {
             </div>
 
             <div className="p-2">
-                <h3 className="forum-border-bottom text-primary">Đổi tên tài khoản</h3>
+                <h4 className="forum-border-bottom text-primary">Đổi tên tài khoản</h4>
 
                 <form onSubmit={formik.handleSubmit}>
                     <div className="form-group mb-2">

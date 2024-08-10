@@ -96,7 +96,7 @@ function Login() {
                 </div>
 
                 <div className="p-1">
-                    <Button type="default" href={BASE_URL + '/oauth2/authorization/google'}>
+                    <Button href={BASE_URL + '/oauth2/authorization/google'}>
                         <img width={16} src={images.google} alt="Google" />
                         Đăng nhập với Google
                     </Button>

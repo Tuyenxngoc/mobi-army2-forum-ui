@@ -100,7 +100,7 @@ function ApproveClanMembers() {
 
         return (
             <div className="p-2">
-                <h3 className="text-primary forum-border-bottom">Duyệt thành viên</h3>
+                <h4 className="forum-border-bottom text-primary">Duyệt thành viên</h4>
 
                 <table className="table align-middle mb-0">
                     <thead>
@@ -121,7 +121,7 @@ function ApproveClanMembers() {
                                             <Button type="primary" size="small" onClick={() => handleApprove(item.id)}>
                                                 Chấp nhận
                                             </Button>
-                                            <Button type="default" size="small" onClick={() => handleReject(item.id)}>
+                                            <Button size="small" onClick={() => handleReject(item.id)}>
                                                 Từ chối
                                             </Button>
                                         </Space>

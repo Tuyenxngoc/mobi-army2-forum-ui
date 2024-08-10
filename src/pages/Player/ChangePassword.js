@@ -58,7 +58,7 @@ function ChangePassword() {
             </div>
 
             <div className="p-2">
-                <h3 className="forum-border-bottom text-primary">Đổi mật khẩu</h3>
+                <h4 className="forum-border-bottom text-primary">Đổi mật khẩu</h4>
 
                 <form onSubmit={formik.handleSubmit}>
                     <div className="form-group mb-2">

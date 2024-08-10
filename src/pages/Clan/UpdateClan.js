@@ -125,7 +125,7 @@ function UpdateClan() {
                 </div>
             ) : (
                 <form className="p-2" onSubmit={formik.handleSubmit}>
-                    <h3 className="forum-border-bottom text-primary mb-4">Cập nhật thông tin đội</h3>
+                    <h4 className="forum-border-bottom text-primary mb-4">Cập nhật thông tin đội</h4>
 
                     <div className="form-group mb-2">
                         <label htmlFor="description">Mô tả</label>

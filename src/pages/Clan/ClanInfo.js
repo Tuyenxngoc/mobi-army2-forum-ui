@@ -160,7 +160,7 @@ function ClanInfo() {
                         <Link to="/clan">Quay lại</Link>
                     </div>
                     <div className="p-2">
-                        <h3 className="forum-border-bottom text-primary">Thông tin biệt đội</h3>
+                        <h4 className="forum-border-bottom text-primary">Thông tin biệt đội</h4>
                         <div className="alert alert-primary p-2" role="alert">
                             Loading... <Spin />
                         </div>
@@ -176,7 +176,7 @@ function ClanInfo() {
                         <Link to="/clan">Quay lại</Link>
                     </div>
                     <div className="p-2">
-                        <h3 className="forum-border-bottom text-primary">Thông tin biệt đội</h3>
+                        <h4 className="forum-border-bottom text-primary">Thông tin biệt đội</h4>
                         <div className="alert alert-danger p-2" role="alert">
                             Lỗi: {clanLoadError}
                         </div>
@@ -193,7 +193,7 @@ function ClanInfo() {
                     </div>
 
                     <div className="p-2">
-                        <h3 className="forum-border-bottom text-primary">Thông tin biệt đội</h3>
+                        <h4 className="forum-border-bottom text-primary">Thông tin biệt đội</h4>
 
                         <ul>
                             <li>Tên: {clan.name}</li>

@@ -213,7 +213,7 @@ function ClanMembers() {
                             <Button type="primary" size="small" onClick={() => handleKick(record.id)} danger>
                                 Đuổi
                             </Button>
-                            <Button type="default" size="small" onClick={() => handlePromote(record.id)}>
+                            <Button size="small" onClick={() => handlePromote(record.id)}>
                                 Thăng chức
                             </Button>
                         </>
@@ -234,7 +234,7 @@ function ClanMembers() {
 
         return (
             <div className="p-2">
-                <h3 className="text-primary forum-border-bottom">Quản lý thành viên</h3>
+                <h4 className="forum-border-bottom text-primary">Quản lý thành viên</h4>
 
                 <Space.Compact className="mb-2">
                     <Select

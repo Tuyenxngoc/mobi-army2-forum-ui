@@ -105,13 +105,13 @@ function Forum() {
         <>
             {isAuthenticated && (
                 <div className="box-container p-2 mb-1">
-                    <h4 className="forum-border-bottom">Quản lí bài viết</h4>
+                    <h4 className="forum-border-bottom text-primary">Quản lí bài viết</h4>
 
                     <Flex wrap gap="small">
-                        <Button size="small" type="default" onClick={() => handleButtonNavigation('/post/new')}>
+                        <Button size="small" onClick={() => handleButtonNavigation('/post/new')}>
                             Bài viết mới
                         </Button>
-                        <Button size="small" type="default" onClick={() => handleButtonNavigation('/following-post')}>
+                        <Button size="small" onClick={() => handleButtonNavigation('/following-post')}>
                             Đang theo giõi
                         </Button>
                     </Flex>
@@ -120,23 +120,19 @@ function Forum() {
 
             {hasRequiredRole && (
                 <div className="box-container p-2 mb-1 admin">
-                    <h4 className="forum-border-bottom">Chức năng quản trị</h4>
+                    <h4 className="forum-border-bottom text-primary">Chức năng quản trị</h4>
 
                     <Flex wrap gap="small">
-                        <Button size="small" type="primary" onClick={() => handleButtonNavigation('/admin/post')}>
+                        <Button size="small" onClick={() => handleButtonNavigation('/admin/post')}>
                             Quản lý bài viết
                         </Button>
-                        <Button size="small" type="primary" onClick={() => handleButtonNavigation('/admin/category')}>
+                        <Button size="small" onClick={() => handleButtonNavigation('/admin/category')}>
                             Quản lý danh mục
                         </Button>
-                        <Button size="small" type="primary" onClick={() => handleButtonNavigation('/admin/player')}>
+                        <Button size="small" onClick={() => handleButtonNavigation('/admin/player')}>
                             Quản lý thành viên
                         </Button>
-                        <Button
-                            size="small"
-                            type="primary"
-                            onClick={() => handleButtonNavigation('/admin/notification/new')}
-                        >
+                        <Button size="small" onClick={() => handleButtonNavigation('/admin/notification/new')}>
                             Thêm thông báo
                         </Button>
                     </Flex>

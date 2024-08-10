@@ -106,7 +106,7 @@ function Comment({ data, onUpdateComment, onDeleteComment, message }) {
                                         Lưu
                                     </Button>
                                 ) : (
-                                    <Button size="small" type="default" onClick={handleEdit} loading={isLoading}>
+                                    <Button size="small" onClick={handleEdit} loading={isLoading}>
                                         Sửa
                                     </Button>
                                 )}

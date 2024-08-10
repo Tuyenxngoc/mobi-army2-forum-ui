@@ -263,21 +263,11 @@ function PostManagement() {
                             Duyệt
                         </Button>
                     ) : record.locked ? (
-                        <Button
-                            type="default"
-                            size="small"
-                            loading={loadingAction}
-                            onClick={() => handleToggleLockPost(record.id)}
-                        >
+                        <Button size="small" loading={loadingAction} onClick={() => handleToggleLockPost(record.id)}>
                             Mở Khóa
                         </Button>
                     ) : (
-                        <Button
-                            type="default"
-                            size="small"
-                            loading={loadingAction}
-                            onClick={() => handleToggleLockPost(record.id)}
-                        >
+                        <Button size="small" loading={loadingAction} onClick={() => handleToggleLockPost(record.id)}>
                             Khóa
                         </Button>
                     )}

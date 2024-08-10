@@ -148,9 +148,7 @@ function Notification() {
                 title="Chi tiết thông báo"
                 footer={
                     <>
-                        <Button type="default" onClick={() => setIsModalOpen(false)}>
-                            Đóng
-                        </Button>
+                        <Button onClick={() => setIsModalOpen(false)}>Đóng</Button>
                         {notificationDetails && (
                             <Button
                                 type="primary"
