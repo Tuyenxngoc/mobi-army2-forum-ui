@@ -46,7 +46,11 @@ function Forum() {
     };
 
     const handleChangeRowsPerPage = (event) => {
-        setFilters({ pageNum: 1, pageSize: parseInt(event.target.value, 10) });
+        setFilters((prev) => ({
+            ...prev,
+            pageNum: 1,
+            pageSize: parseInt(event.target.value, 10),
+        }));
     };
 
     const handleCategorySelection = (categoryId) => {
@@ -101,12 +105,14 @@ function Forum() {
         <>
             {isAuthenticated && (
                 <div className="box-container p-2 mb-1">
+                    <h4 className="forum-border-bottom">Quản lí bài viết</h4>
+
                     <Flex wrap gap="small">
                         <Button size="small" type="default" onClick={() => handleButtonNavigation('/post/new')}>
                             Bài viết mới
                         </Button>
                         <Button size="small" type="default" onClick={() => handleButtonNavigation('/following-post')}>
-                            Theo giõi
+                            Đang theo giõi
                         </Button>
                     </Flex>
                 </div>
@@ -114,6 +120,8 @@ function Forum() {
 
             {hasRequiredRole && (
                 <div className="box-container p-2 mb-1 admin">
+                    <h4 className="forum-border-bottom">Chức năng quản trị</h4>
+
                     <Flex wrap gap="small">
                         <Button size="small" type="primary" onClick={() => handleButtonNavigation('/admin/post')}>
                             Quản lý bài viết

@@ -39,7 +39,11 @@ function Notification() {
     };
 
     const handleChangeRowsPerPage = (event) => {
-        setFilters({ pageNum: 1, pageSize: parseInt(event.target.value, 10) });
+        setFilters((prev) => ({
+            ...prev,
+            pageNum: 1,
+            pageSize: parseInt(event.target.value, 10),
+        }));
     };
 
     const handleViewNotification = async (id) => {

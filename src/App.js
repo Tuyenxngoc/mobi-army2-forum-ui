@@ -23,7 +23,7 @@ import UpdatePost from './pages/Post/UpdatePost';
 import CategoryManagement from './pages/Category/CategoryManagement';
 import EditCategory from './pages/Category/EditCategory';
 import AddCategory from './pages/Category/AddCategory';
-import PlayerInfo from './pages/Player/PlayerInfo';
+import PlayerProfile from './pages/Player/PlayerProfile';
 import Clan from './pages/Clan/Clan';
 import CreateClan from './pages/Clan/CreateClan';
 import ClanInfo from './pages/Clan/ClanInfo';
@@ -60,7 +60,7 @@ function App() {
                             <Route path="post/new" element={<NewPost />} />
                             <Route path="notification" element={<Notification />} />
                             <Route path="following-post" element={<FollowingPosts />} />
-                            <Route path="player/info" element={<PlayerInfo />} />
+                            <Route path="player/:playerId" element={<PlayerProfile />} />
                             <Route path="clan" element={<Clan />} />
                             <Route path="clan/:clanId" element={<ClanInfo />} />
                             <Route path="clan/new" element={<CreateClan />} />

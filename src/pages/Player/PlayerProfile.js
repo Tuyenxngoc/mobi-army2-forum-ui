@@ -10,7 +10,7 @@ import { getPlayerInfo, toggleEquipmentChestLock, toggleInvitationLock } from '~
 
 const cx = classNames.bind(Style);
 
-function PlayerInfo() {
+function PlayerProfile() {
     const { player } = useAuth();
 
     const navigate = useNavigate();
@@ -207,4 +207,4 @@ function PlayerInfo() {
     );
 }
 
-export default PlayerInfo;
+export default PlayerProfile;

@@ -1,18 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import classNames from 'classnames/bind';
-import Style from './FollowingPosts.module.scss';
-import Pagination from '~/components/Pagination';
-import { INITIAL_FILTERS, INITIAL_META } from '~/common/contans';
 import queryString from 'query-string';
 import { Spin } from 'antd';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart, faMessage } from '@fortawesome/free-regular-svg-icons';
-import DateFormatter from '~/components/DateFormatter/DateFormatter';
-import { getFollowingPosts } from '~/services/playerService';
 
-const cx = classNames.bind(Style);
+import Post from '~/components/Post';
+import Pagination from '~/components/Pagination';
+import { INITIAL_FILTERS, INITIAL_META } from '~/common/contans';
+import { getFollowingPosts } from '~/services/playerService';
 
 function FollowingPosts() {
     const [meta, setMeta] = useState(INITIAL_META);
@@ -28,7 +23,11 @@ function FollowingPosts() {
     };
 
     const handleChangeRowsPerPage = (event) => {
-        setFilters({ pageNum: 1, pageSize: parseInt(event.target.value, 10) });
+        setFilters((prev) => ({
+            ...prev,
+            pageNum: 1,
+            pageSize: parseInt(event.target.value, 10),
+        }));
     };
 
     useEffect(() => {
@@ -69,22 +68,13 @@ function FollowingPosts() {
         }
 
         return (
-            <div>
+            <>
                 {posts.length > 0 ? (
-                    posts.map((post) => (
-                        <div key={post.id} className={cx('item', 'p-2')}>
-                            <Link to={`/post/${post.id}`}>{post.title}</Link>
-                            <div>
-                                bởi {post.player.name} <DateFormatter datetime={post.createdDate} />{' '}
-                                <FontAwesomeIcon icon={faHeart} /> {post.favorites} <FontAwesomeIcon icon={faMessage} />{' '}
-                                {post.comments}
-                            </div>
-                        </div>
-                    ))
+                    posts.map((item, i) => <Post key={i} data={item} />)
                 ) : (
                     <p className="px-2">Chưa có bài viết nào.</p>
                 )}
-            </div>
+            </>
         );
     };
 

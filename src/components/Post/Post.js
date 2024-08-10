@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import { Link } from 'react-router-dom';
 
 import Style from './Post.module.scss';
@@ -6,6 +8,7 @@ import images from '~/assets';
 import { BASE_URL } from '~/common/contans';
 
 const cx = classNames.bind(Style);
+
 function Post({ data }) {
     return (
         <div className={cx('post-wrapper', { admin: data.priority })}>
@@ -30,5 +33,21 @@ function Post({ data }) {
         </div>
     );
 }
+
+Post.propTypes = {
+    data: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        title: PropTypes.string.isRequired,
+        locked: PropTypes.bool,
+        priority: PropTypes.number,
+        player: PropTypes.shape({
+            avatar: PropTypes.string.isRequired,
+            name: PropTypes.string.isRequired,
+        }).isRequired,
+        comments: PropTypes.number.isRequired,
+        views: PropTypes.number.isRequired,
+        favorites: PropTypes.number,
+    }).isRequired,
+};
 
 export default Post;

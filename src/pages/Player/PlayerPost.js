@@ -1,15 +1,14 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
-import Pagination from '~/components/Pagination';
-import { INITIAL_FILTERS, INITIAL_META } from '~/common/contans';
-import queryString from 'query-string';
 import { Spin } from 'antd';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart, faMessage } from '@fortawesome/free-regular-svg-icons';
-import DateFormatter from '~/components/DateFormatter/DateFormatter';
+import queryString from 'query-string';
+
+import { INITIAL_FILTERS, INITIAL_META } from '~/common/contans';
 import { getPostsByPlayerId } from '~/services/postService';
 import { checkIdIsNumber } from '~/utils/helper';
+import Post from '~/components/Post';
+import Pagination from '~/components/Pagination';
 
 function PlayerPost() {
     const { playerId } = useParams();
@@ -86,24 +85,13 @@ function PlayerPost() {
         }
 
         return (
-            <div className="p-2">
-                <h3 className="forum-border-bottom text-primary">Danh sách bài viết</h3>
-
+            <>
                 {posts.length > 0 ? (
-                    posts.map((post) => (
-                        <div key={post.id}>
-                            <Link to={`/post/${post.id}`}>{post.title}</Link>
-                            <div>
-                                bởi {post.player.name} <DateFormatter datetime={post.createdDate} />{' '}
-                                <FontAwesomeIcon icon={faHeart} /> {post.favorites} <FontAwesomeIcon icon={faMessage} />{' '}
-                                {post.comments}
-                            </div>
-                        </div>
-                    ))
+                    posts.map((item, i) => <Post key={i} data={item} />)
                 ) : (
-                    <span>Chưa có bài viết nào.</span>
+                    <p className="px-2">Chưa có bài viết nào.</p>
                 )}
-            </div>
+            </>
         );
     };
 
@@ -112,6 +100,8 @@ function PlayerPost() {
             <div className="forum-header">
                 <Link to="/forum">Quay lại</Link>
             </div>
+
+            <h3 className="p-2 pb-0">Danh sách bài viết</h3>
 
             {renderContent()}
 

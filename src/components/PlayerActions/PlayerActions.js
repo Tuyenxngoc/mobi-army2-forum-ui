@@ -35,7 +35,7 @@ function PlayerActions() {
             {isAuthenticated ? (
                 <nav className="navbar navbar-expand-lg">
                     <div className="container-fluid">
-                        <Link className="navbar-brand" to="/player/info">
+                        <Link className="navbar-brand" to={`/player/${player.id}`}>
                             Bản thân
                         </Link>
 
