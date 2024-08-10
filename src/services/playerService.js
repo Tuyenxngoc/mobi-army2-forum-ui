@@ -4,8 +4,8 @@ export const getFollowingPosts = (params) => {
     return axiosPrivate.get(`players/following-post?${params}`);
 };
 
-export const getPlayerInfo = () => {
-    return axiosPrivate.get('players/info');
+export const getPlayerById = (playerId) => {
+    return axiosPrivate.get(`players/${playerId}`);
 };
 
 export const toggleInvitationLock = () => {
