@@ -3,11 +3,12 @@
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid #072d5c;
+    margin-bottom: 4px;
+
     h4 {
         margin: 2.6px 0;
         font-size: 13px;
         font-weight: bold;
-        color: #456ad4;
     }
 
     input {
@@ -16,19 +17,15 @@
     }
 }
 
-.content {
-    padding: 0;
-}
-
-.date {
-    padding: 2px 2px 2px 0px;
-    font-size: 9px;
-    font-style: italic;
-    text-align: right;
-}
-
 .edit-action {
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
+}
+
+.date {
+    padding: 4px;
+    font-size: 12px;
+    font-style: italic;
+    text-align: right;
 }

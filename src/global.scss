@@ -1,6 +1,7 @@
 @import 'normalize.css';
 
 :root {
+    --primary-color: #456ad4;
     --text-color: #000000;
     --link-color: #1757a6;
     --background-color: #c4ddfb;
@@ -51,6 +52,10 @@ ol {
 
 .custom-bg-primary {
     background-color: var(--body-color);
+}
+
+.forum-text-primary {
+    color: var(--primary-color);
 }
 
 .forum-header {

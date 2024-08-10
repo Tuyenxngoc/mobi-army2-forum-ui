@@ -31,13 +31,7 @@ const defaultValue = {
 };
 
 function CreateNotification({ onAddNotification, messageApi }) {
-    const formik = useFormik({
-        initialValues: defaultValue,
-        validationSchema: validationSchema,
-        onSubmit: handleNotificationCreate,
-    });
-
-    async function handleNotificationCreate(values, { setSubmitting, resetForm }) {
+    const handleNotificationCreate = async (values, { setSubmitting, resetForm }) => {
         try {
             const response = await createNotification(values);
             onAddNotification(response.data.data);
@@ -48,7 +42,13 @@ function CreateNotification({ onAddNotification, messageApi }) {
         } finally {
             setSubmitting(false);
         }
-    }
+    };
+
+    const formik = useFormik({
+        initialValues: defaultValue,
+        validationSchema: validationSchema,
+        onSubmit: handleNotificationCreate,
+    });
 
     return (
         <div className="box-container p-2">

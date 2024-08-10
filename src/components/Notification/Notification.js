@@ -45,13 +45,7 @@ const Notification = ({ data, onNotificationUpdate, onNotificationDelete, canEdi
         'Bạn có chắc muốn xóa thông báo này? Lưu ý: Sau khi xóa, bạn không thể hoàn tác hay khôi phục.',
     );
 
-    const formik = useFormik({
-        initialValues: defaultValue,
-        validationSchema: validationSchema,
-        onSubmit: handleNotificationUpdate,
-    });
-
-    async function handleNotificationUpdate(values, { setSubmitting }) {
+    const handleNotificationUpdate = async (values, { setSubmitting }) => {
         if (values.title === data.title && values.content === data.content) {
             messageApi.info('Không có thay đổi nào để cập nhật.');
             setSubmitting(false);
@@ -68,7 +62,13 @@ const Notification = ({ data, onNotificationUpdate, onNotificationDelete, canEdi
         } finally {
             setSubmitting(false);
         }
-    }
+    };
+
+    const formik = useFormik({
+        initialValues: defaultValue,
+        validationSchema: validationSchema,
+        onSubmit: handleNotificationUpdate,
+    });
 
     const handleNotificationDelete = async () => {
         setIsDeleteConfirmLoading(true);
@@ -174,15 +174,13 @@ const Notification = ({ data, onNotificationUpdate, onNotificationDelete, canEdi
                                 </div>
                             </div>
                         </div>
-                        <div className={cx('content')}>
-                            <ReactQuill
-                                className="custom-quill"
-                                value={formik.values.content}
-                                modules={modules}
-                                formats={formats}
-                                onChange={(value) => formik.setFieldValue('content', value)}
-                            />
-                        </div>
+                        <ReactQuill
+                            className="custom-quill"
+                            value={formik.values.content}
+                            modules={modules}
+                            formats={formats}
+                            onChange={(value) => formik.setFieldValue('content', value)}
+                        />
                     </>
                 ) : (
                     <>
@@ -217,7 +215,7 @@ const Notification = ({ data, onNotificationUpdate, onNotificationDelete, canEdi
                         </div>
 
                         <div
-                            className={cx('ql-snow', 'ql-editor', 'content')}
+                            className="ql-snow ql-editor p-0 forum-text-primary"
                             dangerouslySetInnerHTML={{ __html: data.content }}
                         />
 
