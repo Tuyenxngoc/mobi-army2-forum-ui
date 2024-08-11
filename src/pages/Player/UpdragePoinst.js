@@ -5,10 +5,6 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { handleError } from '~/utils/errorHandler';
 import { getPlayerCharacter, getPlayerPoints, updatePoints } from '~/services/playerService';
-import Style from './UpdragePoinst.module.scss';
-import classNames from 'classnames/bind';
-
-const cx = classNames.bind(Style);
 
 const defaultValue = {
     playerCharacterId: 0,
@@ -79,6 +75,31 @@ function UpdragePoinst() {
         onSubmit: handleSubmit,
     });
 
+    function renderInput({ name, label }) {
+        return (
+            <div className="p-1">
+                <label className="w-50" htmlFor={`txt${name}`}>
+                    {label}: {playerPoints[name]}
+                </label>
+                <InputNumber
+                    className="w-50"
+                    id={`txt${name}`}
+                    name={name}
+                    min={0}
+                    max={10000}
+                    defaultValue={0}
+                    value={formik.values[name]}
+                    onChange={(newValue) => formik.setFieldValue(name, newValue)}
+                    onBlur={formik.handleBlur}
+                    status={formik.touched[name] && formik.errors[name] ? 'error' : undefined}
+                />
+                {formik.touched[name] && formik.errors[name] ? (
+                    <div className="text-danger">{formik.errors[name]}</div>
+                ) : null}
+            </div>
+        );
+    }
+
     useEffect(() => {
         const fetchPlayerCharacter = async () => {
             try {
@@ -125,11 +146,12 @@ function UpdragePoinst() {
                 <h4 className="title">Cộng Điểm Nâng Cấp</h4>
 
                 <form onSubmit={formik.handleSubmit}>
-                    <div className={cx('form-group')}>
-                        <label className={cx('form-label')} htmlFor="playerCharacterId">
+                    <div className="p-1">
+                        <label className="w-50" htmlFor="playerCharacterId">
                             Nhân vật
                         </label>
                         <Select
+                            className="w-50"
                             id="playerCharacterId"
                             options={characterList}
                             fieldNames={{ label: 'name', value: 'id' }}
@@ -147,105 +169,30 @@ function UpdragePoinst() {
                         <div className="text-danger">{formik.errors.playerCharacterId}</div>
                     ) : null}
 
-                    <div className={cx('form-group')}>
-                        <label className={cx('form-label')} htmlFor="health">
-                            Sinh lực: {playerPoints.health}
-                        </label>
-                        <InputNumber
-                            id="health"
-                            name="health"
-                            min={0}
-                            max={10000}
-                            defaultValue={0}
-                            value={formik.values.health}
-                            onChange={(value) => formik.setFieldValue('health', value)}
-                            onBlur={formik.handleBlur}
-                            status={formik.touched.health && formik.errors.health ? 'error' : undefined}
-                        />
-                    </div>
-                    {formik.touched.health && formik.errors.health ? (
-                        <div className="text-danger">{formik.errors.health}</div>
-                    ) : null}
+                    {renderInput({
+                        name: 'health',
+                        label: 'Sinh lực',
+                    })}
 
-                    <div className={cx('form-group')}>
-                        <label className={cx('form-label')} htmlFor="damage">
-                            Sát thương: {playerPoints.damage}
-                        </label>
-                        <InputNumber
-                            id="damage"
-                            name="damage"
-                            min={0}
-                            max={10000}
-                            defaultValue={0}
-                            value={formik.values.damage}
-                            onChange={(value) => formik.setFieldValue('damage', value)}
-                            onBlur={formik.handleBlur}
-                            status={formik.touched.damage && formik.errors.damage ? 'error' : undefined}
-                        />
-                    </div>
-                    {formik.touched.damage && formik.errors.damage ? (
-                        <div className="text-danger">{formik.errors.damage}</div>
-                    ) : null}
+                    {renderInput({
+                        name: 'damage',
+                        label: 'Sát thương',
+                    })}
 
-                    <div className={cx('form-group')}>
-                        <label className={cx('form-label')} htmlFor="defense">
-                            Phòng thủ: {playerPoints.defense}
-                        </label>
-                        <InputNumber
-                            id="defense"
-                            name="defense"
-                            min={0}
-                            max={10000}
-                            defaultValue={0}
-                            value={formik.values.defense}
-                            onChange={(value) => formik.setFieldValue('defense', value)}
-                            onBlur={formik.handleBlur}
-                            status={formik.touched.defense && formik.errors.defense ? 'error' : undefined}
-                        />
-                    </div>
-                    {formik.touched.defense && formik.errors.defense ? (
-                        <div className="text-danger">{formik.errors.defense}</div>
-                    ) : null}
+                    {renderInput({
+                        name: 'defense',
+                        label: 'Phòng thủ',
+                    })}
 
-                    <div className={cx('form-group')}>
-                        <label className={cx('form-label')} htmlFor="luck">
-                            May mắn: {playerPoints.luck}
-                        </label>
-                        <InputNumber
-                            id="luck"
-                            name="luck"
-                            min={0}
-                            max={10000}
-                            defaultValue={0}
-                            value={formik.values.luck}
-                            onChange={(value) => formik.setFieldValue('luck', value)}
-                            onBlur={formik.handleBlur}
-                            status={formik.touched.luck && formik.errors.luck ? 'error' : undefined}
-                        />
-                    </div>
-                    {formik.touched.luck && formik.errors.luck ? (
-                        <div className="text-danger">{formik.errors.luck}</div>
-                    ) : null}
+                    {renderInput({
+                        name: 'luck',
+                        label: 'May mắn',
+                    })}
 
-                    <div className={cx('form-group')}>
-                        <label className={cx('form-label')} htmlFor="teammates">
-                            Đồng đội: {playerPoints.teammates}
-                        </label>
-                        <InputNumber
-                            id="teammates"
-                            name="teammates"
-                            min={0}
-                            max={10000}
-                            defaultValue={0}
-                            value={formik.values.teammates}
-                            onChange={(value) => formik.setFieldValue('teammates', value)}
-                            onBlur={formik.handleBlur}
-                            status={formik.touched.teammates && formik.errors.teammates ? 'error' : undefined}
-                        />
-                    </div>
-                    {formik.touched.teammates && formik.errors.teammates ? (
-                        <div className="text-danger">{formik.errors.teammates}</div>
-                    ) : null}
+                    {renderInput({
+                        name: 'teammates',
+                        label: 'Đồng đội',
+                    })}
 
                     <div className="text-center mt-2">Điểm chưa cộng: {playerPoints.totalPoints}</div>
 
