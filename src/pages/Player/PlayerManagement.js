@@ -148,15 +148,20 @@ function PlayerManagement() {
         {
             title: 'Hành động',
             key: 'action',
-            render: () => (
+            render: (_, record) => (
                 <Space>
-                    <Button type="primary" size="small" onClick={() => handleButtonNavigation('promote')}>
+                    <Button type="primary" size="small" onClick={() => handleButtonNavigation(`${record.id}/promote`)}>
                         Thăng chức
                     </Button>
-                    <Button size="small" onClick={() => handleButtonNavigation('history')}>
+                    <Button size="small" onClick={() => handleButtonNavigation(`${record.id}/history`)}>
                         Lịch sử
                     </Button>
-                    <Button danger type="primary" size="small" onClick={() => handleButtonNavigation('lock-account')}>
+                    <Button
+                        danger
+                        type="primary"
+                        size="small"
+                        onClick={() => handleButtonNavigation(`${record.id}/lock-account`)}
+                    >
                         Khóa tài khoản
                     </Button>
                 </Space>

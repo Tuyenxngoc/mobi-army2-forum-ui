@@ -39,3 +39,7 @@ export const changePassword = (values) => {
 export const changeUserName = (values) => {
     return axiosPrivate.put('user/change-username', values);
 };
+
+export const lockPlayerAccount = (playerId, values) => {
+    return axiosPrivate.put(`/user/${playerId}/lock`, values);
+};

@@ -85,9 +85,9 @@ function App() {
                             <Route path="category/new" element={<AddCategory />} />
                             <Route path="category/:categoryId" element={<EditCategory />} />
 
-                            <Route path="player/promote" element={<PromotePlayer />} />
-                            <Route path="player/history" element={<PlayerHistory />} />
-                            <Route path="player/lock-account" element={<LockPlayerAccount />} />
+                            <Route path="player/:playerId/promote" element={<PromotePlayer />} />
+                            <Route path="player/:playerId/history" element={<PlayerHistory />} />
+                            <Route path="player/:playerId/lock-account" element={<LockPlayerAccount />} />
                         </Route>
                     </Route>
 
