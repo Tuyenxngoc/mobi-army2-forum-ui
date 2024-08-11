@@ -70,7 +70,7 @@ function ClanMembers() {
         }));
     };
 
-    const handleSortChange = (_, __, sorter) => {
+    const handleSortChange = (pagination, filters, sorter) => {
         const sortOrder = sorter.order === 'ascend' ? true : sorter.order === 'descend' ? false : undefined;
         setFilters((prev) => ({
             ...prev,

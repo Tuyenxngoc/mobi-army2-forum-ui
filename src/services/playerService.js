@@ -8,6 +8,10 @@ export const getPlayerById = (playerId) => {
     return axiosPrivate.get(`players/${playerId}`);
 };
 
+export const getPlayers = (params) => {
+    return axiosPrivate.get(`players?${params}`);
+};
+
 export const toggleInvitationLock = () => {
     return axiosPrivate.put('players/toggle-invitation-lock');
 };

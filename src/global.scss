@@ -38,6 +38,11 @@ ol {
 .box-container {
     background-color: var(--background-color);
     border: 2px solid var(--border-color);
+
+    .title {
+        color: var(--primary-color);
+        border-bottom: 1px solid #072d5c;
+    }
 }
 
 .custom-width-630 {
