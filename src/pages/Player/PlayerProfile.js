@@ -106,9 +106,7 @@ function PlayerProfile() {
 
         return (
             <div className="p-2">
-                <h4 className="forum-border-bottom text-primary">
-                    {isCurrentPlayer ? 'Hồ Sơ Của Tôi' : 'Thông tin tài khoản'}
-                </h4>
+                <h4 className="title">{isCurrentPlayer ? 'Hồ Sơ Của Tôi' : 'Thông tin tài khoản'}</h4>
 
                 <div className="text-center">
                     <img width={100} src={BASE_URL + playerProfile.avatar} alt="avt" />
@@ -175,7 +173,7 @@ function PlayerProfile() {
 
                 {isCurrentPlayer ? (
                     <>
-                        <h4 className="forum-border-bottom text-primary my-2">Chức Năng Tài Khoản</h4>
+                        <h4 className="title my-2">Chức Năng Tài Khoản</h4>
                         <Space direction="vertical">
                             <Button onClick={() => handleButtonNavigation('/change-username')}>
                                 Đổi tên tài khoản
@@ -187,7 +185,7 @@ function PlayerProfile() {
                             </Button>
                         </Space>
 
-                        <h4 className="forum-border-bottom text-primary my-2">Chức Năng Đặc Biệt</h4>
+                        <h4 className="title my-2">Chức Năng Đặc Biệt</h4>
                         <Space direction="vertical">
                             <div>
                                 <Button
@@ -211,7 +209,7 @@ function PlayerProfile() {
                             </div>
                         </Space>
 
-                        <h4 className="forum-border-bottom text-primary my-2">Chức Năng Khác</h4>
+                        <h4 className="title my-2">Chức Năng Khác</h4>
                         <Space direction="vertical">
                             <div>
                                 <Button onClick={() => handleButtonNavigation('/clan')}>Biệt đội</Button>
@@ -228,7 +226,7 @@ function PlayerProfile() {
                     </>
                 ) : (
                     <>
-                        <h4 className="forum-border-bottom text-primary my-2">Chức Năng Khác</h4>
+                        <h4 className="title my-2">Chức Năng Khác</h4>
                         <Space direction="vertical">
                             <div>
                                 <Button onClick={() => handleButtonNavigation('/clan')}>Biệt đội</Button>
@@ -252,7 +250,7 @@ function PlayerProfile() {
         <div className="box-container">
             {contextHolder}
 
-            <div className="forum-header">
+            <div className="header">
                 <Link to="/forum">Quay lại</Link>
             </div>
 

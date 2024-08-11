@@ -101,7 +101,7 @@ function Notification() {
     const renderContent = () => {
         if (isLoading) {
             return (
-                <div className="alert alert-primary m-2 p-2" role="alert">
+                <div className="alert alert-primary p-2" role="alert">
                     Loading... <Spin />
                 </div>
             );
@@ -109,7 +109,7 @@ function Notification() {
 
         if (errorMessage) {
             return (
-                <div className="alert alert-danger m-2 p-2" role="alert">
+                <div className="alert alert-danger p-2" role="alert">
                     Lỗi: {errorMessage.message}
                 </div>
             );
@@ -121,7 +121,7 @@ function Notification() {
                     notifications.map((notification) => (
                         <div
                             key={notification.id}
-                            className={cx({ read: !notification.read }, 'notification-content', 'p-2')}
+                            className={cx({ read: !notification.read }, 'content')}
                             onClick={() => handleViewNotification(notification.id)}
                         >
                             <div>{notification.title}</div>
@@ -131,7 +131,7 @@ function Notification() {
                         </div>
                     ))
                 ) : (
-                    <p className="px-2">Chưa có thông báo nào.</p>
+                    <p>Chưa có thông báo nào.</p>
                 )}
             </div>
         );
@@ -140,7 +140,7 @@ function Notification() {
         <div className="box-container">
             {contextHolder}
 
-            <div className="forum-header">
+            <div className="header">
                 <Link to="/forum">Quay lại</Link>
             </div>
 
@@ -176,9 +176,11 @@ function Notification() {
                 )}
             </Modal>
 
-            <h3 className="p-2 pb-0">Thông báo</h3>
+            <div className="p-2">
+                <h4 className="title">Thông báo</h4>
 
-            {renderContent()}
+                {renderContent()}
+            </div>
 
             <Pagination
                 totalPages={meta.totalPages || 1}

@@ -234,7 +234,7 @@ function ClanMembers() {
 
         return (
             <div className="p-2">
-                <h4 className="forum-border-bottom text-primary">Quản lý thành viên</h4>
+                <h4 className="title">Quản lý thành viên</h4>
 
                 <Space.Compact className="mb-2">
                     <Select
@@ -276,7 +276,7 @@ function ClanMembers() {
         <div className="box-container">
             {contextHolder}
 
-            <div className="forum-header">
+            <div className="header">
                 <Link to="/clan">Quay lại</Link>
             </div>
 

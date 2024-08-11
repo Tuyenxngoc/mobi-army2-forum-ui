@@ -97,7 +97,7 @@ function PostDetail() {
         <div className="box-container">
             {contextHolder}
 
-            <div className="forum-header">
+            <div className="header">
                 <Link to="/forum">Quay lại</Link>
             </div>
 

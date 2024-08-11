@@ -156,11 +156,11 @@ function ClanInfo() {
         if (isClanLoading) {
             return (
                 <div className="box-container">
-                    <div className="forum-header">
+                    <div className="header">
                         <Link to="/clan">Quay lại</Link>
                     </div>
                     <div className="p-2">
-                        <h4 className="forum-border-bottom text-primary">Thông tin biệt đội</h4>
+                        <h4 className="title">Thông tin biệt đội</h4>
                         <div className="alert alert-primary p-2" role="alert">
                             Loading... <Spin />
                         </div>
@@ -172,11 +172,11 @@ function ClanInfo() {
         if (clanLoadError) {
             return (
                 <div className="box-container">
-                    <div className="forum-header">
+                    <div className="header">
                         <Link to="/clan">Quay lại</Link>
                     </div>
                     <div className="p-2">
-                        <h4 className="forum-border-bottom text-primary">Thông tin biệt đội</h4>
+                        <h4 className="title">Thông tin biệt đội</h4>
                         <div className="alert alert-danger p-2" role="alert">
                             Lỗi: {clanLoadError}
                         </div>
@@ -188,12 +188,12 @@ function ClanInfo() {
         return (
             <>
                 <div className="box-container mb-1">
-                    <div className="forum-header">
+                    <div className="header">
                         <Link to="/clan">Quay lại</Link>
                     </div>
 
                     <div className="p-2">
-                        <h4 className="forum-border-bottom text-primary">Thông tin biệt đội</h4>
+                        <h4 className="title">Thông tin biệt đội</h4>
 
                         <ul>
                             <li>Tên: {clan.name}</li>
@@ -263,12 +263,12 @@ function ClanInfo() {
                 </div>
 
                 <div className="box-container p-2 mb-1">
-                    <h4 className="forum-border-bottom text-primary">Thông báo biệt đội</h4>
+                    <h4 className="title">Thông báo biệt đội</h4>
                     <h6 className="">{clan.notification}</h6>
                 </div>
 
                 <div className="box-container p-2 mb-1">
-                    <h4 className="forum-border-bottom text-primary">Danh Sách Item</h4>
+                    <h4 className="title">Danh Sách Item</h4>
                     <table className="table align-middle mb-0">
                         <thead>
                             <tr>
@@ -297,7 +297,7 @@ function ClanInfo() {
 
                 <div className="box-container">
                     <div className="p-2">
-                        <h4 className="forum-border-bottom text-primary">Danh Sách Thành Viên</h4>
+                        <h4 className="title">Danh Sách Thành Viên</h4>
                         {isMembersLoading ? (
                             <div className="alert alert-primary m-2 p-2" role="alert">
                                 Đang tải thành viên... <Spin />

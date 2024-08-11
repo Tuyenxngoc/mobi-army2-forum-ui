@@ -87,14 +87,14 @@ function CreateClan() {
         <div className="box-container">
             {contextHolder}
 
-            <div className="forum-header">
+            <div className="header">
                 <Link to="/clan">Quay lại</Link>
             </div>
 
-            <h3 className="p-2 pb-0">Đăng ký thành lập đội</h3>
-            <small className="form-text text-muted p-2">Lưu ý: cần điền thông tin chính xác để lấy lại mật khẩu.</small>
+            <form className="p-2" onSubmit={formik.handleSubmit}>
+                <h4 className="title">Đăng ký thành lập đội</h4>
+                <small className="form-text text-muted">Lưu ý: cần điền thông tin chính xác để lấy lại mật khẩu.</small>
 
-            <form className="p-2 mt-4" onSubmit={formik.handleSubmit}>
                 <div className="form-group mb-2">
                     <label htmlFor="name">Tên đội</label>
                     <input

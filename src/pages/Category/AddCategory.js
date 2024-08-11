@@ -48,13 +48,13 @@ function AddCategory() {
         <div className="box-container">
             {contextHolder}
 
-            <div className="forum-header">
+            <div className="header">
                 <Link to="/admin/category">Quay lại</Link>
             </div>
 
-            <h3 className="p-2 pb-0">Tạo danh mục</h3>
-
             <form className="p-2" onSubmit={formik.handleSubmit}>
+                <h4 className="title">Tạo mới danh mục</h4>
+
                 <div className="form-group mb-2">
                     <label htmlFor="name">Tên danh mục</label>
                     <input

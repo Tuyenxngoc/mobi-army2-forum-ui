@@ -2,11 +2,12 @@
     background-color: white;
 }
 
-.notification-content {
+.content {
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px #65a5ac solid;
+    padding: 8px;
     &:last-child {
         border-bottom: none;
     }

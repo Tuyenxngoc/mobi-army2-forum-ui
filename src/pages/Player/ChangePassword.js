@@ -53,12 +53,12 @@ function ChangePassword() {
         <div className="box-container">
             {contextHolder}
 
-            <div className="forum-header">
+            <div className="header">
                 <Link to="/player/info">Quay lại</Link>
             </div>
 
             <div className="p-2">
-                <h4 className="forum-border-bottom text-primary">Đổi mật khẩu</h4>
+                <h4 className="title">Đổi mật khẩu</h4>
 
                 <form onSubmit={formik.handleSubmit}>
                     <div className="form-group mb-2">

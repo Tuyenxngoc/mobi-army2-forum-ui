@@ -74,7 +74,7 @@ function Clan() {
     const renderContent = () => {
         if (isLoading) {
             return (
-                <div className="alert alert-primary m-2 p-2" role="alert">
+                <div className="alert alert-primary p-2" role="alert">
                     Loading... <Spin />
                 </div>
             );
@@ -82,14 +82,14 @@ function Clan() {
 
         if (errorMessage) {
             return (
-                <div className="alert alert-danger m-2 p-2" role="alert">
+                <div className="alert alert-danger p-2" role="alert">
                     Lỗi: {errorMessage}
                 </div>
             );
         }
 
         return (
-            <main className="p-2 table-responsive">
+            <main className="table-responsive">
                 <table className="table">
                     <thead>
                         <tr>
@@ -132,39 +132,41 @@ function Clan() {
 
     return (
         <div className="box-container">
-            <div className="forum-header">
+            <div className="header">
                 <Link to="/player/info">Quay lại</Link>
             </div>
 
-            <h3 className="p-2 pb-0">Danh sách biệt đội</h3>
-
             <div className="p-2">
-                <Button type="primary" onClick={handleButtonCreateClick}>
-                    Thành lập biệt đội
-                </Button>
+                <h4 className="title">Danh sách biệt đội</h4>
+
+                <div className="mb-2">
+                    <Button type="primary" onClick={handleButtonCreateClick}>
+                        Thành lập biệt đội
+                    </Button>
+                </div>
+
+                <Space.Compact className="mb-2">
+                    <Select
+                        options={options}
+                        disabled={isLoading}
+                        value={activeFilterOption}
+                        onChange={(value) => setActiveFilterOption(value)}
+                    />
+                    <Input
+                        allowClear
+                        name="searchInput"
+                        placeholder="Nhập từ cần tìm..."
+                        value={searchInput}
+                        disabled={isLoading}
+                        onChange={(e) => setSearchInput(e.target.value)}
+                    />
+                    <Button type="primary" loading={isLoading} onClick={() => handleSearch()}>
+                        Tìm
+                    </Button>
+                </Space.Compact>
+
+                {renderContent()}
             </div>
-
-            <Space.Compact className="p-2">
-                <Select
-                    options={options}
-                    disabled={isLoading}
-                    value={activeFilterOption}
-                    onChange={(value) => setActiveFilterOption(value)}
-                />
-                <Input
-                    allowClear
-                    name="searchInput"
-                    placeholder="Nhập từ cần tìm..."
-                    value={searchInput}
-                    disabled={isLoading}
-                    onChange={(e) => setSearchInput(e.target.value)}
-                />
-                <Button type="primary" loading={isLoading} onClick={() => handleSearch()}>
-                    Tìm
-                </Button>
-            </Space.Compact>
-
-            {renderContent()}
 
             <Pagination
                 totalPages={meta.totalPages || 1}

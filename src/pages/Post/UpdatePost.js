@@ -112,13 +112,13 @@ function UpdatePost() {
         <div className="box-container">
             {contextHolder}
 
-            <div className="forum-header">
+            <div className="header">
                 <Link to="/admin/post">Quay lại</Link>
             </div>
 
-            <h3 className="p-2 pb-0">Sửa bài viết</h3>
-
             <form className="p-2" onSubmit={formik.handleSubmit}>
+                <h4 className="title">Sửa bài viết</h4>
+
                 <div className="form-group mb-2">
                     <label htmlFor="title">Tiêu đề</label>
                     <input

@@ -11,6 +11,7 @@ import { createPost } from '~/services/postService';
 
 import ReactQuill from 'react-quill';
 import { formats, modules } from '~/common/editorConfig';
+import { handleError } from '~/utils/errorHandler';
 
 const defaultValue = {
     title: '',
@@ -64,11 +65,7 @@ function NewPost() {
             }
             resetForm();
         } catch (error) {
-            if (error.response && error.response.status === 400 && error.response.data) {
-                messageApi.error(error.response.data.message);
-            } else {
-                messageApi.error('Lỗi khi tạo bài viết mới');
-            }
+            handleError(error, formik, messageApi);
         } finally {
             setSubmitting(false);
         }
@@ -97,12 +94,13 @@ function NewPost() {
         <div className="box-container">
             {contextHolder}
 
-            <div className="forum-header">
+            <div className="header">
                 <Link to="/forum">Quay lại</Link>
             </div>
 
-            <h3 className="p-2 pb-0">Tạo bài viết</h3>
             <form className="p-2" onSubmit={formik.handleSubmit}>
+                <h4 className="title">Tạo bài viết</h4>
+
                 <div className="form-group mb-2">
                     <label htmlFor="title">Tiêu đề</label>
                     <input

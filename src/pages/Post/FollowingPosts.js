@@ -80,11 +80,13 @@ function FollowingPosts() {
 
     return (
         <div className="box-container">
-            <div className="forum-header">
+            <div className="header">
                 <Link to="/forum">Quay lại</Link>
             </div>
 
-            <h3 className="p-2 pb-0">Các bài viết đang theo dõi</h3>
+            <div className="p-2">
+                <h4 className="title">Các bài viết đang theo dõi</h4>
+            </div>
 
             {renderContent()}
 

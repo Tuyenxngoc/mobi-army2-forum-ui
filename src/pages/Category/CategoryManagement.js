@@ -173,27 +173,25 @@ function CategoryManagement() {
     const renderContent = () => {
         if (errorMessage) {
             return (
-                <div className="alert alert-danger m-2 p-2" role="alert">
+                <div className="alert alert-danger p-2" role="alert">
                     Lỗi: {errorMessage}
                 </div>
             );
         }
 
         return (
-            <div className="p-2">
-                <Table
-                    rowKey="id"
-                    size="small"
-                    columns={columns}
-                    dataSource={categories}
-                    pagination={false}
-                    loading={isLoading}
-                    onChange={handleSortChange}
-                    scroll={{
-                        x: 1000,
-                    }}
-                />
-            </div>
+            <Table
+                rowKey="id"
+                size="small"
+                columns={columns}
+                dataSource={categories}
+                pagination={false}
+                loading={isLoading}
+                onChange={handleSortChange}
+                scroll={{
+                    x: 1000,
+                }}
+            />
         );
     };
 
@@ -201,39 +199,41 @@ function CategoryManagement() {
         <div className="box-container">
             {contextHolder}
 
-            <div className="forum-header">
+            <div className="header">
                 <Link to="/forum">Quay lại</Link>
             </div>
 
-            <h3 className="p-2 pb-0"> Quản lý danh mục </h3>
-
             <div className="p-2">
-                <Button type="primary" onClick={handleBtnCreateClick}>
-                    Thêm mới
-                </Button>
+                <h4 className="title"> Quản lý danh mục </h4>
+
+                <div className="mb-2">
+                    <Button type="primary" onClick={handleBtnCreateClick}>
+                        Thêm mới
+                    </Button>
+                </div>
+
+                <Space.Compact className="mb-2">
+                    <Select
+                        options={options}
+                        disabled={isLoading}
+                        value={activeFilterOption}
+                        onChange={(value) => setActiveFilterOption(value)}
+                    />
+                    <Input
+                        name="searchInput"
+                        allowClear
+                        placeholder="Nhập từ cần tìm..."
+                        value={searchInput}
+                        disabled={isLoading}
+                        onChange={(e) => setSearchInput(e.target.value)}
+                    />
+                    <Button type="primary" loading={isLoading} onClick={() => handleSearch()}>
+                        Tìm
+                    </Button>
+                </Space.Compact>
+
+                {renderContent()}
             </div>
-
-            <Space.Compact className="p-2">
-                <Select
-                    options={options}
-                    disabled={isLoading}
-                    value={activeFilterOption}
-                    onChange={(value) => setActiveFilterOption(value)}
-                />
-                <Input
-                    name="searchInput"
-                    allowClear
-                    placeholder="Nhập từ cần tìm..."
-                    value={searchInput}
-                    disabled={isLoading}
-                    onChange={(e) => setSearchInput(e.target.value)}
-                />
-                <Button type="primary" loading={isLoading} onClick={() => handleSearch()}>
-                    Tìm
-                </Button>
-            </Space.Compact>
-
-            {renderContent()}
 
             <Pagination
                 totalPages={meta.totalPages || 1}

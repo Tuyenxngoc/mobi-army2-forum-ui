@@ -60,13 +60,13 @@ function NewNotification() {
         <div className="box-container">
             {contextHolder}
 
-            <div className="forum-header">
+            <div className="header">
                 <Link to="/forum">Quay lại</Link>
             </div>
 
-            <h3 className="p-2 pb-0">Thêm thông báo mới</h3>
+            <form className="p-2" onSubmit={formik.handleSubmit}>
+                <h4 className="title">Thêm thông báo mới</h4>
 
-            <form onSubmit={formik.handleSubmit} className="p-2">
                 <div className="form-group mb-2">
                     <label htmlFor="title">Tiêu đề</label>
                     <input

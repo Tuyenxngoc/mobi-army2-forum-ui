@@ -100,7 +100,7 @@ function ApproveClanMembers() {
 
         return (
             <div className="p-2">
-                <h4 className="forum-border-bottom text-primary">Duyệt thành viên</h4>
+                <h4 className="title">Duyệt thành viên</h4>
 
                 <table className="table align-middle mb-0">
                     <thead>
@@ -145,7 +145,7 @@ function ApproveClanMembers() {
         <div className="box-container">
             {contextHolder}
 
-            <div className="forum-header">
+            <div className="header">
                 <Link to="/clan">Quay lại</Link>
             </div>
 

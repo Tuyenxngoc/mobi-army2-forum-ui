@@ -105,7 +105,7 @@ function Forum() {
         <>
             {isAuthenticated && (
                 <div className="box-container p-2 mb-1">
-                    <h4 className="forum-border-bottom text-primary">Quản lí bài viết</h4>
+                    <h4 className="title">Quản lí bài viết</h4>
 
                     <Flex wrap gap="small">
                         <Button size="small" onClick={() => handleButtonNavigation('/post/new')}>
@@ -120,7 +120,7 @@ function Forum() {
 
             {hasRequiredRole && (
                 <div className="box-container p-2 mb-1 admin">
-                    <h4 className="forum-border-bottom text-primary">Chức năng quản trị</h4>
+                    <h4 className="title">Chức năng quản trị</h4>
 
                     <Flex wrap gap="small">
                         <Button size="small" onClick={() => handleButtonNavigation('/admin/post')}>

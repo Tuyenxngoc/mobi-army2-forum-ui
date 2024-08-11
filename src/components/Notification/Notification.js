@@ -215,7 +215,7 @@ const Notification = ({ data, onNotificationUpdate, onNotificationDelete, canEdi
                         </div>
 
                         <div
-                            className="ql-snow ql-editor p-0 forum-text-primary"
+                            className="ql-snow ql-editor p-0 custom-text-primary"
                             dangerouslySetInnerHTML={{ __html: data.content }}
                         />
 

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -7,6 +7,8 @@ import * as yup from 'yup';
 import { Button, message } from 'antd';
 
 import { getCategoryByIdForAdmin, updateCategory } from '~/services/categoryService';
+import { handleError } from '~/utils/errorHandler';
+import { checkIdIsNumber } from '~/utils/helper';
 
 const validationSchema = yup.object({
     name: yup
@@ -17,6 +19,7 @@ const validationSchema = yup.object({
 });
 
 function EditCategory() {
+    const navigate = useNavigate();
     const { categoryId } = useParams();
 
     const [messageApi, contextHolder] = message.useMessage();
@@ -29,11 +32,7 @@ function EditCategory() {
             }
             resetForm();
         } catch (error) {
-            if (error.response && error.response.status === 400 && error.response.data) {
-                messageApi.error(error.response.data.message);
-            } else {
-                messageApi.error('Lỗi khi sửa danh mục');
-            }
+            handleError(error, formik, messageApi);
         } finally {
             setSubmitting(false);
         }
@@ -49,10 +48,18 @@ function EditCategory() {
     });
 
     useEffect(() => {
+        if (!checkIdIsNumber(categoryId)) {
+            navigate('/admin/category', { replace: true });
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => {
         const fetchCategory = async () => {
             try {
-                if (isNaN(categoryId)) {
-                    throw new Error('ID không hợp lệ. Vui lòng kiểm tra lại.');
+                if (!checkIdIsNumber(categoryId)) {
+                    return;
                 }
 
                 const response = await getCategoryByIdForAdmin(categoryId);
@@ -69,19 +76,19 @@ function EditCategory() {
         fetchCategory();
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [categoryId]);
+    }, []);
 
     return (
         <div className="box-container">
             {contextHolder}
 
-            <div className="forum-header">
+            <div className="header">
                 <Link to="/admin/category">Quay lại</Link>
             </div>
 
-            <h3 className="p-2 pb-0">Sửa danh mục</h3>
-
             <form className="p-2" onSubmit={formik.handleSubmit}>
+                <h4 className="title">Sửa danh mục</h4>
+
                 <div className="form-group mb-2">
                     <label htmlFor="name">Tên danh mục</label>
                     <input

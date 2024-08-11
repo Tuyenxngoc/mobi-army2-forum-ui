@@ -47,12 +47,12 @@ function ChangeUserName() {
         <div className="box-container">
             {contextHolder}
 
-            <div className="forum-header">
+            <div className="header">
                 <Link to="/player/info">Quay lại</Link>
             </div>
 
             <div className="p-2">
-                <h4 className="forum-border-bottom text-primary">Đổi tên tài khoản</h4>
+                <h4 className="title">Đổi tên tài khoản</h4>
 
                 <form onSubmit={formik.handleSubmit}>
                     <div className="form-group mb-2">

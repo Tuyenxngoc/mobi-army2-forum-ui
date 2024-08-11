@@ -117,12 +117,12 @@ function UpdragePoinst() {
         <div className="box-container">
             {contextHolder}
 
-            <div className="forum-header">
+            <div className="header">
                 <Link to="/player/info">Quay lại</Link>
             </div>
 
             <div className="p-2">
-                <div className="forum-border-bottom text-primary mb-2">Cộng Điểm Nâng Cấp</div>
+                <h4 className="title">Cộng Điểm Nâng Cấp</h4>
 
                 <form onSubmit={formik.handleSubmit}>
                     <div className={cx('form-group')}>

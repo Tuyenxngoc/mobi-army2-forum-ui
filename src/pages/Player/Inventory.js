@@ -49,7 +49,7 @@ function Inventory() {
 
         return (
             <div className="p-2">
-                <div className="forum-border-bottom text-primary mt-2">Rương Item</div>
+                <h4 className="title">Rương Item</h4>
                 <table className="table align-middle">
                     <thead>
                         <tr>
@@ -82,7 +82,7 @@ function Inventory() {
                     </tbody>
                 </table>
 
-                <div className="forum-border-bottom text-primary mt-2">Rương Trang Bị</div>
+                <h4 className="title">Rương Trang Bị</h4>
                 <table className="table align-middle">
                     <thead>
                         <tr>
@@ -134,7 +134,7 @@ function Inventory() {
 
     return (
         <div className="box-container">
-            <div className="forum-header">
+            <div className="header">
                 <Link to="/player/info">Quay lại</Link>
             </div>
 
