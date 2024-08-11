@@ -5,6 +5,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { handleError } from '~/utils/errorHandler';
 import { getPlayerCharacter, getPlayerPoints, updatePoints } from '~/services/playerService';
+import useAuth from '~/hooks/useAuth';
 
 const defaultValue = {
     playerCharacterId: 0,
@@ -54,6 +55,7 @@ function UpdragePoinst() {
     const [characterList, setCharacterList] = useState([]);
 
     const [messageApi, contextHolder] = message.useMessage();
+    const { player } = useAuth();
 
     const handleSubmit = async (values, { setSubmitting }) => {
         try {
@@ -139,7 +141,7 @@ function UpdragePoinst() {
             {contextHolder}
 
             <div className="header">
-                <Link to="/player/info">Quay lại</Link>
+                <Link to={`/player/${player.id}`}>Quay lại</Link>
             </div>
 
             <div className="p-2">

@@ -2,6 +2,7 @@ import { Spin } from 'antd';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { BASE_URL } from '~/common/contans';
+import useAuth from '~/hooks/useAuth';
 import { getPlayerInventory } from '~/services/playerService';
 
 function Inventory() {
@@ -10,6 +11,8 @@ function Inventory() {
 
     const [isLoading, setIsLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState(null);
+
+    const { player } = useAuth();
 
     useEffect(() => {
         const fetchPlayerInfo = async () => {
@@ -135,7 +138,7 @@ function Inventory() {
     return (
         <div className="box-container">
             <div className="header">
-                <Link to="/player/info">Quay lại</Link>
+                <Link to={`/player/${player.id}`}>Quay lại</Link>
             </div>
 
             {renderContent()}

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { BASE_URL, INITIAL_FILTERS, INITIAL_META } from '~/common/contans';
 import Pagination from '~/components/Pagination';
+import useAuth from '~/hooks/useAuth';
 import { getclans } from '~/services/clanService';
 
 const options = [
@@ -25,6 +26,8 @@ function Clan() {
 
     const [isLoading, setIsLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState(null);
+
+    const { player } = useAuth();
 
     const handleChangePage = (newPage) => {
         setFilters((prev) => ({ ...prev, pageNum: newPage + 1 }));
@@ -133,7 +136,7 @@ function Clan() {
     return (
         <div className="box-container">
             <div className="header">
-                <Link to="/player/info">Quay lại</Link>
+                <Link to={`/player/${player.id}`}>Quay lại</Link>
             </div>
 
             <div className="p-2">

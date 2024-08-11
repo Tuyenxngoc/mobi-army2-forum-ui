@@ -9,6 +9,7 @@ import { getPostsByPlayerId } from '~/services/postService';
 import { checkIdIsNumber } from '~/utils/helper';
 import Post from '~/components/Post';
 import Pagination from '~/components/Pagination';
+import useAuth from '~/hooks/useAuth';
 
 function PlayerPost() {
     const { playerId } = useParams();
@@ -21,6 +22,8 @@ function PlayerPost() {
 
     const [isLoading, setIsLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState(null);
+
+    const { player } = useAuth();
 
     const handleChangePage = (newPage) => {
         setFilters((prev) => ({ ...prev, pageNum: newPage + 1 }));
@@ -98,7 +101,7 @@ function PlayerPost() {
     return (
         <div className="box-container">
             <div className="header">
-                <Link to="/forum">Quay lại</Link>
+                <Link to={`/player/${player.id}`}>Quay lại</Link>
             </div>
 
             <div className="p-2">

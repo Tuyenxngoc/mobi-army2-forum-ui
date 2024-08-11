@@ -19,9 +19,8 @@ const validationSchema = yup.object({
 });
 
 function ChangeUserName() {
-    const { loadUserInfo } = useAuth();
-
     const [messageApi, contextHolder] = message.useMessage();
+    const { player, loadUserInfo } = useAuth();
 
     const handleSubmit = async (values, { setSubmitting }) => {
         try {
@@ -48,7 +47,7 @@ function ChangeUserName() {
             {contextHolder}
 
             <div className="header">
-                <Link to="/player/info">Quay lại</Link>
+                <Link to={`/player/${player.id}`}>Quay lại</Link>
             </div>
 
             <div className="p-2">

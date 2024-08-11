@@ -4,6 +4,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { changePassword } from '~/services/authService';
 import { handleError } from '~/utils/errorHandler';
+import useAuth from '~/hooks/useAuth';
 
 const defaultValue = {
     oldPassword: '',
@@ -29,6 +30,7 @@ const validationSchema = yup.object({
 
 function ChangePassword() {
     const [messageApi, contextHolder] = message.useMessage();
+    const { player } = useAuth();
 
     const handleSubmit = async (values, { setSubmitting }) => {
         try {
@@ -54,7 +56,7 @@ function ChangePassword() {
             {contextHolder}
 
             <div className="header">
-                <Link to="/player/info">Quay lại</Link>
+                <Link to={`/player/${player.id}`}>Quay lại</Link>
             </div>
 
             <div className="p-2">
