@@ -36,6 +36,9 @@ import UpdateClan from './pages/Clan/UpdateClan';
 import ClanMembers from './pages/Clan/ClanMembers';
 import ApproveClanMembers from './pages/Clan/ApproveClanMembers';
 import PlayerPost from './pages/Player/PlayerPost';
+import PromotePlayer from './pages/Player/PromotePlayer';
+import PlayerHistory from './pages/Player/PlayerHistory';
+import LockPlayerAccount from './pages/Player/LockPlayerAccount';
 
 function App() {
     return (
@@ -81,6 +84,10 @@ function App() {
                             <Route path="category" element={<CategoryManagement />} />
                             <Route path="category/new" element={<AddCategory />} />
                             <Route path="category/:categoryId" element={<EditCategory />} />
+
+                            <Route path="player/promote" element={<PromotePlayer />} />
+                            <Route path="player/history" element={<PlayerHistory />} />
+                            <Route path="player/lock-account" element={<LockPlayerAccount />} />
                         </Route>
                     </Route>
 
