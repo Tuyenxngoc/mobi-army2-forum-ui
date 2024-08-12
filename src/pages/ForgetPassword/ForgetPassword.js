@@ -2,6 +2,7 @@ import { Button, Input, message } from 'antd';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { forgetPassword } from '~/services/authService';
+import { handleError } from '~/utils/errorHandler';
 
 const validationSchema = yup.object({
     username: yup.string().trim().required('Vui lòng nhập tên tài khoản'),
@@ -24,13 +25,7 @@ function ForgetPassword() {
                 messageApi.success(response.data.data.message);
             }
         } catch (error) {
-            let message = '';
-            if (!error?.response) {
-                message = 'Máy chủ không phản hồi';
-            } else {
-                message = error?.response?.data?.message || 'Có lỗi xảy ra vui lòng thử lại sau';
-            }
-            messageApi.error(message);
+            handleError(error, formik, messageApi);
         } finally {
             actions.setSubmitting(false);
         }

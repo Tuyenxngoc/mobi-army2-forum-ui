@@ -155,17 +155,15 @@ function CategoryManagement() {
             title: 'Hành động',
             key: 'action',
             render: (_, record) => (
-                <Space>
-                    <Button
-                        danger
-                        type="primary"
-                        size="small"
-                        loading={loadingAction}
-                        onClick={() => handleDeleteCategory(record.id)}
-                    >
-                        Xóa
-                    </Button>
-                </Space>
+                <Button
+                    danger
+                    type="primary"
+                    size="small"
+                    loading={loadingAction}
+                    onClick={() => handleDeleteCategory(record.id)}
+                >
+                    Xóa
+                </Button>
             ),
         },
     ];

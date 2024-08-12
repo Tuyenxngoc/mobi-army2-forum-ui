@@ -10,6 +10,11 @@ import { getCategoryByIdForAdmin, updateCategory } from '~/services/categoryServ
 import { handleError } from '~/utils/errorHandler';
 import { checkIdIsNumber } from '~/utils/helper';
 
+const defaultValue = {
+    name: '',
+    description: '',
+};
+
 const validationSchema = yup.object({
     name: yup
         .string('Nhập tên danh mục')
@@ -24,13 +29,12 @@ function EditCategory() {
 
     const [messageApi, contextHolder] = message.useMessage();
 
-    const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+    const handleSubmit = async (values, { setSubmitting }) => {
         try {
             const response = await updateCategory(categoryId, values);
             if (response.status === 200) {
                 messageApi.success(response.data.data.message);
             }
-            resetForm();
         } catch (error) {
             handleError(error, formik, messageApi);
         } finally {
@@ -39,10 +43,7 @@ function EditCategory() {
     };
 
     const formik = useFormik({
-        initialValues: {
-            name: '',
-            description: '',
-        },
+        initialValues: defaultValue,
         validationSchema: validationSchema,
         onSubmit: handleSubmit,
     });
@@ -119,7 +120,7 @@ function EditCategory() {
                         }`}
                         id="description"
                         name="description"
-                        rows={3}
+                        rows={2}
                         placeholder="Nhập mô tả"
                         value={formik.values.description}
                         onChange={formik.handleChange}
@@ -132,7 +133,7 @@ function EditCategory() {
 
                 <div className="text-center">
                     <Button type="primary" htmlType="submit" loading={formik.isSubmitting}>
-                        Thêm mới
+                        Lưu
                     </Button>
                 </div>
             </form>

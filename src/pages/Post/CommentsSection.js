@@ -109,7 +109,7 @@ function CommentsSection({ postId, postLocked }) {
                         ) : (
                             <div className="p-2 text-center">
                                 Đăng nhập để bình luận
-                                <span className="text-primary ms-1" onClick={handleLoginButtonClick}>
+                                <span className="custom-text-primary ms-1" onClick={handleLoginButtonClick}>
                                     Đăng nhập
                                 </span>
                             </div>

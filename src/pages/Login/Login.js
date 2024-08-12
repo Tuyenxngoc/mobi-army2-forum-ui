@@ -106,11 +106,11 @@ function Login() {
             <div>
                 <div>
                     <span> Nếu bạn chưa có tài khoản, vui lòng đăng ký </span>
-                    <Link className="text-primary" to={'/register'}>
+                    <Link className="custom-text-primary" to={'/register'}>
                         Đăng ký
                     </Link>
                 </div>
-                <Link className="text-primary" to={'/forget-password'}>
+                <Link className="custom-text-primary" to={'/forget-password'}>
                     Quên mật khẩu
                 </Link>
             </div>

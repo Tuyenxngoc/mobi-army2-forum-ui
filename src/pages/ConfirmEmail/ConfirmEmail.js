@@ -91,7 +91,7 @@ const ConfirmEmail = () => {
                     <Link to="/">Quay lại trang chủ</Link>
                 </div>
             ) : emailConfirmed ? (
-                <div>Xác thực thành công, tự động chuyển hướng trang chủ sau 5s</div>
+                <div className="text-center">Xác thực thành công, tự động chuyển hướng trang chủ sau 5s</div>
             ) : (
                 <>
                     <div>Xác minh bằng liên kết gửi qua Email</div>

@@ -1,8 +1,5 @@
-import Style from './DownloadItem.module.scss';
-import classNames from 'classnames/bind';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-const cx = classNames.bind(Style);
 
 function DownloadItem({ content }) {
     const [hovered, setHovered] = useState(false);
@@ -16,8 +13,8 @@ function DownloadItem({ content }) {
     };
 
     return (
-        <div className={cx('downloadItem')}>
-            <a href={content.link} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} download>
+        <div className="text-center">
+            <a href={content.link} className="d-block" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                 <img src={hovered ? content.icon2 : content.icon1} alt="icon" />
             </a>
             <div>{content.title}</div>

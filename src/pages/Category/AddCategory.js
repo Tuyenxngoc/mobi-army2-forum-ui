@@ -1,17 +1,24 @@
+import { Link } from 'react-router-dom';
+
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { Button, message } from 'antd';
 
 import { createCategory } from '~/services/categoryService';
-import { Link } from 'react-router-dom';
+import { handleError } from '~/utils/errorHandler';
+
+const defaultValue = {
+    name: '',
+    description: '',
+};
 
 const validationSchema = yup.object({
     name: yup
         .string('Nhập tên danh mục')
-        .max(15, 'Tên chỉ được tối đa 15 ký tự')
-        .matches(/^[\p{L}\s\d]*$/u, 'Tên không được chứa ký tự đặc biệt')
-        .required('Tên là bắt buộc'),
+        .max(15, 'Tên danh mục chỉ được tối đa 15 ký tự')
+        .matches(/^[\p{L}\s\d]*$/u, 'Tên danh mục không được chứa ký tự đặc biệt')
+        .required('Tên danh mục là bắt buộc'),
 });
 
 function AddCategory() {
@@ -25,21 +32,14 @@ function AddCategory() {
             }
             resetForm();
         } catch (error) {
-            if (error.response && error.response.status === 400 && error.response.data) {
-                messageApi.error(error.response.data.message);
-            } else {
-                messageApi.error('Lỗi khi tạo danh mục mới');
-            }
+            handleError(error, formik, messageApi);
         } finally {
             setSubmitting(false);
         }
     };
 
     const formik = useFormik({
-        initialValues: {
-            name: '',
-            description: '',
-        },
+        initialValues: defaultValue,
         validationSchema: validationSchema,
         onSubmit: handleSubmit,
     });
@@ -85,7 +85,7 @@ function AddCategory() {
                         }`}
                         id="description"
                         name="description"
-                        rows={3}
+                        rows={2}
                         placeholder="Nhập mô tả"
                         value={formik.values.description}
                         onChange={formik.handleChange}
