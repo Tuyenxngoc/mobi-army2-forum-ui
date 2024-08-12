@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { Button, message } from 'antd';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { changeUserName } from '~/services/authService';
+import { changeUserName } from '~/services/userService';
 import { handleError } from '~/utils/errorHandler';
 import useAuth from '~/hooks/useAuth';
 

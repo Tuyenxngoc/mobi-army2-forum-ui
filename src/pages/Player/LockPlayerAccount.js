@@ -1,7 +1,7 @@
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Button, message } from 'antd';
 import { useFormik } from 'formik';
-import { lockPlayerAccount } from '~/services/authService';
+import { lockPlayerAccount } from '~/services/userService';
 import { handleError } from '~/utils/errorHandler';
 import { useEffect, useState } from 'react';
 import { checkIdIsNumber } from '~/utils/helper';

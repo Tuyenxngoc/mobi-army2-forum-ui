@@ -20,10 +20,6 @@ export const checkEmailConfirmed = (email) => {
     return axios.get(`auth/check-email?email=${email}`);
 };
 
-export const getCurrentUserLogin = () => {
-    return axiosPrivate.get('user/current');
-};
-
 export const logoutToken = () => {
     return axiosPrivate.post('auth/logout');
 };
@@ -34,12 +30,4 @@ export const forgetPassword = (values) => {
 
 export const changePassword = (values) => {
     return axiosPrivate.patch('auth/change-password', values);
-};
-
-export const changeUserName = (values) => {
-    return axiosPrivate.put('user/change-username', values);
-};
-
-export const lockPlayerAccount = (playerId, values) => {
-    return axiosPrivate.put(`/user/${playerId}/lock`, values);
 };
