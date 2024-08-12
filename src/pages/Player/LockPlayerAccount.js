@@ -1,22 +1,23 @@
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Button, message } from 'antd';
 import { useFormik } from 'formik';
-import * as yup from 'yup';
-import { lockPlayerAccount } from '~/services/authService'; // Assuming you have this function
+import { lockPlayerAccount } from '~/services/authService';
 import { handleError } from '~/utils/errorHandler';
 import { useEffect, useState } from 'react';
 import { checkIdIsNumber } from '~/utils/helper';
 
+const lockReasons = [
+    { value: 'fraud', label: 'Gian lận' },
+    { value: 'spam', label: 'Spam' },
+    { value: 'terms_violation', label: 'Vi phạm điều khoản' },
+    { value: 'inactive', label: 'Không hoạt động' },
+    { value: 'other', label: 'Lý do khác' },
+];
+
 const defaultValue = {
     lockTime: '',
+    lockReason: '',
 };
-
-const validationSchema = yup.object({
-    lockTime: yup
-        .date()
-        .required('Vui lòng chọn thời gian khóa tài khoản')
-        .min(new Date(), 'Thời gian khóa phải là thời gian trong tương lai'),
-});
 
 const calculateDaysLocked = (lockTime) => {
     const currentDate = new Date();
@@ -48,7 +49,6 @@ function LockPlayerAccount() {
 
     const formik = useFormik({
         initialValues: defaultValue,
-        validationSchema: validationSchema,
         onSubmit: handleSubmit,
     });
 
@@ -63,7 +63,7 @@ function LockPlayerAccount() {
     useEffect(() => {
         if (formik.values.lockTime) {
             const days = calculateDaysLocked(formik.values.lockTime);
-            setDaysLocked(days > 0 ? days : null);
+            setDaysLocked(days);
         } else {
             setDaysLocked(null);
         }
@@ -95,19 +95,49 @@ function LockPlayerAccount() {
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                         />
-                        {formik.touched.lockTime && formik.errors.lockTime ? (
-                            <div className="text-danger">{formik.errors.lockTime}</div>
-                        ) : (
-                            <small id="lockTimeHelp" className="form-text text-muted">
-                                Chọn thời gian khóa
-                            </small>
-                        )}
+                        <small id="lockTimeHelp" className="form-text text-muted">
+                            Chọn thời gian khóa. Để trống nếu muốn khóa vĩnh viễn. Chọn thời gian trong quá khứ để mở
+                            khóa.
+                        </small>
+                    </div>
+
+                    <div className="form-group mb-2">
+                        <label htmlFor="lockReason">Lý do khóa</label>
+                        <select
+                            className="form-control"
+                            id="lockReason"
+                            name="lockReason"
+                            aria-describedby="lockReasonHelp"
+                            value={formik.values.lockReason || ''}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                        >
+                            <option value="">Chọn lý do</option>
+                            {lockReasons.map((reason) => (
+                                <option key={reason.value} value={reason.value}>
+                                    {reason.label}
+                                </option>
+                            ))}
+                        </select>
+                        <small id="lockReasonHelp" className="form-text text-muted">
+                            Có thể trống
+                        </small>
                     </div>
 
                     <div className="text-center">
-                        <Button danger type="primary" htmlType="submit" loading={formik.isSubmitting}>
-                            {daysLocked !== null ? `Khóa trong ${daysLocked} ngày` : 'Khóa'}
-                        </Button>
+                        {daysLocked === null ? (
+                            <Button danger type="primary" htmlType="submit" loading={formik.isSubmitting}>
+                                Khóa vĩnh viễn
+                            </Button>
+                        ) : daysLocked < 0 ? (
+                            <Button type="primary" htmlType="submit" loading={formik.isSubmitting}>
+                                Mở khóa
+                            </Button>
+                        ) : (
+                            <Button danger type="primary" htmlType="submit" loading={formik.isSubmitting}>
+                                {`Khóa trong ${daysLocked} ngày`}
+                            </Button>
+                        )}
                     </div>
                 </form>
             </div>
