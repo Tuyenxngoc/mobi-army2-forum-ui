@@ -103,7 +103,7 @@ function PostDetail() {
 
             {isPostLoading ? (
                 <>
-                    <div className={cx('container')}>
+                    <div className="p-2">
                         <Skeleton active avatar />
                     </div>
                     <div className={cx('ads')}>
@@ -117,8 +117,8 @@ function PostDetail() {
             ) : (
                 post && (
                     <>
-                        <div className={cx('container')}>
-                            <div className={cx('player')}>
+                        <div className="d-flex align-items-start p-2">
+                            <div className="text-center">
                                 <img src={BASE_URL + post.player.avatar} alt="avt" />
                                 <div>Bài: {post.player.points}</div>
                             </div>
@@ -132,38 +132,41 @@ function PostDetail() {
                                         </Link>
                                     </div>
 
-                                    <div className={cx('metadata')}>
-                                        <span className={cx('time')}>
+                                    <div className="d-flex align-items-center">
+                                        <i>
                                             <DateFormatter datetime={post.lastModifiedDate} />
-                                        </span>
+                                        </i>
                                         {isAuthenticated && (
-                                            <div className={cx('actions')}>
-                                                <Button type="primary" size="small" onClick={handleToggleFollowPost}>
-                                                    {post.followed ? (
-                                                        <>
-                                                            <FontAwesomeIcon icon={faBellSlash} />
-                                                            {' Bỏ theo dõi'}
-                                                        </>
-                                                    ) : (
-                                                        <>
-                                                            <FontAwesomeIcon icon={faBell} />
-                                                            {' Theo dõi'}
-                                                        </>
-                                                    )}
-                                                </Button>
-                                            </div>
+                                            <Button
+                                                className="ms-2"
+                                                type="primary"
+                                                size="small"
+                                                onClick={handleToggleFollowPost}
+                                            >
+                                                {post.followed ? (
+                                                    <>
+                                                        <FontAwesomeIcon icon={faBellSlash} />
+                                                        {' Bỏ theo dõi'}
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <FontAwesomeIcon icon={faBell} />
+                                                        {' Theo dõi'}
+                                                    </>
+                                                )}
+                                            </Button>
                                         )}
                                     </div>
                                 </div>
 
-                                <div className={cx('body')}>
-                                    <div className={cx('title')}>{post.title}</div>
+                                <div>
+                                    <div className="fw-bold">{post.title}</div>
                                     <div
-                                        className={cx('ql-snow', 'ql-editor', 'content')}
+                                        className="ql-snow ql-editor p-0"
                                         dangerouslySetInnerHTML={{ __html: post.content }}
                                     />
                                     <br />
-                                    <div className={cx('like-session')}>
+                                    <div className="d-flex justify-content-between align-items-center">
                                         {isAuthenticated && (
                                             <Tooltip title={post.like.hasLikes ? 'Bỏ thích' : 'Thích'}>
                                                 <div className="text-danger" onClick={handleToggleLikePost}>

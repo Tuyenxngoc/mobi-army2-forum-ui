@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import TextArea from 'antd/es/input/TextArea';
-import { Badge, Button } from 'antd';
+import { Badge, Button, Space } from 'antd';
 
 import Style from './Comment.module.scss';
 import classNames from 'classnames/bind';
@@ -76,7 +76,7 @@ function Comment({ data, onUpdateComment, onDeleteComment, message }) {
 
     return (
         <div className={cx('item')}>
-            <div className={cx('player')}>
+            <div className="text-center">
                 <img src={BASE_URL + data.player.avatar} alt="avt" />
                 <div>Bài: {data.player.points}</div>
             </div>
@@ -90,12 +90,12 @@ function Comment({ data, onUpdateComment, onDeleteComment, message }) {
                         </Link>
                     </div>
 
-                    <div className={cx('metadata')}>
-                        <span className={cx('time')}>
+                    <div className="d-flex align-items-center">
+                        <i>
                             <DateFormatter datetime={data.lastModifiedDate} />
-                        </span>
+                        </i>
                         {canEditOrDelete && (
-                            <div className={cx('actions')}>
+                            <Space className="ms-2">
                                 {isEditing ? (
                                     <Button
                                         size="small"
@@ -119,7 +119,7 @@ function Comment({ data, onUpdateComment, onDeleteComment, message }) {
                                 >
                                     Xóa
                                 </Button>
-                            </div>
+                            </Space>
                         )}
                     </div>
                 </div>

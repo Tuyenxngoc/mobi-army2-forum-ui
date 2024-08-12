@@ -7,10 +7,6 @@
     margin-top: 8px;
 }
 
-.player {
-    text-align: center;
-}
-
 .container {
     flex: 1;
     position: relative;
@@ -37,19 +33,4 @@
 .username {
     font-weight: bold;
     color: #013481;
-}
-
-.metadata {
-    display: flex;
-    align-items: center;
-}
-
-.time {
-    font-style: italic;
-}
-
-.actions {
-    display: flex;
-    align-items: center;
-    margin-left: 8px;
 }

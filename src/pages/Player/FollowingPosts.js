@@ -68,13 +68,15 @@ function FollowingPosts() {
         }
 
         return (
-            <>
+            <div className="p-2">
+                <h4 className="title">Các bài viết đang theo dõi</h4>
+
                 {posts.length > 0 ? (
                     posts.map((item, i) => <Post key={i} data={item} />)
                 ) : (
-                    <p className="px-2">Chưa có bài viết nào.</p>
+                    <span>Chưa có bài viết nào.</span>
                 )}
-            </>
+            </div>
         );
     };
 
@@ -82,10 +84,6 @@ function FollowingPosts() {
         <div className="box-container">
             <div className="header">
                 <Link to="/forum">Quay lại</Link>
-            </div>
-
-            <div className="p-2">
-                <h4 className="title">Các bài viết đang theo dõi</h4>
             </div>
 
             {renderContent()}

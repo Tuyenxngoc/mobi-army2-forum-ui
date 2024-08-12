@@ -14,7 +14,7 @@ import AccessDenied from './pages/AccessDenied/AccessDenied';
 import Terms from './pages/Terms/Terms';
 import ConfirmEmail from './pages/ConfirmEmail/ConfirmEmail';
 import Notification from './pages/Notification/Notification';
-import FollowingPosts from './pages/Post/FollowingPosts';
+import FollowingPosts from './pages/Player/FollowingPosts';
 import NewNotification from './pages/Notification/NewNotification';
 import PlayerManagement from './pages/Player/PlayerManagement';
 import ForgetPassword from './pages/ForgetPassword/ForgetPassword';

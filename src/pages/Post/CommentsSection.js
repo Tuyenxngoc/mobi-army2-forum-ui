@@ -1,17 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+
 import { Skeleton, message } from 'antd';
 import queryString from 'query-string';
-import classNames from 'classnames/bind';
-import Style from './PostDetail.module.scss';
+
 import Comment from '~/components/Comment/Comment';
 import NewComment from '~/components/Comment/NewComment';
 import Pagination from '~/components/Pagination';
 import { getCommentByPostId } from '~/services/commentService';
 import { INITIAL_FILTERS, INITIAL_META } from '~/common/contans';
 import useAuth from '~/hooks/useAuth';
-
-const cx = classNames.bind(Style);
 
 function CommentsSection({ postId, postLocked }) {
     const [meta, setMeta] = useState(INITIAL_META);
@@ -84,7 +82,7 @@ function CommentsSection({ postId, postLocked }) {
             {contextHolder}
 
             {isCommentsLoading ? (
-                <div className={cx('comment-list')}>
+                <div className="p-2">
                     {Array.from({ length: 5 }).map((_, index) => (
                         <Skeleton key={index} active avatar />
                     ))}
@@ -94,7 +92,7 @@ function CommentsSection({ postId, postLocked }) {
                     Lỗi khi tải bình luận: {commentErrorMessage.message}
                 </div>
             ) : (
-                <div className={cx('comment-list')}>
+                <div className="p-2">
                     {comments.map((comment) => (
                         <Comment
                             key={comment.id}
@@ -109,7 +107,7 @@ function CommentsSection({ postId, postLocked }) {
                         (isAuthenticated ? (
                             <NewComment postId={postId} onCommentSubmit={handleCommentSubmit} message={messageApi} />
                         ) : (
-                            <div className={cx('login-session')}>
+                            <div className="p-2 text-center">
                                 Đăng nhập để bình luận
                                 <span className="text-primary ms-1" onClick={handleLoginButtonClick}>
                                     Đăng nhập

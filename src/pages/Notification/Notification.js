@@ -131,7 +131,7 @@ function Notification() {
                         </div>
                     ))
                 ) : (
-                    <p>Chưa có thông báo nào.</p>
+                    <span>Chưa có thông báo nào.</span>
                 )}
             </div>
         );
