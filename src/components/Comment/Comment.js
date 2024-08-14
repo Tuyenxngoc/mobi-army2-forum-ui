@@ -85,7 +85,7 @@ function Comment({ data, onUpdateComment, onDeleteComment, message }) {
                 <div className={cx('header')}>
                     <div>
                         {data.player.isOnline ? <Badge status="success" /> : <Badge status="default" />}
-                        <Link to={`/player/${data.player.id}`} className={cx('username')}>
+                        <Link to={`/player/${data.player.id}`} className="fw-bold">
                             {data.player.name}
                         </Link>
                     </div>

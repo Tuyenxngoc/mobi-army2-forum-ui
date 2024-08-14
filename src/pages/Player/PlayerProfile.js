@@ -76,7 +76,7 @@ function PlayerProfile() {
                 const response = await getPlayerById(playerId);
                 setPlayerProfile(response.data.data);
             } catch (error) {
-                setErrorMessage(error.message);
+                setErrorMessage(error.response?.data?.message || error.message);
             } finally {
                 setIsLoading(false);
             }

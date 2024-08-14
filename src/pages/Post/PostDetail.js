@@ -127,7 +127,7 @@ function PostDetail() {
                                 <div className={cx('header')}>
                                     <div>
                                         {post.player.isOnline ? <Badge status="success" /> : <Badge status="default" />}
-                                        <Link to={`/player/${post.player.id}`} className={cx('username')}>
+                                        <Link to={`/player/${post.player.id}`} className="fw-bold">
                                             {post.player.name}
                                         </Link>
                                     </div>
