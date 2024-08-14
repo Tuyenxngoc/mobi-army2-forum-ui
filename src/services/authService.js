@@ -4,6 +4,10 @@ export const loginUser = (values) => {
     return axios.post('auth/login', values);
 };
 
+export const loginWithGoogle = (values) => {
+    return axios.post('auth/google-login', values);
+};
+
 export const register = (url, values) => {
     return axios.post(`auth/register?siteURL=${url}`, values);
 };

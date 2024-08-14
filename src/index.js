@@ -10,14 +10,19 @@ import { AuthProvider } from './contexts/AuthProvider';
 import { ConfigProvider } from 'antd';
 import viVN from 'antd/es/locale/vi_VN';
 
+import { GoogleOAuthProvider } from '@react-oauth/google';
+const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
-        <ConfigProvider locale={viVN}>
-            <AuthProvider>
-                <App />
-            </AuthProvider>
-        </ConfigProvider>
+        <GoogleOAuthProvider clientId={clientId}>
+            <ConfigProvider locale={viVN}>
+                <AuthProvider>
+                    <App />
+                </AuthProvider>
+            </ConfigProvider>
+        </GoogleOAuthProvider>
     </React.StrictMode>,
 );
 

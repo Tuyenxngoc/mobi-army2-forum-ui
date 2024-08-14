@@ -5,11 +5,11 @@ import { Button, Input, message } from 'antd';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { loginUser } from '~/services/authService';
+import { loginUser, loginWithGoogle } from '~/services/authService';
 import useAuth from '~/hooks/useAuth';
-import { BASE_URL } from '~/common/contans';
 import images from '~/assets';
 import { handleError } from '~/utils/errorHandler';
+import { useGoogleLogin } from '@react-oauth/google';
 
 const validationSchema = yup.object({
     username: yup.string().trim().required('Vui lòng nhập tên tài khoản'),
@@ -30,6 +30,25 @@ function Login() {
     const { isAuthenticated, login } = useAuth();
 
     const from = location.state?.from?.pathname || '/';
+
+    const loginGoogle = useGoogleLogin({
+        onSuccess: async (response) => {
+            try {
+                const { data } = await loginWithGoogle({
+                    access_token: response.access_token,
+                });
+
+                const { accessToken, refreshToken } = data.data;
+                login({ accessToken, refreshToken });
+                navigate(from, { replace: true });
+            } catch (error) {
+                handleError(error, formik, messageApi);
+            }
+        },
+        onError: (error) => {
+            messageApi.error('Đăng nhập với thất bại.');
+        },
+    });
 
     const handleLogin = async (values, { setSubmitting }) => {
         try {
@@ -96,7 +115,7 @@ function Login() {
                 </div>
 
                 <div className="p-1">
-                    <Button href={BASE_URL + '/oauth2/authorization/google'}>
+                    <Button onClick={() => loginGoogle()}>
                         <img width={16} src={images.google} alt="Google" />
                         Đăng nhập với Google
                     </Button>
