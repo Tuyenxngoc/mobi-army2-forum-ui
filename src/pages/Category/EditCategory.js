@@ -107,7 +107,7 @@ function EditCategory() {
                         <div className="text-danger">{formik.errors.name}</div>
                     ) : (
                         <small id="nameHelp" className="form-text text-muted">
-                            Tên từ 3 đến 30 kí tự, không chứa kí tự đặc biệt
+                            Tên từ 3 đến 15 kí tự, không chứa kí tự đặc biệt
                         </small>
                     )}
                 </div>
