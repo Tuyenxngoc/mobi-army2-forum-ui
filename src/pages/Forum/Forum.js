@@ -20,6 +20,7 @@ const cx = classNames.bind(Style);
 const allowedRoles = {
     [ROLES.SuperAdmin]: true,
     [ROLES.Admin]: true,
+    [ROLES.Moderator]: true,
 };
 
 function Forum() {

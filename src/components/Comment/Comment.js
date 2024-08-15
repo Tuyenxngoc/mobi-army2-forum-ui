@@ -15,8 +15,10 @@ import { Link } from 'react-router-dom';
 const cx = classNames.bind(Style);
 
 const allowedRoles = {
-    [ROLES.Admin]: true,
     [ROLES.SuperAdmin]: true,
+    [ROLES.Admin]: true,
+    [ROLES.Moderator]: true,
+    [ROLES.Support]: true,
 };
 
 function Comment({ data, onUpdateComment, onDeleteComment, message }) {

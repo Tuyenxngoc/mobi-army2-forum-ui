@@ -58,12 +58,11 @@ function App() {
                         <Route path="post/:postId" element={<PostDetail />} />
 
                         <Route element={<RequireAuth />}>
+                            <Route path="player/:playerId" element={<PlayerProfile />} />
                             <Route path="player/:playerId/post" element={<PlayerPost />} />
-
+                            <Route path="following-post" element={<FollowingPosts />} />
                             <Route path="post/new" element={<NewPost />} />
                             <Route path="notification" element={<Notification />} />
-                            <Route path="following-post" element={<FollowingPosts />} />
-                            <Route path="player/:playerId" element={<PlayerProfile />} />
                             <Route path="clan" element={<Clan />} />
                             <Route path="clan/:clanId" element={<ClanInfo />} />
                             <Route path="clan/new" element={<CreateClan />} />
@@ -76,18 +75,28 @@ function App() {
                             <Route path="upgrade-points" element={<UpdragePoinst />} />
                         </Route>
 
-                        <Route path="admin" element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.SuperAdmin]} />}>
-                            <Route path="notification/new" element={<NewNotification />} />
-                            <Route path="player" element={<PlayerManagement />} />
+                        <Route
+                            path="admin"
+                            element={<RequireAuth allowedRoles={[ROLES.Moderator, ROLES.Admin, ROLES.SuperAdmin]} />}
+                        >
                             <Route path="post" element={<PostManagement />} />
                             <Route path="post/:postId" element={<UpdatePost />} />
+                        </Route>
+
+                        <Route path="admin" element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.SuperAdmin]} />}>
+                            <Route path="notification/new" element={<NewNotification />} />
+
                             <Route path="category" element={<CategoryManagement />} />
                             <Route path="category/new" element={<AddCategory />} />
                             <Route path="category/:categoryId" element={<EditCategory />} />
 
-                            <Route path="player/:playerId/promote" element={<PromotePlayer />} />
+                            <Route path="player" element={<PlayerManagement />} />
                             <Route path="player/:playerId/history" element={<PlayerHistory />} />
                             <Route path="player/:playerId/lock-account" element={<LockPlayerAccount />} />
+                        </Route>
+
+                        <Route path="admin" element={<RequireAuth allowedRoles={[ROLES.SuperAdmin]} />}>
+                            <Route path="player/:playerId/promote" element={<PromotePlayer />} />
                         </Route>
                     </Route>
 
