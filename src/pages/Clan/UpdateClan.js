@@ -197,7 +197,11 @@ function UpdateClan() {
                                             {row.map((icon) => (
                                                 <td key={icon.id}>
                                                     <label className="form-check-label me-2" htmlFor={`icon${icon.id}`}>
-                                                        <img src={BASE_URL + icon.src} alt={`Icon ${icon.id}`} />
+                                                        <img
+                                                            src={BASE_URL + icon.src}
+                                                            className="pixel-art"
+                                                            alt={`Icon ${icon.id}`}
+                                                        />
                                                     </label>
                                                     <input
                                                         type="radio"

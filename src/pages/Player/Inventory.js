@@ -68,7 +68,7 @@ function Inventory() {
                                 <tr key={index}>
                                     <th scope="row">{item.id}</th>
                                     <td>
-                                        <img src={BASE_URL + item.imageUrl} alt={item.name} />
+                                        <img src={BASE_URL + item.imageUrl} className="pixel-art" alt="item" />
                                         <span>&nbsp;{item.name}</span>
                                     </td>
                                     <td>{item.detail}</td>
@@ -101,7 +101,7 @@ function Inventory() {
                                 <tr key={index}>
                                     <td>{index + 1}</td>
                                     <td>
-                                        <img src={BASE_URL + equip.imageUrl} alt="" />
+                                        <img src={BASE_URL + equip.imageUrl} className="pixel-art" alt="equip" />
                                         <span>&nbsp;{equip.name}</span>
                                     </td>
                                     <td>
@@ -113,7 +113,12 @@ function Inventory() {
                                         [
                                         {equip.slots.map((slot, index) =>
                                             slot ? (
-                                                <img key={index} src={`${BASE_URL}${slot}`} alt={`Slot ${index}`} />
+                                                <img
+                                                    key={index}
+                                                    src={`${BASE_URL}${slot}`}
+                                                    className="pixel-art"
+                                                    alt={`Slot ${index}`}
+                                                />
                                             ) : (
                                                 <span key={index}>-1</span>
                                             ),

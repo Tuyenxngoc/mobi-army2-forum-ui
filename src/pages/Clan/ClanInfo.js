@@ -203,7 +203,7 @@ function ClanInfo() {
                             <li>Ngày tạo: {clan.createdDate}</li>
                             <li>Tên đội trưởng: {clan.masterName}</li>
                             <li>
-                                Biểu tượng: <img src={BASE_URL + clan.icon} alt="icon" />
+                                Biểu tượng: <img src={BASE_URL + clan.icon} className="pixel-art" alt="icon" />
                             </li>
                             <li>Cúp: {clan.cup}</li>
                             <li>Kinh nghiệm: {clan.xp}</li>

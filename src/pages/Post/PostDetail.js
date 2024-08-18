@@ -119,7 +119,7 @@ function PostDetail() {
                     <>
                         <div className="d-flex align-items-start p-2">
                             <div className="text-center">
-                                <img src={BASE_URL + post.player.avatar} alt="avt" />
+                                <img src={BASE_URL + post.player.avatar} className="pixel-art" alt="avt" />
                                 <div>Bài: {post.player.points}</div>
                             </div>
 

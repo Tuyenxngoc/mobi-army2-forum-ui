@@ -13,7 +13,7 @@ function Post({ data }) {
     return (
         <div className={cx('post-wrapper', { admin: data.priority })}>
             <div className={cx('avatar-container')}>
-                <img src={BASE_URL + data.player.avatar} alt="avatar" />
+                <img src={BASE_URL + data.player.avatar} className="pixel-art" alt="avt" />
             </div>
             <div className={cx('post-details')}>
                 <div className={cx('post-title')}>

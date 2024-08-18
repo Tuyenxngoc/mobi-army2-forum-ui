@@ -79,7 +79,7 @@ function Comment({ data, onUpdateComment, onDeleteComment, message }) {
     return (
         <div className={cx('item')}>
             <div className="text-center">
-                <img src={BASE_URL + data.player.avatar} alt="avt" />
+                <img src={BASE_URL + data.player.avatar} className="pixel-art" alt="avt" />
                 <div>Bài: {data.player.points}</div>
             </div>
 

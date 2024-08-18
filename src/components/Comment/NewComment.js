@@ -42,7 +42,7 @@ function NewComment({ postId, onCommentSubmit, message }) {
     return (
         <div className={cx('item')}>
             <div className={cx('player')}>
-                <img src={BASE_URL + player.avatar} alt="avt" />
+                <img src={BASE_URL + player.avatar} className="pixel-art" alt="avt" />
                 <div>Bài: {player.points}</div>
             </div>
 

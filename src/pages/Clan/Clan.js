@@ -115,7 +115,7 @@ function Clan() {
                                 <tr key={index}>
                                     <th scope="row">{clan.id}</th>
                                     <th>
-                                        <img src={BASE_URL + clan.icon} alt="Icon clan" />
+                                        <img src={BASE_URL + clan.icon} className="pixel-art" alt="icon" />
                                     </th>
                                     <td>
                                         <Link to={`/clan/${clan.id}`}>{clan.name}</Link>

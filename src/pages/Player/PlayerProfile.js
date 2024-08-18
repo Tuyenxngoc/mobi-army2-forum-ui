@@ -109,7 +109,7 @@ function PlayerProfile() {
                 <h4 className="title">{isCurrentPlayer ? 'Hồ Sơ Của Tôi' : 'Thông tin tài khoản'}</h4>
 
                 <div className="text-center">
-                    <img width={100} src={BASE_URL + playerProfile.avatar} alt="avt" />
+                    <img width={200} src={BASE_URL + playerProfile.avatar} className="pixel-art" alt="avt" />
                 </div>
 
                 <ul className="mb-2 ps-3" style={{ listStyle: 'disc' }}>
@@ -131,7 +131,7 @@ function PlayerProfile() {
                         {playerProfile.clan ? (
                             <>
                                 <Link to={`/clan/${playerProfile.clan.id}`}>{playerProfile.clan.name}</Link>
-                                [<img src={BASE_URL + playerProfile.clan.icon} alt="icon" />]
+                                [<img src={BASE_URL + playerProfile.clan.icon} className="pixel-art" alt="icon" />]
                             </>
                         ) : (
                             'Chưa tham gia biệt đội'
@@ -158,7 +158,7 @@ function PlayerProfile() {
                             {playerProfile.characters.map((character, index) => (
                                 <tr key={index}>
                                     <th scope="row">
-                                        <img src={BASE_URL + character.avatar} alt="avt" />
+                                        <img src={BASE_URL + character.avatar} className="pixel-art" alt="avt" />
                                     </th>
                                     <td>{character.name}</td>
                                     <td>{character.level}</td>
