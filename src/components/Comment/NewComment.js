@@ -43,7 +43,6 @@ function NewComment({ postId, onCommentSubmit, message }) {
         <div className={cx('item')}>
             <div className={cx('player')}>
                 <img src={BASE_URL + player.avatar} className="pixel-art" alt="avt" />
-                <div>Bài: {player.points}</div>
             </div>
 
             <form className={cx('container')} onSubmit={handleCommentSubmit}>

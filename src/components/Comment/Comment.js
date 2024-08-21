@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import TextArea from 'antd/es/input/TextArea';
-import { Badge, Button, Space } from 'antd';
+import { Button, Space } from 'antd';
 
 import Style from './Comment.module.scss';
 import classNames from 'classnames/bind';
@@ -10,7 +10,7 @@ import useAuth from '~/hooks/useAuth';
 import { BASE_URL, ROLES } from '~/common/contans';
 import { deleteComment, updateComment } from '~/services/commentService';
 import DateFormatter from '../DateFormatter/DateFormatter';
-import { Link } from 'react-router-dom';
+import Player from '../Player/Player';
 
 const cx = classNames.bind(Style);
 
@@ -86,10 +86,7 @@ function Comment({ data, onUpdateComment, onDeleteComment, message }) {
             <div className={cx('container')}>
                 <div className={cx('header')}>
                     <div>
-                        {data.player.isOnline ? <Badge status="success" /> : <Badge status="default" />}
-                        <Link to={`/player/${data.player.id}`} className="fw-bold">
-                            {data.player.name}
-                        </Link>
+                        <Player data={data.player} />
                     </div>
 
                     <div className="d-flex align-items-center">

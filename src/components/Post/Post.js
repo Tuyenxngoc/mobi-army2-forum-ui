@@ -24,7 +24,7 @@ function Post({ data }) {
                 </div>
                 <div className={cx('post-metadata')}>
                     bởi
-                    <span> {data.player.name}</span>
+                    <span> {data.player.username}</span>
                     <span> Trả lời: {data.comments}</span>
                     <span> - Xem: {data.views}</span>
                     {data.favorites > 0 && <span className="text-danger"> ♥{data.favorites}</span>}

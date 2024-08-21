@@ -17,6 +17,14 @@ export const ROLES_NAME = {
     ROLE_USER: 'Người dùng',
 };
 
+export const ROLE_COLORS = {
+    ROLE_SUPER_ADMIN: 'red',
+    ROLE_ADMIN: 'red',
+    ROLE_MODERATOR: 'purple',
+    ROLE_SUPPORT: 'green',
+    ROLE_USER: 'black',
+};
+
 export const INITIAL_META = { totalPages: 1, pageSize: 10 };
 export const INITIAL_FILTERS = { pageNum: 1, pageSize: 10 };
 

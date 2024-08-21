@@ -12,13 +12,12 @@ const AuthContext = createContext();
 const defaultAuth = {
     isAuthenticated: false,
     player: {
-        fullName: '',
-        roleName: '',
-        username: '',
         id: null,
+        username: '',
+        roleName: '',
         avatar: '',
-        points: 1,
         online: false,
+        points: 1,
         clanMember: null,
     },
 };
@@ -43,19 +42,10 @@ const AuthProvider = ({ children }) => {
             }
             const response = await getCurrentUserLogin();
             if (response.status === 200) {
-                const user = response.data.data;
+                const { id, username, roleName, avatar, online, points, clanMember } = response.data.data;
                 setAuthData({
                     isAuthenticated: true,
-                    player: {
-                        roleName: user.roleName,
-                        fullName: user.fullName,
-                        username: user.player.name,
-                        id: user.player.id,
-                        avatar: user.player.avatar,
-                        points: user.player.points,
-                        online: user.player.online,
-                        clanMember: user.player.clanMember,
-                    },
+                    player: { id, username, roleName, avatar, online, points, clanMember },
                 });
             } else {
                 setAuthData(defaultAuth);
