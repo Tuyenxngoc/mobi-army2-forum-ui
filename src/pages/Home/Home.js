@@ -15,25 +15,25 @@ const cx = classNames.bind(Style);
 const downloadInfo = [
     {
         title: 'Phiên bản: 244',
-        link: '~/assets/files/army2local.jar',
+        link: 'http://localhost:8080/files/army2_v244.apk',
         icon1: images.ggplay0,
         icon2: images.ggplay1,
     },
     {
         title: 'Phiên bản: 244',
-        link: '~/assets/files/army2local.jar',
+        link: 'http://localhost:8080/files/army2_v244.apk',
         icon1: images.apk0,
         icon2: images.apk1,
     },
     {
         title: 'Phiên bản: 243',
-        link: '~/assets/files/army2local.jar',
+        link: 'http://localhost:8080/files/Army2_v241_PC.zip',
         icon1: images.pc0,
         icon2: images.pc1,
     },
     {
         title: 'Phiên bản: 243',
-        link: '~/assets/files/army2local.jar',
+        link: 'http://localhost:8080/files/Army2_v241_PC.zip',
         icon1: images.ios0,
         icon2: images.ios1,
     },
