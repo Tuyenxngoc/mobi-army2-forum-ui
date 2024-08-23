@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button, Input, message, Select, Space, Table } from 'antd';
 import queryString from 'query-string';
 
-import { INITIAL_FILTERS, INITIAL_META } from '~/common/contans';
+import { INITIAL_FILTERS, INITIAL_META } from '~/common/commonConstants';
 import Pagination from '~/components/Pagination/Pagination';
 import { deleteCategory, getCategoriesForAdmin } from '~/services/categoryService';
 

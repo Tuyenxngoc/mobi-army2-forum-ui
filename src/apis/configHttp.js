@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ACCESS_TOKEN, API_URL, REFRESH_TOKEN } from '~/common/contans';
+import { ACCESS_TOKEN, API_URL, REFRESH_TOKEN } from '~/common/commonConstants';
 
 export default axios.create({
     baseURL: API_URL,

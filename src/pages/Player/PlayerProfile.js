@@ -1,7 +1,7 @@
 import { Badge, Button, message, Spin, Space } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { BASE_URL } from '~/common/contans';
+import { BASE_URL } from '~/common/commonConstants';
 import useAuth from '~/hooks/useAuth';
 
 import { getPlayerById, toggleEquipmentChestLock, toggleInvitationLock } from '~/services/playerService';

@@ -9,7 +9,7 @@ import { handleError } from '~/utils/errorHandler';
 import { getRoles } from '~/services/roleService';
 import { updateRole } from '~/services/userService';
 import { checkIdIsNumber } from '~/utils/helper';
-import { ROLES_NAME } from '~/common/contans';
+import { ROLE_NAMES } from '~/common/roleConstants';
 
 const defaultValue = {
     roleId: 0,
@@ -122,7 +122,7 @@ function PromotePlayer() {
                         >
                             {roles.map((role) => (
                                 <option key={role.id} value={role.id}>
-                                    {ROLES_NAME[role.name] || role.name}
+                                    {ROLE_NAMES[role.name] || role.name}
                                 </option>
                             ))}
                         </select>

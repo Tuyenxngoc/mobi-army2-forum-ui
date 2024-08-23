@@ -13,7 +13,6 @@ export const modules = {
             [{ indent: '-1' }, { indent: '+1' }], // outdent/indent
             [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
             [{ direction: 'rtl' }], // text direction
-
             ['clean'], // remove formatting button
         ],
     },

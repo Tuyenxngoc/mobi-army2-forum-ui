@@ -7,7 +7,8 @@ import Style from './Comment.module.scss';
 import classNames from 'classnames/bind';
 
 import useAuth from '~/hooks/useAuth';
-import { BASE_URL, ROLES } from '~/common/contans';
+import { BASE_URL } from '~/common/commonConstants';
+import { ROLES } from '~/common/roleConstants';
 import { deleteComment, updateComment } from '~/services/commentService';
 import DateFormatter from '../DateFormatter/DateFormatter';
 import Player from '../Player/Player';

@@ -4,7 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button, Input, Select, Space, Table, Tag } from 'antd';
 import queryString from 'query-string';
 
-import { INITIAL_FILTERS, INITIAL_META, ROLES, ROLES_NAME } from '~/common/contans';
+import { INITIAL_FILTERS, INITIAL_META } from '~/common/commonConstants';
+import { ROLE_COLORS, ROLE_NAMES } from '~/common/roleConstants';
 import Pagination from '~/components/Pagination/Pagination';
 import { getPlayers } from '~/services/playerService';
 
@@ -12,21 +13,6 @@ const options = [
     { value: 'id', label: 'ID' },
     { value: 'username', label: 'Tên' },
 ];
-
-const getTagsColor = (text) => {
-    switch (text) {
-        case ROLES.SuperAdmin:
-            return <Tag color="red">{ROLES_NAME[text] || text}</Tag>;
-        case ROLES.Admin:
-            return <Tag color="blue">{ROLES_NAME[text] || text}</Tag>;
-        case ROLES.Moderator:
-            return <Tag color="green">{ROLES_NAME[text] || text}</Tag>;
-        case ROLES.Support:
-            return <Tag color="orange">{ROLES_NAME[text] || text}</Tag>;
-        default:
-            return <Tag color="default">{ROLES_NAME[text] || text}</Tag>;
-    }
-};
 
 function PlayerManagement() {
     const navigate = useNavigate();
@@ -114,7 +100,7 @@ function PlayerManagement() {
             title: 'Quyền',
             dataIndex: 'roleName',
             key: 'roleName',
-            render: (text) => getTagsColor(text),
+            render: (text) => <Tag color={ROLE_COLORS[text]}>{ROLE_NAMES[text]}</Tag>,
         },
         {
             title: 'Ngày tạo',

@@ -1,6 +1,6 @@
 import { Badge } from 'antd';
 import { Link } from 'react-router-dom';
-import { ROLE_COLORS, ROLES, ROLES_NAME2 } from '~/common/contans';
+import { ROLE_COLORS, ROLES, ROLE_LABELS } from '~/common/roleConstants';
 
 function Player({ data }) {
     const { id, username, roleName, online } = data;
@@ -11,7 +11,7 @@ function Player({ data }) {
         <>
             {online ? <Badge status="success" /> : <Badge status="default" />}
             <Link to={`/player/${id}`} className="fw-bold ms-1" style={{ color: roleColor }}>
-                {username} {roleName !== ROLES.User && ` - ${ROLES_NAME2[roleName]}`}
+                {username} {roleName !== ROLES.User && ` - ${ROLE_LABELS[roleName]}`}
             </Link>
         </>
     );

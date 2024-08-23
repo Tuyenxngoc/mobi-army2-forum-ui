@@ -4,7 +4,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Spin } from 'antd';
 import queryString from 'query-string';
 
-import { INITIAL_FILTERS, INITIAL_META } from '~/common/contans';
+import { INITIAL_FILTERS, INITIAL_META } from '~/common/commonConstants';
 import { getPostsByPlayerId } from '~/services/postService';
 import { checkIdIsNumber } from '~/utils/helper';
 import Post from '~/components/Post/Post';

@@ -15,7 +15,7 @@ import { toggleLike } from '~/services/likeService';
 import useAuth from '~/hooks/useAuth';
 import DateFormatter from '~/components/DateFormatter/DateFormatter';
 import CommentsSection from './CommentsSection';
-import { BASE_URL } from '~/common/contans';
+import { BASE_URL } from '~/common/commonConstants';
 import { checkIdIsNumber } from '~/utils/helper';
 import Player from '~/components/Player/Player';
 

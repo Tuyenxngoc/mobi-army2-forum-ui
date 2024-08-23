@@ -4,7 +4,7 @@ import DownloadItem from '~/components/DownloadItem/DownloadItem';
 import Notification from '~/components/Notification/Notification';
 import CreateNotification from '~/components/Notification/CreateNotification';
 import useAuth from '~/hooks/useAuth';
-import { ROLES } from '~/common/contans';
+import { ROLES } from '~/common/roleConstants';
 import { useEffect, useState } from 'react';
 import { getAllNotifications } from '~/services/NotificationService';
 import images from '~/assets';

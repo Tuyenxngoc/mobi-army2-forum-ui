@@ -10,7 +10,8 @@ import Pagination from '~/components/Pagination/Pagination';
 
 import { getAllCategories } from '~/services/categoryService';
 import { getPosts } from '~/services/postService';
-import { INITIAL_FILTERS, INITIAL_META, ROLES } from '~/common/contans';
+import { INITIAL_FILTERS, INITIAL_META } from '~/common/commonConstants';
+import { ROLES } from '~/common/roleConstants';
 import { Button, Skeleton, Flex } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '~/hooks/useAuth';

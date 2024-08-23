@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { Button, Input, message, Select, Space, Table, Tag } from 'antd';
 
 import { getClanMembersForOwner } from '~/services/clanService';
-import { INITIAL_FILTERS, INITIAL_META } from '~/common/contans';
+import { INITIAL_FILTERS, INITIAL_META } from '~/common/commonConstants';
 import { Link, useParams } from 'react-router-dom';
 import useAuth from '~/hooks/useAuth';
 import { checkIdIsNumber } from '~/utils/helper';

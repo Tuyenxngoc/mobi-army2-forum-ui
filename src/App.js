@@ -9,7 +9,7 @@ import NotFound from './pages/NotFound/NotFound';
 import NewPost from './pages/Post/NewPost';
 import PostDetail from './pages/Post/PostDetail';
 import RequireAuth from './utils/RequireAuth';
-import { ROLES } from './common/contans';
+import { ROLES } from './common/roleConstants';
 import AccessDenied from './pages/AccessDenied/AccessDenied';
 import Terms from './pages/Terms/Terms';
 import ConfirmEmail from './pages/ConfirmEmail/ConfirmEmail';

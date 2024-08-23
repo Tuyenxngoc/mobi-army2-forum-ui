@@ -6,7 +6,7 @@ import { Button, message, Space } from 'antd';
 
 import { checkIdIsNumber } from '~/utils/helper';
 import useAuth from '~/hooks/useAuth';
-import { INITIAL_FILTERS, INITIAL_META } from '~/common/contans';
+import { INITIAL_FILTERS, INITIAL_META } from '~/common/commonConstants';
 import Pagination from '~/components/Pagination/Pagination';
 import { approveMember, getApprovals, rejectMember } from '~/services/clanApprovalService';
 

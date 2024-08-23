@@ -5,7 +5,7 @@ import * as yup from 'yup';
 import { Button, message } from 'antd';
 
 import useAuth from '~/hooks/useAuth';
-import { ROLES } from '~/common/contans';
+import { ROLES } from '~/common/roleConstants';
 import { getAllCategories } from '~/services/categoryService';
 import { createPost } from '~/services/postService';
 

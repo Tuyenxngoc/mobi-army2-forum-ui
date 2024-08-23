@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import Style from './Post.module.scss';
 import classNames from 'classnames/bind';
 import images from '~/assets';
-import { BASE_URL } from '~/common/contans';
+import { BASE_URL } from '~/common/commonConstants';
 
 const cx = classNames.bind(Style);
 

@@ -6,7 +6,7 @@ import { Spin } from 'antd';
 
 import Post from '~/components/Post/Post';
 import Pagination from '~/components/Pagination/Pagination';
-import { INITIAL_FILTERS, INITIAL_META } from '~/common/contans';
+import { INITIAL_FILTERS, INITIAL_META } from '~/common/commonConstants';
 import { getFollowingPosts } from '~/services/playerService';
 
 function FollowingPosts() {

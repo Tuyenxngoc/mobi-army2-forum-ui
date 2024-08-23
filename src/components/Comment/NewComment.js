@@ -8,7 +8,7 @@ import classNames from 'classnames/bind';
 import Style from './Comment.module.scss';
 
 import { createComment } from '~/services/commentService';
-import { BASE_URL } from '~/common/contans';
+import { BASE_URL } from '~/common/commonConstants';
 import useAuth from '~/hooks/useAuth';
 
 const cx = classNames.bind(Style);

@@ -2,7 +2,7 @@ import { Button, Input, Select, Space, Spin } from 'antd';
 import queryString from 'query-string';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { BASE_URL, INITIAL_FILTERS, INITIAL_META } from '~/common/contans';
+import { BASE_URL, INITIAL_FILTERS, INITIAL_META } from '~/common/commonConstants';
 import Pagination from '~/components/Pagination/Pagination';
 import useAuth from '~/hooks/useAuth';
 import { getclans } from '~/services/clanService';

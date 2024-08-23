@@ -1,7 +1,7 @@
 import { Spin } from 'antd';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { BASE_URL } from '~/common/contans';
+import { BASE_URL } from '~/common/commonConstants';
 import useAuth from '~/hooks/useAuth';
 import { getPlayerInventory } from '~/services/playerService';
 

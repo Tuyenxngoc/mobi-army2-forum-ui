@@ -7,7 +7,7 @@ import queryString from 'query-string';
 import useAuth from '~/hooks/useAuth';
 import Pagination from '~/components/Pagination/Pagination';
 import { checkIdIsNumber } from '~/utils/helper';
-import { BASE_URL, INITIAL_FILTERS, INITIAL_META } from '~/common/contans';
+import { BASE_URL, INITIAL_FILTERS, INITIAL_META } from '~/common/commonConstants';
 import { getClanById, getClanMembers, joinClan, leaveClan } from '~/services/clanService';
 
 const getTagColor = (categoryName) => {

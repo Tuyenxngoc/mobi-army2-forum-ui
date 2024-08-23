@@ -4,7 +4,7 @@ import * as yup from 'yup';
 import { Button, message } from 'antd';
 
 import { getClanById, getclanIcons, updateClan } from '~/services/clanService';
-import { BASE_URL } from '~/common/contans';
+import { BASE_URL } from '~/common/commonConstants';
 import { Link, useParams } from 'react-router-dom';
 import { handleError } from '~/utils/errorHandler';
 import useAuth from '~/hooks/useAuth';
