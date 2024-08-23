@@ -7,7 +7,7 @@ import { Link, useParams } from 'react-router-dom';
 import useAuth from '~/hooks/useAuth';
 import { checkIdIsNumber } from '~/utils/helper';
 import queryString from 'query-string';
-import Pagination from '~/components/Pagination';
+import Pagination from '~/components/Pagination/Pagination';
 import { kickClanMember, promoteClanMember } from '~/services/clanMemberService';
 
 const options = [

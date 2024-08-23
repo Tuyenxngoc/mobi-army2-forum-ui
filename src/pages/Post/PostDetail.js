@@ -131,7 +131,7 @@ function PostDetail() {
                                     </div>
 
                                     <div className="d-flex align-items-center">
-                                        <i>
+                                        <i className="d-none d-md-block">
                                             <DateFormatter datetime={post.lastModifiedDate} />
                                         </i>
                                         {isAuthenticated && (

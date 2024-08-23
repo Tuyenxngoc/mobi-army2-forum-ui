@@ -5,8 +5,8 @@ import classNames from 'classnames/bind';
 
 import queryString from 'query-string';
 
-import Post from '~/components/Post';
-import Pagination from '~/components/Pagination';
+import Post from '~/components/Post/Post';
+import Pagination from '~/components/Pagination/Pagination';
 
 import { getAllCategories } from '~/services/categoryService';
 import { getPosts } from '~/services/postService';

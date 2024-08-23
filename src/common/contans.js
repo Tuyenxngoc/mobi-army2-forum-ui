@@ -17,6 +17,13 @@ export const ROLES_NAME = {
     ROLE_USER: 'Người dùng',
 };
 
+export const ROLES_NAME2 = {
+    ROLE_SUPER_ADMIN: 'Admin',
+    ROLE_ADMIN: 'Admin',
+    ROLE_MODERATOR: 'Mod',
+    ROLE_SUPPORT: 'Support',
+};
+
 export const ROLE_COLORS = {
     ROLE_SUPER_ADMIN: 'red',
     ROLE_ADMIN: 'red',

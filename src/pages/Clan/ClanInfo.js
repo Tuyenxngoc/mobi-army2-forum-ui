@@ -5,7 +5,7 @@ import { intervalToDuration } from 'date-fns';
 import queryString from 'query-string';
 
 import useAuth from '~/hooks/useAuth';
-import Pagination from '~/components/Pagination';
+import Pagination from '~/components/Pagination/Pagination';
 import { checkIdIsNumber } from '~/utils/helper';
 import { BASE_URL, INITIAL_FILTERS, INITIAL_META } from '~/common/contans';
 import { getClanById, getClanMembers, joinClan, leaveClan } from '~/services/clanService';

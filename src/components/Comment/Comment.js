@@ -90,7 +90,7 @@ function Comment({ data, onUpdateComment, onDeleteComment, message }) {
                     </div>
 
                     <div className="d-flex align-items-center">
-                        <i>
+                        <i className="d-none d-md-block">
                             <DateFormatter datetime={data.lastModifiedDate} />
                         </i>
                         {canEditOrDelete && (

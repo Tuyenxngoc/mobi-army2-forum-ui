@@ -13,7 +13,7 @@ import classNames from 'classnames/bind';
 
 import { INITIAL_FILTERS, INITIAL_META } from '~/common/contans';
 import DateFormatter from '~/components/DateFormatter/DateFormatter';
-import Pagination from '~/components/Pagination';
+import Pagination from '~/components/Pagination/Pagination';
 import { Link } from 'react-router-dom';
 
 const cx = classNames.bind(Style);

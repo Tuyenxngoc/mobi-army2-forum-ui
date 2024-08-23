@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 import queryString from 'query-string';
 import { Spin } from 'antd';
 
-import Post from '~/components/Post';
-import Pagination from '~/components/Pagination';
+import Post from '~/components/Post/Post';
+import Pagination from '~/components/Pagination/Pagination';
 import { INITIAL_FILTERS, INITIAL_META } from '~/common/contans';
 import { getFollowingPosts } from '~/services/playerService';
 

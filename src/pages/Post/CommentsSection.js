@@ -6,7 +6,7 @@ import queryString from 'query-string';
 
 import Comment from '~/components/Comment/Comment';
 import NewComment from '~/components/Comment/NewComment';
-import Pagination from '~/components/Pagination';
+import Pagination from '~/components/Pagination/Pagination';
 import { getCommentByPostId } from '~/services/commentService';
 import { INITIAL_FILTERS, INITIAL_META } from '~/common/contans';
 import useAuth from '~/hooks/useAuth';

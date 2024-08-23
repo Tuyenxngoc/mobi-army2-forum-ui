@@ -7,8 +7,8 @@ import queryString from 'query-string';
 import { INITIAL_FILTERS, INITIAL_META } from '~/common/contans';
 import { getPostsByPlayerId } from '~/services/postService';
 import { checkIdIsNumber } from '~/utils/helper';
-import Post from '~/components/Post';
-import Pagination from '~/components/Pagination';
+import Post from '~/components/Post/Post';
+import Pagination from '~/components/Pagination/Pagination';
 import useAuth from '~/hooks/useAuth';
 
 function PlayerPost() {

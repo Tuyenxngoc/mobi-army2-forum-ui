@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { createContext, useEffect, useState } from 'react';
 
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '~/common/contans';
-import Loading from '~/components/Loading';
+import Loading from '~/components/Loading/Loading';
 import { logoutToken } from '~/services/authService';
 import { getCurrentUserLogin } from '~/services/userService';
 

@@ -5,7 +5,7 @@ import { Button, Input, message, Select, Space, Table, Tag } from 'antd';
 import queryString from 'query-string';
 
 import { INITIAL_FILTERS, INITIAL_META } from '~/common/contans';
-import Pagination from '~/components/Pagination';
+import Pagination from '~/components/Pagination/Pagination';
 import { approvePost, deletePost, getPostsForAdmin, toggleLock } from '~/services/postService';
 
 const options = [

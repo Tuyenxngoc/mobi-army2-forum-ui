@@ -5,7 +5,7 @@ import { Button, Input, Select, Space, Table, Tag } from 'antd';
 import queryString from 'query-string';
 
 import { INITIAL_FILTERS, INITIAL_META, ROLES, ROLES_NAME } from '~/common/contans';
-import Pagination from '~/components/Pagination';
+import Pagination from '~/components/Pagination/Pagination';
 import { getPlayers } from '~/services/playerService';
 
 const options = [

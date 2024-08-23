@@ -12,11 +12,11 @@ const cx = classNames.bind(Style);
 function Post({ data }) {
     return (
         <div className={cx('post-wrapper', { admin: data.priority })}>
-            <div className={cx('avatar-container')}>
+            <div>
                 <img src={BASE_URL + data.player.avatar} className="pixel-art" alt="avt" />
             </div>
-            <div className={cx('post-details')}>
-                <div className={cx('post-title')}>
+            <div>
+                <div>
                     <Link to={`/post/${data.id}`}>
                         {data.locked && <img src={images.lock} alt="lock" />}
                         {data.title}
@@ -42,7 +42,7 @@ Post.propTypes = {
         priority: PropTypes.number,
         player: PropTypes.shape({
             avatar: PropTypes.string.isRequired,
-            name: PropTypes.string.isRequired,
+            username: PropTypes.string.isRequired,
         }).isRequired,
         comments: PropTypes.number.isRequired,
         views: PropTypes.number.isRequired,
