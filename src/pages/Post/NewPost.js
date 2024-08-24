@@ -207,9 +207,9 @@ function NewPost() {
                 )}
 
                 <div className="alert alert-light" role="alert">
-                    Những bài viết vi phạm{' '}
+                    Những bài viết vi phạm&nbsp;
                     <Link to="/terms" target="_blank" className="alert-link">
-                        Tiêu chuẩn cộng đồng{' '}
+                        Tiêu chuẩn cộng đồng&nbsp;
                     </Link>
                     sẽ không được duyệt
                 </div>

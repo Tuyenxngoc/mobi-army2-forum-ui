@@ -7,6 +7,7 @@ import useAuth from '~/hooks/useAuth';
 import { getPlayerById, toggleEquipmentChestLock, toggleInvitationLock } from '~/services/playerService';
 import { checkIdIsNumber } from '~/utils/helper';
 import NumberFormatter from '~/components/NumberFormatter/NumberFormatter ';
+import { ROLE_COLORS, ROLE_LABELS, ROLES } from '~/common/roleConstants';
 
 function PlayerProfile() {
     const { playerId } = useParams();
@@ -85,7 +86,7 @@ function PlayerProfile() {
         fetchPlayerInfo();
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [playerId]);
 
     const renderContent = () => {
         if (isLoading) {
@@ -104,41 +105,67 @@ function PlayerProfile() {
             );
         }
 
+        const {
+            id,
+            avatar,
+            username,
+            roleName,
+            online,
+            xu,
+            luong,
+            cup,
+            x2XpTime,
+            clan,
+            email,
+            phoneNumber,
+            characters,
+        } = playerProfile;
+
+        const avatarUrl = BASE_URL + avatar;
+        const roleColor = ROLE_COLORS[roleName] || 'black';
+        const roleLabel = roleName !== ROLES.User ? ` - ${ROLE_LABELS[roleName]}` : '';
+
         return (
             <div className="p-2">
                 <h4 className="title">{isCurrentPlayer ? 'Hồ Sơ Của Tôi' : 'Thông tin tài khoản'}</h4>
 
                 <div className="text-center">
-                    <img width={200} src={BASE_URL + playerProfile.avatar} className="pixel-art" alt="avt" />
+                    <img width={200} src={avatarUrl} className="pixel-art" alt="avt" />
                 </div>
 
                 <ul className="mb-2 ps-3" style={{ listStyle: 'disc' }}>
-                    <li>ID: {playerProfile.id}</li>
-                    <li>Tên tài khoản: {playerProfile.username}</li>
-                    <li>Online: {playerProfile.online ? <Badge status="success" /> : <Badge status="default" />}</li>
+                    <li>ID: {id}</li>
                     <li>
-                        Xu: <NumberFormatter number={playerProfile.xu} />
+                        Tên tài khoản:&nbsp;
+                        <span style={{ color: roleColor }}>
+                            {username}
+                            {roleLabel}
+                        </span>
+                    </li>
+                    <li>Online: {online ? <Badge status="success" /> : <Badge status="default" />}</li>
+                    <li>
+                        Xu: <NumberFormatter number={xu} />
                     </li>
                     <li>
-                        Lượng: <NumberFormatter number={playerProfile.luong} />
+                        Lượng: <NumberFormatter number={luong} />
                     </li>
                     <li>
-                        Danh dự: <NumberFormatter number={playerProfile.cup} />
+                        Danh dự: <NumberFormatter number={cup} />
                     </li>
-                    {playerProfile.x2XpTime && <li>X2 EXP Time: {playerProfile.x2XpTime}</li>}
+                    {x2XpTime && <li>Thời gian nhân đôi xp: {x2XpTime}</li>}
                     <li>
-                        Biệt đội:{' '}
-                        {playerProfile.clan ? (
+                        Biệt đội:&nbsp;
+                        {clan ? (
                             <>
-                                <Link to={`/clan/${playerProfile.clan.id}`}>{playerProfile.clan.name}</Link>
-                                [<img src={BASE_URL + playerProfile.clan.icon} className="pixel-art" alt="icon" />]
+                                <Link to={`/clan/${clan.id}`}>{clan.name}</Link>
+                                [<img src={BASE_URL + clan.icon} className="pixel-art" alt="icon" />]
                             </>
                         ) : (
                             'Chưa tham gia biệt đội'
                         )}
                     </li>
-                    {playerProfile.email && <li>Email: {playerProfile.email}</li>}
-                    {playerProfile.phoneNumber && <li>Số điện thoại: {playerProfile.phoneNumber}</li>}
+                    {email && <li>Email: {email}</li>}
+                    {phoneNumber && <li>Số điện thoại: {phoneNumber}</li>}
                 </ul>
 
                 <b>Nhân Vật</b>
@@ -155,7 +182,7 @@ function PlayerProfile() {
                             </tr>
                         </thead>
                         <tbody>
-                            {playerProfile.characters.map((character, index) => (
+                            {characters.map((character, index) => (
                                 <tr key={index}>
                                     <th scope="row">
                                         <img src={BASE_URL + character.avatar} className="pixel-art" alt="avt" />
