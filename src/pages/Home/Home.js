@@ -46,60 +46,62 @@ const allowedRoles = {
 
 function Home() {
     const [notifications, setNotifications] = useState([]);
+
     const [messageApi, contextHolder] = message.useMessage();
     const { player } = useAuth();
 
     const hasRequiredRole = allowedRoles[player.roleName];
 
-    const addNotification = (newNotification) => {
-        setNotifications((prevNotifications) => [...prevNotifications, newNotification]);
+    const addNotification = (data) => {
+        setNotifications((prev) => [...prev, data]);
     };
 
-    const updateNotification = (updatedNotification) => {
-        setNotifications((prevNotifications) => {
-            const index = prevNotifications.findIndex((notification) => notification.id === updatedNotification.id);
+    const updateNotification = (data) => {
+        setNotifications((prev) => {
+            const index = prev.findIndex((notification) => notification.id === data.id);
 
             if (index !== -1) {
-                const updatedNotifications = [...prevNotifications];
-                updatedNotifications[index] = updatedNotification;
+                const updatedNotifications = [...prev];
+                updatedNotifications[index] = data;
 
                 return updatedNotifications;
             } else {
-                return prevNotifications;
+                return prev;
             }
         });
     };
 
-    const removeNotification = (notificationIdToRemove) => {
-        setNotifications((prevNotifications) => {
-            const updatedNotifications = prevNotifications.filter(
-                (notification) => notification.id !== notificationIdToRemove,
-            );
+    const removeNotification = (id) => {
+        setNotifications((prev) => {
+            const updatedNotifications = prev.filter((notification) => notification.id !== id);
 
             return updatedNotifications;
         });
     };
 
-    const fetchNotifications = async () => {
-        try {
-            const notifications = await getAllNotifications();
-            setNotifications(notifications.data.data);
-        } catch (error) {
-            console.error('Error fetching Notifications:', error);
-        }
-    };
-
     useEffect(() => {
+        const fetchNotifications = async () => {
+            try {
+                const notifications = await getAllNotifications();
+                setNotifications(notifications.data.data);
+            } catch (error) {
+                messageApi.error('Lỗi: Không thể lấy dữ liệu thông báo');
+            }
+        };
+
         fetchNotifications();
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
-        <main>
+        <main className="custom-bg-primary">
             {contextHolder}
 
             <div className={cx('slide')}>
                 <img src={images.background} alt="background" />
             </div>
+
             <div className={cx('download')}>
                 <div className="container">
                     <div className="row">
@@ -111,19 +113,19 @@ function Home() {
                     </div>
                 </div>
             </div>
-            <div className={cx('notificationWrapper')}>
-                {notifications.map((notification, index) => (
-                    <Notification
-                        key={index}
-                        data={notification}
-                        onNotificationUpdate={updateNotification}
-                        onNotificationDelete={removeNotification}
-                        canEdit={hasRequiredRole}
-                        messageApi={messageApi}
-                    />
-                ))}
-                {hasRequiredRole && <CreateNotification onAddNotification={addNotification} messageApi={messageApi} />}
-            </div>
+
+            {notifications.map((notification, index) => (
+                <Notification
+                    key={index}
+                    data={notification}
+                    onNotificationUpdate={updateNotification}
+                    onNotificationDelete={removeNotification}
+                    canEdit={hasRequiredRole}
+                    messageApi={messageApi}
+                    className={index < notifications.length - 1 ? 'mb-1' : ''}
+                />
+            ))}
+            {hasRequiredRole && <CreateNotification onAddNotification={addNotification} messageApi={messageApi} />}
         </main>
     );
 }

@@ -37,10 +37,10 @@ const defaultValue = {
     content: '',
 };
 
-const Notification = ({ data, onNotificationUpdate, onNotificationDelete, canEdit = false, messageApi }) => {
-    const [isEditingNotification, setIsEditingNotification] = useState(false);
-    const [isDeleteDialogVisible, setIsDeleteDialogVisible] = useState(false);
-    const [isDeleteConfirmLoading, setIsDeleteConfirmLoading] = useState(false);
+const Notification = ({ data, onNotificationUpdate, onNotificationDelete, canEdit = false, messageApi, className }) => {
+    const [editing, setEditing] = useState(false);
+    const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+    const [deleteLoading, setDeleteLoading] = useState(false);
     const [deleteDialogText, setDeleteDialogText] = useState(
         'Bạn có chắc muốn xóa thông báo này? Lưu ý: Sau khi xóa, bạn không thể hoàn tác hay khôi phục.',
     );
@@ -49,14 +49,14 @@ const Notification = ({ data, onNotificationUpdate, onNotificationDelete, canEdi
         if (values.title === data.title && values.content === data.content) {
             messageApi.info('Không có thay đổi nào để cập nhật.');
             setSubmitting(false);
-            setIsEditingNotification(false);
+            setEditing(false);
             return;
         }
         try {
             const response = await updateNotification(data.id, values);
             messageApi.success('Sửa thông báo thành công');
             onNotificationUpdate(response.data.data);
-            setIsEditingNotification(false);
+            setEditing(false);
         } catch (error) {
             messageApi.error('Thêm thông báo thất bại: ' + error.message);
         } finally {
@@ -71,62 +71,62 @@ const Notification = ({ data, onNotificationUpdate, onNotificationDelete, canEdi
     });
 
     const handleNotificationDelete = async () => {
-        setIsDeleteConfirmLoading(true);
+        setDeleteLoading(true);
         setDeleteDialogText('Đang xóa...');
 
         try {
             await deleteNotification(data.id);
             messageApi.success('Xoá thông báo thành công');
-            setIsDeleteDialogVisible(false);
-            setIsDeleteConfirmLoading(false);
+            setShowDeleteDialog(false);
+            setDeleteLoading(false);
             onNotificationDelete(data.id);
         } catch (error) {
             setDeleteDialogText('Xóa thất bại. Vui lòng thử lại.');
         } finally {
-            setIsDeleteConfirmLoading(false);
+            setDeleteLoading(false);
         }
     };
 
     const handleEditButtonClick = () => {
-        setIsEditingNotification(true);
+        setEditing(true);
     };
 
     const handleDeleteButtonClick = () => {
-        setIsDeleteDialogVisible(true);
+        setShowDeleteDialog(true);
     };
 
     const handleCloseEditButtonClick = () => {
-        setIsEditingNotification(false);
+        setEditing(false);
     };
 
     const handleCloseDeleteDialogClick = () => {
-        setIsDeleteDialogVisible(false);
+        setShowDeleteDialog(false);
     };
 
     useEffect(() => {
-        if (isEditingNotification) {
+        if (editing) {
             formik.setValues({
                 title: data.title,
                 content: data.content,
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isEditingNotification]);
+    }, [editing]);
 
     return (
         <>
             <Modal
                 title="Xác nhận xóa"
-                open={isDeleteDialogVisible}
+                open={showDeleteDialog}
                 onOk={handleNotificationDelete}
-                confirmLoading={isDeleteConfirmLoading}
+                confirmLoading={deleteLoading}
                 onCancel={handleCloseDeleteDialogClick}
             >
                 <p>{deleteDialogText}</p>
             </Modal>
 
-            <div className="box-container p-2">
-                {isEditingNotification ? (
+            <div className={classNames('box-container p-2', className)}>
+                {editing ? (
                     <>
                         <div className={cx('title')}>
                             <div className="form-group">
@@ -191,20 +191,20 @@ const Notification = ({ data, onNotificationUpdate, onNotificationDelete, canEdi
                                         <h4 className="me-2">{data.title}</h4>
                                         <div
                                             style={{
-                                                cursor: isDeleteConfirmLoading ? 'not-allowed' : 'pointer',
-                                                opacity: isDeleteConfirmLoading ? 0.5 : 1,
+                                                cursor: deleteLoading ? 'not-allowed' : 'pointer',
+                                                opacity: deleteLoading ? 0.5 : 1,
                                             }}
-                                            onClick={isDeleteConfirmLoading ? null : handleEditButtonClick}
+                                            onClick={deleteLoading ? null : handleEditButtonClick}
                                         >
                                             <FontAwesomeIcon icon={faPen} />
                                         </div>
                                     </div>
                                     <div
                                         style={{
-                                            cursor: isDeleteConfirmLoading ? 'not-allowed' : 'pointer',
-                                            opacity: isDeleteConfirmLoading ? 0.5 : 1,
+                                            cursor: deleteLoading ? 'not-allowed' : 'pointer',
+                                            opacity: deleteLoading ? 0.5 : 1,
                                         }}
-                                        onClick={isDeleteConfirmLoading ? null : handleDeleteButtonClick}
+                                        onClick={deleteLoading ? null : handleDeleteButtonClick}
                                     >
                                         <FontAwesomeIcon icon={faTrash} />
                                     </div>
@@ -240,6 +240,7 @@ Notification.propTypes = {
     onNotificationDelete: PropTypes.func.isRequired,
     canEdit: PropTypes.bool,
     messageApi: PropTypes.object.isRequired,
+    className: PropTypes.string,
 };
 
 export default Notification;

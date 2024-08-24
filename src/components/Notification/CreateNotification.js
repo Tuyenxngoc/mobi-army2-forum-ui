@@ -51,7 +51,7 @@ function CreateNotification({ onAddNotification, messageApi }) {
     });
 
     return (
-        <div className="box-container p-2">
+        <div className="box-container p-2 mt-1">
             <h4 className="title">Thêm thông báo mới</h4>
 
             <form onSubmit={formik.handleSubmit}>
