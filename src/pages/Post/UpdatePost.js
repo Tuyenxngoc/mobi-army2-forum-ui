@@ -27,7 +27,7 @@ const validationSchema = yup.object({
     content: yup
         .string('Nhập nội dung')
         .min(20, 'Nội dung có ít nhất 20 ký tự')
-        .max(2000, 'Nội dung chỉ được tối đa 2000 ký tự')
+        .max(3000, 'Nội dung chỉ được tối đa 3000 ký tự')
         .required('Nội dung là bắt buộc'),
     priority: yup
         .number('Nhập số thứ tự hiển thị')
