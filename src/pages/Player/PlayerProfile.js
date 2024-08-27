@@ -170,7 +170,7 @@ function PlayerProfile() {
 
                 <b>Nhân Vật</b>
                 <div className="table-responsive">
-                    <table className="table align-middle table-hover mb-0">
+                    <table className="table table-hover align-middle table-hover mb-0">
                         <thead>
                             <tr>
                                 <th scope="col"></th>

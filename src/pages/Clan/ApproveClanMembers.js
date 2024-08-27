@@ -102,7 +102,7 @@ function ApproveClanMembers() {
             <div className="p-2">
                 <h4 className="title">Duyệt thành viên</h4>
 
-                <table className="table align-middle mb-0">
+                <table className="table table-hover align-middle mb-0">
                     <thead>
                         <tr>
                             <th scope="col">Tên</th>

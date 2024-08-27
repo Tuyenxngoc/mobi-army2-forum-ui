@@ -269,7 +269,7 @@ function ClanInfo() {
 
                 <div className="box-container p-2 mb-1">
                     <h4 className="title">Danh Sách Item</h4>
-                    <table className="table align-middle mb-0">
+                    <table className="table table-hover align-middle mb-0">
                         <thead>
                             <tr>
                                 <th scope="col">Tên</th>
@@ -307,7 +307,7 @@ function ClanInfo() {
                                 Lỗi: {membersError}
                             </div>
                         ) : (
-                            <table className="table align-middle mb-0">
+                            <table className="table table-hover align-middle mb-0">
                                 <thead>
                                     <tr>
                                         <th scope="col">Tên</th>

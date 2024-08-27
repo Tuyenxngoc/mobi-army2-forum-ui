@@ -53,7 +53,7 @@ function Inventory() {
         return (
             <div className="p-2">
                 <h4 className="title">Rương Item</h4>
-                <table className="table align-middle">
+                <table className="table table-hover align-middle">
                     <thead>
                         <tr>
                             <th scope="col">ID</th>
@@ -86,7 +86,7 @@ function Inventory() {
                 </table>
 
                 <h4 className="title">Rương Trang Bị</h4>
-                <table className="table align-middle">
+                <table className="table table-hover align-middle">
                     <thead>
                         <tr>
                             <th scope="col">STT</th>
