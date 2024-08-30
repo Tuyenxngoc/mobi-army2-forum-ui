@@ -82,8 +82,10 @@ function CreateGiftCode() {
      */
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [equips, setEquips] = useState([]);
+    const [editingEquipIndex, setEditingEquipIndex] = useState(null);
 
     const showModal = () => {
+        setEditingEquipIndex(null);
         setIsModalVisible(true);
     };
 
@@ -92,8 +94,25 @@ function CreateGiftCode() {
     };
 
     const handleOk = (newEquip) => {
-        setEquips([...equips, newEquip]);
+        if (editingEquipIndex !== null) {
+            const updatedEquips = [...equips];
+            updatedEquips[editingEquipIndex] = newEquip;
+            setEquips(updatedEquips);
+            setEditingEquipIndex(null);
+        } else {
+            setEquips([...equips, newEquip]);
+        }
         setIsModalVisible(false);
+    };
+
+    const handleEditEquip = (index) => {
+        setEditingEquipIndex(index);
+        setIsModalVisible(true);
+    };
+
+    const handleDeleteEquip = (index) => {
+        const newEquips = equips.filter((_, i) => i !== index);
+        setEquips(newEquips);
     };
 
     const renderInputNumber = (name, label, min, max) => (
@@ -125,7 +144,12 @@ function CreateGiftCode() {
         <div className="box-container">
             {contextHolder}
 
-            <EquipModal visible={isModalVisible} onCancel={handleCancel} onOk={handleOk} />
+            <EquipModal
+                visible={isModalVisible}
+                handleCancel={handleCancel}
+                onOk={handleOk}
+                initialValues={equips[editingEquipIndex]}
+            />
 
             <div className="header">
                 <Link to="/admin/giftcode">Quay lại</Link>
@@ -189,22 +213,57 @@ function CreateGiftCode() {
 
                 {renderInputNumber('exp', 'Kinh nghiệm', 0, MAX_VALUE)}
 
-                <Button type="primary" onClick={showModal}>
-                    Thêm Equip
+                <Button type="primary" size="small" onClick={showModal}>
+                    Thêm trang bị
                 </Button>
 
-                {equips.map((equip, index) => (
-                    <div key={index}>
-                        <p>Equip {index + 1}</p>
-                        <p>K: {equip.k}</p>
-                        <p>EI: {equip.ei}</p>
-                        <p>ET: {equip.et}</p>
-                        <p>VL: {equip.vl}</p>
-                        <p>PD: {equip.pd}</p>
-                        <p>CID: {equip.cid}</p>
-                        <p>IU: {equip.iu}</p>
-                    </div>
-                ))}
+                <h6 className="title mt-2">Danh Sách Trang Bị</h6>
+                <table className="table table-hover align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th scope="col">Index</th>
+                            <th scope="col">Nhân vật</th>
+                            <th scope="col">Loại</th>
+                            <th scope="col">Chỉ số</th>
+                            <th scope="col">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {equips.length > 0 ? (
+                            equips.map((equip, index) => (
+                                <tr key={index}>
+                                    <th scope="row">{equip.ei}</th>
+                                    <td>{equip.cid}</td>
+                                    <td>{equip.et}</td>
+                                    <td>
+                                        {JSON.stringify(equip.ap)}
+                                        <br />
+                                        {JSON.stringify(equip.apc)}
+                                    </td>
+                                    <td>
+                                        <Button type="link" size="small" onClick={() => handleEditEquip(index)}>
+                                            Sửa
+                                        </Button>
+                                        <Button
+                                            danger
+                                            type="link"
+                                            size="small"
+                                            onClick={() => handleDeleteEquip(index)}
+                                        >
+                                            Xóa
+                                        </Button>
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="5" align="center">
+                                    Chưa thêm trang bị nào
+                                </td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
 
                 <div className="text-center">
                     <Button type="primary" htmlType="submit" loading={formik.isSubmitting}>
