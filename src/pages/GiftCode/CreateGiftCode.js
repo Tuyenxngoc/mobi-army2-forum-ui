@@ -8,6 +8,7 @@ import images from '~/assets';
 import { useState } from 'react';
 import EquipModal from './EquipModal';
 import NumberToString from '~/components/NumberFormatter/NumberToString';
+import SpecialItemModal from './SpecialItemModal';
 
 const MAX_VALUE = 2000000000;
 
@@ -53,12 +54,22 @@ const validationSchema = yup.object({
 });
 
 function CreateGiftCode() {
+    const [isEquipModalVisible, setIsEquipModalVisible] = useState(false);
+    const [isItemModalVisible, setIsItemModalVisible] = useState(false);
+
+    const [equips, setEquips] = useState([]);
+    const [items, setItems] = useState([]);
+
+    const [editingEquipIndex, setEditingEquipIndex] = useState(null);
+    const [editingItemIndex, setEditingItemIndex] = useState(null);
+
     const [messageApi, contextHolder] = message.useMessage();
 
     const handleSubmit = async (values, { setSubmitting, resetForm }) => {
         const completeData = {
             ...values,
             equips: equips,
+            items: items,
         };
         try {
             const response = await createGiftCode(completeData);
@@ -66,6 +77,8 @@ function CreateGiftCode() {
                 messageApi.success(response.data.data.message);
             }
             resetForm();
+            setEquips([]);
+            setItems([]);
         } catch (error) {
             handleError(error, formik, messageApi);
         } finally {
@@ -79,22 +92,25 @@ function CreateGiftCode() {
         onSubmit: handleSubmit,
     });
 
-    /*
-     */
-    const [isModalVisible, setIsModalVisible] = useState(false);
-    const [equips, setEquips] = useState([]);
-    const [editingEquipIndex, setEditingEquipIndex] = useState(null);
-
-    const showModal = () => {
+    const showEquipModal = () => {
         setEditingEquipIndex(null);
-        setIsModalVisible(true);
+        setIsEquipModalVisible(true);
     };
 
-    const handleCancel = () => {
-        setIsModalVisible(false);
+    const showItemModal = () => {
+        setEditingItemIndex(null);
+        setIsItemModalVisible(true);
     };
 
-    const handleOk = (newEquip) => {
+    const handleEquipCancel = () => {
+        setIsEquipModalVisible(false);
+    };
+
+    const handleItemCancel = () => {
+        setIsItemModalVisible(false);
+    };
+
+    const handleEquipOk = (newEquip) => {
         if (editingEquipIndex !== null) {
             const updatedEquips = [...equips];
             updatedEquips[editingEquipIndex] = newEquip;
@@ -103,17 +119,39 @@ function CreateGiftCode() {
         } else {
             setEquips([...equips, newEquip]);
         }
-        setIsModalVisible(false);
+        setIsEquipModalVisible(false);
+    };
+
+    const handleItemOk = (newItem) => {
+        if (editingItemIndex !== null) {
+            const updatedItems = [...items];
+            updatedItems[editingItemIndex] = newItem;
+            setItems(updatedItems);
+            setEditingItemIndex(null);
+        } else {
+            setItems([...items, newItem]);
+        }
+        setIsItemModalVisible(false);
     };
 
     const handleEditEquip = (index) => {
         setEditingEquipIndex(index);
-        setIsModalVisible(true);
+        setIsEquipModalVisible(true);
     };
 
     const handleDeleteEquip = (index) => {
         const newEquips = equips.filter((_, i) => i !== index);
         setEquips(newEquips);
+    };
+
+    const handleEditItem = (index) => {
+        setEditingItemIndex(index);
+        setIsItemModalVisible(true);
+    };
+
+    const handleDeleteItem = (index) => {
+        const newItems = items.filter((_, i) => i !== index);
+        setItems(newItems);
     };
 
     const renderInputNumber = (name, label, min, max) => (
@@ -122,14 +160,14 @@ function CreateGiftCode() {
             <InputNumber
                 size="large"
                 id={name}
-                name={name}
                 min={min}
                 max={max}
+                defaultValue={0}
                 value={formik.values[name]}
                 onChange={(value) => formik.setFieldValue(name, value)}
                 onBlur={formik.handleBlur}
-                style={{ width: '100%' }}
                 status={formik.touched[name] && formik.errors[name] ? 'error' : ''}
+                style={{ width: '100%' }}
             />
             {formik.touched[name] && formik.errors[name] ? (
                 <div className="text-danger">{formik.errors[name]}</div>
@@ -148,10 +186,17 @@ function CreateGiftCode() {
             {contextHolder}
 
             <EquipModal
-                visible={isModalVisible}
-                handleCancel={handleCancel}
-                onOk={handleOk}
+                visible={isEquipModalVisible}
+                handleCancel={handleEquipCancel}
+                onOk={handleEquipOk}
                 initialValues={equips[editingEquipIndex]}
+            />
+
+            <SpecialItemModal
+                visible={isItemModalVisible}
+                handleCancel={handleItemCancel}
+                onOk={handleItemOk}
+                initialValues={items[editingItemIndex]}
             />
 
             <div className="header">
@@ -216,12 +261,12 @@ function CreateGiftCode() {
 
                 {renderInputNumber('exp', 'Kinh nghiệm', 0, MAX_VALUE)}
 
-                <Button type="primary" size="small" onClick={showModal}>
+                <Button type="primary" size="small" onClick={showEquipModal}>
                     Thêm trang bị
                 </Button>
 
                 <h6 className="title mt-2">Danh Sách Trang Bị</h6>
-                <table className="table table-hover align-middle mb-0">
+                <table className="table table-hover align-middle">
                     <thead>
                         <tr>
                             <th scope="col">Index</th>
@@ -262,6 +307,45 @@ function CreateGiftCode() {
                             <tr>
                                 <td colSpan="5" align="center">
                                     Chưa thêm trang bị nào
+                                </td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
+
+                <Button type="primary" size="small" onClick={showItemModal}>
+                    Thêm item
+                </Button>
+
+                <h6 className="title mt-2">Danh Sách Item</h6>
+                <table className="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th scope="col">Id</th>
+                            <th scope="col">Số lượng</th>
+                            <th scope="col">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {items.length > 0 ? (
+                            items.map((item, index) => (
+                                <tr key={index}>
+                                    <th scope="row">{item.i}</th>
+                                    <td>{item.q}</td>
+                                    <td>
+                                        <Button type="link" size="small" onClick={() => handleEditItem(index)}>
+                                            Sửa
+                                        </Button>
+                                        <Button danger type="link" size="small" onClick={() => handleDeleteItem(index)}>
+                                            Xóa
+                                        </Button>
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="3" align="center">
+                                    Chưa thêm item nào
                                 </td>
                             </tr>
                         )}

@@ -94,6 +94,7 @@ function EquipModal({ visible, handleCancel, onOk, initialValues = defaultValue 
                         id={`${name}.${index}`}
                         min={0}
                         max={100}
+                        defaultValue={0}
                         value={value}
                         onChange={(val) => formik.setFieldValue(`${name}.${index}`, val)}
                         onBlur={formik.handleBlur}
@@ -113,7 +114,6 @@ function EquipModal({ visible, handleCancel, onOk, initialValues = defaultValue 
                         <label htmlFor="cid">Nhân vật</label>
                         <Select
                             id="cid"
-                            name="cid"
                             options={characterOptions}
                             value={formik.values.cid}
                             onChange={(value) => formik.setFieldValue('cid', value)}
@@ -126,7 +126,6 @@ function EquipModal({ visible, handleCancel, onOk, initialValues = defaultValue 
                         <label htmlFor="et">Loại</label>
                         <Select
                             id="et"
-                            name="et"
                             options={equipTypeOptions}
                             value={formik.values.et}
                             onChange={(value) => formik.setFieldValue('et', value)}
@@ -139,7 +138,6 @@ function EquipModal({ visible, handleCancel, onOk, initialValues = defaultValue 
                         <label htmlFor="ei">Trang bị</label>
                         <Select
                             id="ei"
-                            name="ei"
                             allowClear
                             options={equips}
                             fieldNames={{ label: 'name', value: 'equipIndex' }}
