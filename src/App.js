@@ -39,6 +39,9 @@ import PlayerPost from './pages/Player/PlayerPost';
 import PromotePlayer from './pages/Player/PromotePlayer';
 import PlayerHistory from './pages/Player/PlayerHistory';
 import LockPlayerAccount from './pages/Player/LockPlayerAccount';
+import GiftCodeManagement from './pages/GiftCode/GiftCodeManagement';
+import CreateGiftCode from './pages/GiftCode/CreateGiftCode';
+import UpdateGiftCode from './pages/GiftCode/UpdateGiftCode';
 
 function App() {
     return (
@@ -97,6 +100,10 @@ function App() {
 
                         <Route path="admin" element={<RequireAuth allowedRoles={[ROLES.SuperAdmin]} />}>
                             <Route path="player/:playerId/promote" element={<PromotePlayer />} />
+
+                            <Route path="giftcode" element={<GiftCodeManagement />} />
+                            <Route path="giftcode/new" element={<CreateGiftCode />} />
+                            <Route path="giftcode/:giftCodeId" element={<UpdateGiftCode />} />
                         </Route>
                     </Route>
 
