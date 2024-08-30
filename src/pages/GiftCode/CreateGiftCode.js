@@ -7,6 +7,7 @@ import { handleError } from '~/utils/errorHandler';
 import images from '~/assets';
 import { useState } from 'react';
 import EquipModal from './EquipModal';
+import NumberToString from '~/components/NumberFormatter/NumberToString';
 
 const MAX_VALUE = 2000000000;
 
@@ -132,6 +133,8 @@ function CreateGiftCode() {
             />
             {formik.touched[name] && formik.errors[name] ? (
                 <div className="text-danger">{formik.errors[name]}</div>
+            ) : formik.values[name] > 0 ? (
+                <small className="form-text text-muted">{<NumberToString number={formik.values[name]} />}</small>
             ) : (
                 <small className="form-text text-muted">
                     Giá trị trong khoảng từ {min} - {max}

@@ -6,7 +6,7 @@ import useAuth from '~/hooks/useAuth';
 
 import { getPlayerById, toggleEquipmentChestLock, toggleInvitationLock } from '~/services/playerService';
 import { checkIdIsNumber } from '~/utils/helper';
-import NumberFormatter from '~/components/NumberFormatter/NumberFormatter ';
+import NumberFormatter from '~/components/NumberFormatter/NumberFormatter';
 import { ROLE_COLORS, ROLE_LABELS, ROLES } from '~/common/roleConstants';
 
 function PlayerProfile() {
