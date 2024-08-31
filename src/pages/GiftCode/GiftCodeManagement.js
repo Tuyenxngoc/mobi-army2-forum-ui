@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Button, Input, message, Select, Space, Table } from 'antd';
+import { Button, Input, message, Modal, Select, Space, Table } from 'antd';
 import queryString from 'query-string';
 
 import { INITIAL_FILTERS, INITIAL_META } from '~/common/commonConstants';
@@ -64,23 +64,29 @@ function GiftCodeManagement() {
         }));
     };
 
-    const handleDeleteGiftCode = async (giftCodeId) => {
-        setLoadingAction(true);
-        try {
-            const response = await deleteGiftCode(giftCodeId);
-            if (response.status === 200) {
-                setGiftCodes((prevCodes) => prevCodes.filter((code) => code.id !== giftCodeId));
-                messageApi.success(response.data.data.message);
-            }
-        } catch (error) {
-            if (error?.response?.data?.message) {
-                messageApi.error(error.response.data.message);
-            } else {
-                messageApi.error(error.message);
-            }
-        } finally {
-            setLoadingAction(false);
-        }
+    const handleDeleteGiftCode = (giftCodeId) => {
+        Modal.confirm({
+            title: 'Xác nhận xóa',
+            content: 'Bạn có chắc chắn muốn xóa mã quà tặng này không?',
+            onOk: async () => {
+                setLoadingAction(true);
+                try {
+                    const response = await deleteGiftCode(giftCodeId);
+                    if (response.status === 200) {
+                        setGiftCodes((prevCodes) => prevCodes.filter((code) => code.id !== giftCodeId));
+                        messageApi.success(response.data.data.message);
+                    }
+                } catch (error) {
+                    if (error?.response?.data?.message) {
+                        messageApi.error(error.response.data.message);
+                    } else {
+                        messageApi.error(error.message);
+                    }
+                } finally {
+                    setLoadingAction(false);
+                }
+            },
+        });
     };
 
     useEffect(() => {
