@@ -19,3 +19,7 @@ export const updateGiftCode = (giftCodeId, values) => {
 export const deleteGiftCode = (giftCodeId) => {
     return axiosPrivate.delete(`gift-codes/${giftCodeId}`);
 };
+
+export const getPlayersByGiftCode = (giftCodeId, params) => {
+    return axiosPrivate.get(`gift-codes/${giftCodeId}/players?${params}`);
+};

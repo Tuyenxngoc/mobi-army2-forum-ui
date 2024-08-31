@@ -135,7 +135,7 @@ function Forum() {
                             Quản lý thành viên
                         </Button>
                         <Button size="small" onClick={() => handleButtonNavigation('/admin/giftcode')}>
-                            Quản lỹ mã quà tặng
+                            Quản lý mã quà tặng
                         </Button>
                         <Button size="small" onClick={() => handleButtonNavigation('/admin/notification/new')}>
                             Thêm thông báo

@@ -8,6 +8,7 @@ import { checkIdIsNumber } from '~/utils/helper';
 import { getGiftCodeById, updateGiftCode } from '~/services/giftCodeService';
 import NumberToString from '~/components/NumberFormatter/NumberToString';
 import { BASE_URL } from '~/common/commonConstants';
+import NumberFormatter from '~/components/NumberFormatter/NumberFormatter';
 
 const defaultValue = {
     usageLimit: 0,
@@ -112,9 +113,22 @@ function UpdateGiftCode() {
                     <li>Sửa bởi: {giftCode.lastModifiedBy}</li>
                     <li>ID: {giftCode.id}</li>
                     <li>Code: {giftCode.code}</li>
-                    <li>Xu: {giftCode.xu}</li>
-                    <li>Lượng: {giftCode.luong}</li>
-                    <li>Kinh nghiệm: {giftCode.exp}</li>
+                    <li>
+                        Xu:&nbsp;
+                        <NumberFormatter number={giftCode.xu} />
+                    </li>
+                    <li>
+                        Lượng:&nbsp;
+                        <NumberFormatter number={giftCode.luong} />
+                    </li>
+                    <li>
+                        Kinh nghiệm:&nbsp;
+                        <NumberFormatter number={giftCode.exp} />
+                    </li>
+                    <li>Số lượt đã dùng: {giftCode.usageCount}</li>
+                    <li>
+                        Danh sách người chơi sử dụng: <Link to="./player">Xem</Link>
+                    </li>
                 </ul>
 
                 <h5 className="title">Vật phẩm</h5>

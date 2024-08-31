@@ -1,34 +1,33 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Button, Input, message, Select, Space, Table } from 'antd';
-import queryString from 'query-string';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
-import { INITIAL_FILTERS, INITIAL_META } from '~/common/commonConstants';
+import queryString from 'query-string';
+import { Button, Input, Select, Space, Table } from 'antd';
+
 import Pagination from '~/components/Pagination/Pagination';
-import { deleteGiftCode, getGiftCodes } from '~/services/giftCodeService';
+import { INITIAL_FILTERS, INITIAL_META } from '~/common/commonConstants';
+import { getPlayersByGiftCode } from '~/services/giftCodeService';
+import { checkIdIsNumber } from '~/utils/helper';
 
 const options = [
-    { value: 'id', label: 'ID' },
-    { value: 'code', label: 'Code' },
+    { value: 'playerId', label: 'ID' },
+    { value: 'username', label: 'Tên' },
 ];
 
-function GiftCodeManagement() {
+function PlayerGiftCodeUsage() {
     const navigate = useNavigate();
+    const { giftCodeId } = useParams();
 
     const [meta, setMeta] = useState(INITIAL_META);
     const [filters, setFilters] = useState(INITIAL_FILTERS);
 
-    const [giftCodes, setGiftCodes] = useState([]);
+    const [players, setPlayers] = useState([]);
 
     const [searchInput, setSearchInput] = useState('');
     const [activeFilterOption, setActiveFilterOption] = useState(options[0].value);
 
     const [isLoading, setIsLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState(null);
-
-    const [loadingAction, setLoadingAction] = useState(false);
-
-    const [messageApi, contextHolder] = message.useMessage();
 
     const handleChangePage = (newPage) => {
         setFilters((prev) => ({ ...prev, pageNum: newPage + 1 }));
@@ -51,10 +50,6 @@ function GiftCodeManagement() {
         }));
     };
 
-    const handleBtnCreateClick = () => {
-        navigate('/admin/giftcode/new');
-    };
-
     const handleSortChange = (pagination, filters, sorter) => {
         const sortOrder = sorter.order === 'ascend' ? true : sorter.order === 'descend' ? false : undefined;
         setFilters((prev) => ({
@@ -64,34 +59,25 @@ function GiftCodeManagement() {
         }));
     };
 
-    const handleDeleteGiftCode = async (giftCodeId) => {
-        setLoadingAction(true);
-        try {
-            const response = await deleteGiftCode(giftCodeId);
-            if (response.status === 200) {
-                setGiftCodes((prevCodes) => prevCodes.filter((code) => code.id !== giftCodeId));
-                messageApi.success(response.data.data.message);
-            }
-        } catch (error) {
-            if (error?.response?.data?.message) {
-                messageApi.error(error.response.data.message);
-            } else {
-                messageApi.error(error.message);
-            }
-        } finally {
-            setLoadingAction(false);
+    useEffect(() => {
+        if (!checkIdIsNumber(giftCodeId)) {
+            navigate('/admin/giftcode', { replace: true });
         }
-    };
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     useEffect(() => {
-        const fetchGiftCodes = async () => {
+        const fetchPlayers = async () => {
             setIsLoading(true);
             setErrorMessage(null);
             try {
+                if (!checkIdIsNumber(giftCodeId)) return;
+
                 const params = queryString.stringify(filters);
-                const response = await getGiftCodes(params);
+                const response = await getPlayersByGiftCode(giftCodeId, params);
                 const { meta, items } = response.data.data;
-                setGiftCodes(items);
+                setPlayers(items);
                 setMeta(meta);
             } catch (error) {
                 setErrorMessage(error.response?.data?.message || error.message);
@@ -100,7 +86,8 @@ function GiftCodeManagement() {
             }
         };
 
-        fetchGiftCodes();
+        fetchPlayers();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filters]);
 
     const columns = [
@@ -112,70 +99,19 @@ function GiftCodeManagement() {
             showSorterTooltip: false,
         },
         {
-            title: 'Code',
-            dataIndex: 'code',
-            key: 'code',
+            title: 'Tên',
+            dataIndex: 'username',
+            key: 'username',
             sorter: true,
             showSorterTooltip: false,
-            render: (text, record) => <Link to={`/admin/giftcode/${record.id}`}>{text}</Link>,
+            render: (text, record) => <Link to={`/player/${record.playerId}`}>{text}</Link>,
         },
         {
-            title: 'Giới hạn sử dụng',
-            dataIndex: 'usageLimit',
-            key: 'usageLimit',
+            title: 'Ngày sử dụng',
+            dataIndex: 'redeemTime',
+            key: 'redeemTime',
             sorter: true,
             showSorterTooltip: false,
-        },
-        {
-            title: 'Ngày hết hạn',
-            dataIndex: 'expirationDate',
-            key: 'expirationDate',
-            sorter: true,
-            showSorterTooltip: false,
-            render: (text) => <>{text || 'Không có'}</>,
-        },
-        {
-            title: 'Người tạo',
-            dataIndex: 'createdBy',
-            key: 'createdBy',
-            sorter: true,
-            showSorterTooltip: false,
-        },
-        {
-            title: 'Người sửa đổi',
-            dataIndex: 'lastModifiedBy',
-            key: 'lastModifiedBy',
-            sorter: true,
-            showSorterTooltip: false,
-        },
-        {
-            title: 'Ngày tạo',
-            dataIndex: 'createdDate',
-            key: 'createdDate',
-            sorter: true,
-            showSorterTooltip: false,
-        },
-        {
-            title: 'Ngày sửa đổi',
-            dataIndex: 'lastModifiedDate',
-            key: 'lastModifiedDate',
-            sorter: true,
-            showSorterTooltip: false,
-        },
-        {
-            title: 'Hành động',
-            key: 'action',
-            render: (_, record) => (
-                <Button
-                    danger
-                    type="primary"
-                    size="small"
-                    loading={loadingAction}
-                    onClick={() => handleDeleteGiftCode(record.id)}
-                >
-                    Xóa
-                </Button>
-            ),
         },
     ];
 
@@ -183,7 +119,7 @@ function GiftCodeManagement() {
         if (errorMessage) {
             return (
                 <div className="alert alert-danger p-2" role="alert">
-                    Error: {errorMessage}
+                    Lỗi: {errorMessage}
                 </div>
             );
         }
@@ -193,12 +129,12 @@ function GiftCodeManagement() {
                 rowKey="id"
                 size="small"
                 columns={columns}
-                dataSource={giftCodes}
+                dataSource={players}
                 pagination={false}
                 loading={isLoading}
                 onChange={handleSortChange}
                 scroll={{
-                    x: 1000,
+                    x: 500,
                 }}
             />
         );
@@ -206,20 +142,12 @@ function GiftCodeManagement() {
 
     return (
         <div className="box-container">
-            {contextHolder}
-
             <div className="header">
-                <Link to="/forum">Quay lại</Link>
+                <Link to={`/admin/giftcode/${giftCodeId}`}>Quay lại</Link>
             </div>
 
             <div className="p-2">
-                <h4 className="title"> Quản lí mã quà tặng </h4>
-
-                <div className="mb-2">
-                    <Button type="primary" onClick={handleBtnCreateClick}>
-                        Thêm mới
-                    </Button>
-                </div>
+                <h4 className="title">Danh sách người chơi đã sử dụng mã quà tặng</h4>
 
                 <Space.Compact className="mb-2">
                     <Select
@@ -236,7 +164,7 @@ function GiftCodeManagement() {
                         disabled={isLoading}
                         onChange={(e) => setSearchInput(e.target.value)}
                     />
-                    <Button type="primary" loading={isLoading} onClick={handleSearch}>
+                    <Button type="primary" loading={isLoading} onClick={() => handleSearch()}>
                         Tìm
                     </Button>
                 </Space.Compact>
@@ -256,4 +184,4 @@ function GiftCodeManagement() {
     );
 }
 
-export default GiftCodeManagement;
+export default PlayerGiftCodeUsage;
