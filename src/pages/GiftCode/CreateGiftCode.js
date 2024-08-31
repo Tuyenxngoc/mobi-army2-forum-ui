@@ -1,11 +1,11 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { Button, message, InputNumber } from 'antd';
+import { Button, message, InputNumber, Descriptions, Modal } from 'antd';
 import { createGiftCode } from '~/services/giftCodeService';
 import { handleError } from '~/utils/errorHandler';
 import images from '~/assets';
-import { useState } from 'react';
 import EquipModal from './EquipModal';
 import NumberToString from '~/components/NumberFormatter/NumberToString';
 import SpecialItemModal from './SpecialItemModal';
@@ -56,6 +56,7 @@ const validationSchema = yup.object({
 function CreateGiftCode() {
     const [isEquipModalVisible, setIsEquipModalVisible] = useState(false);
     const [isItemModalVisible, setIsItemModalVisible] = useState(false);
+    const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
 
     const [equips, setEquips] = useState([]);
     const [items, setItems] = useState([]);
@@ -65,31 +66,37 @@ function CreateGiftCode() {
 
     const [messageApi, contextHolder] = message.useMessage();
 
-    const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+    const handleConfirm = async () => {
+        const values = formik.values;
         const completeData = {
             ...values,
             equips: equips,
             items: items,
         };
+        formik.setSubmitting(true);
         try {
             const response = await createGiftCode(completeData);
             if (response.status === 200) {
                 messageApi.success(response.data.data.message);
+                formik.resetForm();
+                setEquips([]);
+                setItems([]);
+                setIsConfirmModalVisible(false);
             }
-            resetForm();
-            setEquips([]);
-            setItems([]);
         } catch (error) {
             handleError(error, formik, messageApi);
         } finally {
-            setSubmitting(false);
+            formik.setSubmitting(false);
         }
     };
 
     const formik = useFormik({
         initialValues: defaultValue,
         validationSchema: validationSchema,
-        onSubmit: handleSubmit,
+        onSubmit: (_, { setSubmitting }) => {
+            setSubmitting(false);
+            setIsConfirmModalVisible(true);
+        },
     });
 
     const showEquipModal = () => {
@@ -199,6 +206,29 @@ function CreateGiftCode() {
                 initialValues={items[editingItemIndex]}
             />
 
+            <Modal
+                title="Xác nhận phần thưởng"
+                open={isConfirmModalVisible}
+                onOk={handleConfirm}
+                onCancel={() => setIsConfirmModalVisible(false)}
+                confirmLoading={formik.isSubmitting}
+                okText="Xác nhận"
+                cancelText="Hủy"
+            >
+                <Descriptions bordered column={{ xs: 1, sm: 1, md: 1, lg: 2, xl: 2, xxl: 2 }} size="small">
+                    <Descriptions.Item label="Mã quà tặng">{formik.values.code}</Descriptions.Item>
+                    <Descriptions.Item label="Giới hạn sử dụng">{formik.values.usageLimit}</Descriptions.Item>
+                    <Descriptions.Item label="Ngày hết hạn">
+                        {formik.values.expirationDate || 'Không có'}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Xu">{formik.values.xu}</Descriptions.Item>
+                    <Descriptions.Item label="Lượng">{formik.values.luong}</Descriptions.Item>
+                    <Descriptions.Item label="Kinh nghiệm">{formik.values.exp}</Descriptions.Item>
+                    <Descriptions.Item label="Số lượng trang bị">{equips.length}</Descriptions.Item>
+                    <Descriptions.Item label="Số lượng item">{items.length}</Descriptions.Item>
+                </Descriptions>
+            </Modal>
+
             <div className="header">
                 <Link to="/admin/giftcode">Quay lại</Link>
             </div>
@@ -264,6 +294,7 @@ function CreateGiftCode() {
                 <Button type="primary" size="small" onClick={showEquipModal}>
                     Thêm trang bị
                 </Button>
+                <div className="form-text">Tối đa 10 trang bị</div>
 
                 <h6 className="title mt-2">Danh Sách Trang Bị</h6>
                 <table className="table table-hover align-middle">
@@ -316,6 +347,7 @@ function CreateGiftCode() {
                 <Button type="primary" size="small" onClick={showItemModal}>
                     Thêm item
                 </Button>
+                <div className="form-text">Tối đa 10 item</div>
 
                 <h6 className="title mt-2">Danh Sách Item</h6>
                 <table className="table table-hover align-middle">
@@ -351,6 +383,10 @@ function CreateGiftCode() {
                         )}
                     </tbody>
                 </table>
+
+                <div className="alert alert-warning" role="alert">
+                    Mã quà tặng sau khi tạo sẽ không thể cập nhật lại phần thưởng
+                </div>
 
                 <div className="text-center">
                     <Button type="primary" htmlType="submit" loading={formik.isSubmitting}>

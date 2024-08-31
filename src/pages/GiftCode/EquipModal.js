@@ -45,6 +45,7 @@ const validationSchema = yup.object({
 
 function EquipModal({ visible, handleCancel, onOk, initialValues = defaultValue }) {
     const [equips, setEquips] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     const handleEquipChange = (value) => {
         const selectedEquip = equips.find((e) => e.equipIndex === value);
@@ -67,15 +68,23 @@ function EquipModal({ visible, handleCancel, onOk, initialValues = defaultValue 
 
     useEffect(() => {
         const fetchEquipments = async () => {
-            const { cid, et } = formik.values;
+            const { cid, et, ei } = formik.values;
+
             if (cid !== undefined && et !== undefined) {
+                setLoading(true);
+
                 try {
                     const response = await getEquipsByCharacterIdAndType(cid, et);
-                    setEquips(response.data.data);
-                    formik.setFieldValue('ei', null);
-                    formik.setFieldTouched('ei', false);
+                    const equips = response.data.data;
+                    setEquips(equips);
+
+                    const selectedEquip = equips.find((e) => e.equipIndex === ei);
+                    formik.setFieldValue('ei', selectedEquip ? ei : null);
+                    formik.setFieldTouched('ei', !!selectedEquip);
                 } catch (error) {
                     console.error('Error fetching equipments:', error);
+                } finally {
+                    setLoading(false);
                 }
             }
         };
@@ -114,6 +123,7 @@ function EquipModal({ visible, handleCancel, onOk, initialValues = defaultValue 
                         <label htmlFor="cid">Nhân vật</label>
                         <Select
                             id="cid"
+                            disabled={loading}
                             options={characterOptions}
                             value={formik.values.cid}
                             onChange={(value) => formik.setFieldValue('cid', value)}
@@ -126,6 +136,7 @@ function EquipModal({ visible, handleCancel, onOk, initialValues = defaultValue 
                         <label htmlFor="et">Loại</label>
                         <Select
                             id="et"
+                            disabled={loading}
                             options={equipTypeOptions}
                             value={formik.values.et}
                             onChange={(value) => formik.setFieldValue('et', value)}
@@ -134,11 +145,12 @@ function EquipModal({ visible, handleCancel, onOk, initialValues = defaultValue 
                         />
                     </div>
 
-                    <div>
+                    <div className="flex-grow-1">
                         <label htmlFor="ei">Trang bị</label>
                         <Select
                             id="ei"
                             allowClear
+                            disabled={loading}
                             options={equips}
                             fieldNames={{ label: 'name', value: 'equipIndex' }}
                             value={formik.values.ei}
@@ -163,7 +175,7 @@ function EquipModal({ visible, handleCancel, onOk, initialValues = defaultValue 
 
                 <Flex justify="end" gap="small">
                     <Button onClick={handleCancel}>Đóng</Button>
-                    <Button type="primary" htmlType="submit">
+                    <Button type="primary" htmlType="submit" loading={loading}>
                         Lưu
                     </Button>
                 </Flex>

@@ -187,7 +187,7 @@ function UpdateClan() {
                         </div>
                     </div>
 
-                    <div className="form-group mb-2 ">
+                    <div className="form-group mb-2">
                         <span>Hãy lựa chọn ảnh đại diện cho đội:</span>
                         <div className="table-responsive">
                             <table className="table table-bordered align-middle bg-white">

@@ -16,6 +16,7 @@ const validationSchema = yup.object({
 
 function SpecialItemModal({ visible, handleCancel, onOk, initialValues = defaultValue }) {
     const [specialItems, setSpecialItems] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     const handleSubmit = (values, { resetForm }) => {
         onOk(values);
@@ -31,11 +32,14 @@ function SpecialItemModal({ visible, handleCancel, onOk, initialValues = default
 
     useEffect(() => {
         const fetchSpecialItems = async () => {
+            setLoading(true);
             try {
                 const response = await getAllSpecialItems();
                 setSpecialItems(response.data.data);
             } catch (error) {
                 console.log('Failed to fetch special items');
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -52,6 +56,7 @@ function SpecialItemModal({ visible, handleCancel, onOk, initialValues = default
                     <Select
                         id="i"
                         showSearch
+                        disabled={loading}
                         options={specialItems}
                         fieldNames={{ label: 'name', value: 'id' }}
                         optionFilterProp="name"
@@ -82,7 +87,7 @@ function SpecialItemModal({ visible, handleCancel, onOk, initialValues = default
 
                 <Flex justify="end" gap="small">
                     <Button onClick={handleCancel}>Đóng</Button>
-                    <Button type="primary" htmlType="submit">
+                    <Button type="primary" htmlType="submit" loading={loading}>
                         Lưu
                     </Button>
                 </Flex>
