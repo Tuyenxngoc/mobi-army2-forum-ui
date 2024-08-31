@@ -135,8 +135,7 @@ const items = [
 function Info() {
     return (
         <main className="box-container custom-text-primary p-2 border-top-0">
-            <h1>Giới thiệu:</h1>
-            <h3>Cách chơi:</h3>
+            <h4>Cách chơi:</h4>
             <span>
                 Bạn phải tính toán góc bắn và lực bắn kết hợp với sức gió để đường đi của viên đạn trúng đích, cách chơi
                 như sau:
@@ -165,7 +164,7 @@ function Info() {
                 <b>Khi chọn phòng chơi cần quan tâm các thông số sau:</b>
             </span>
             <br />
-            <ul style={{ listStyle: 'none' }}>
+            <ul className="ps-3" style={{ listStyle: 'disc' }}>
                 <li>Số tiền cược / ván đấu.</li>
                 <li>Số người chơi / 1 phòng.</li>
                 <li>Bản đồ chiến đấu</li>
@@ -174,13 +173,14 @@ function Info() {
                 <b>Trong game có các thông số người chơi cần phải biết:</b>
             </span>
             <br />
-            <ul style={{ listStyle: 'none' }}>
+            <ul className="ps-3" style={{ listStyle: 'disc' }}>
                 <li>Thanh lực màu vàng: cho biết quãng đường người chơi có thể đi</li>
                 <li>Thanh lực màu cam : hiển thị lực bắn của người chơi.</li>
                 <li>Con số giữa hai thanh : hiển thị góc bắn của người chơi.</li>
                 <li>Thanh lực nằm trên cùng màn hình: có hai phần trái và phải, hiển thị lực gió và góc của gió.</li>
             </ul>
-            <h3>Chức năng chính:</h3>
+            <br />
+            <h4>Chức năng chính:</h4>
             <p>
                 <b>Đăng ký: </b>
                 <span>
@@ -189,7 +189,6 @@ function Info() {
                     chọn mục Đăng kí trong game hoặc tại màn hình đăng nhập.
                 </span>
             </p>
-            <br />
             <p>
                 <b>Đăng nhập:</b>
                 <span>
@@ -197,7 +196,6 @@ function Info() {
                     mật khẩu để đăng nhập vào trò chơi.
                 </span>
             </p>
-            <br />
             <p>
                 <b>Khu vực:</b>
                 <span>
@@ -213,7 +211,7 @@ function Info() {
                 chơi.Nếu muốn là chủ bàn, bạn hãy chọn mục Tạo khu vực.
             </p>
             <b>Item:</b>
-            <table border="0" cellPadding="1" cellSpacing="1">
+            <table className="table table-hover">
                 <thead>
                     <tr align="center">
                         <th>
@@ -228,11 +226,7 @@ function Info() {
                     {items.map((item, index) => (
                         <tr key={index}>
                             <td>
-                                <img
-                                    style={{ border: 'none', margin: '0px', padding: '0px', width: '20px' }}
-                                    src={item.img}
-                                    alt={item.name}
-                                />
+                                <img width={20} src={item.img} alt={item.name} />
                                 <small>&nbsp;{item.name}</small>
                             </td>
                             <td>
