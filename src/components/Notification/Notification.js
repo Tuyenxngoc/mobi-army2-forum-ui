@@ -11,7 +11,7 @@ import 'react-quill/dist/quill.core.css';
 import classNames from 'classnames/bind';
 import Style from './Notification.module.scss';
 import DateFormatter from '../DateFormatter/DateFormatter';
-import { deleteNotification, updateNotification } from '~/services/NotificationService';
+import { deleteNotification, updateNotification } from '~/services/notificationService';
 import { formats, modules } from '~/common/editorConfig';
 
 const cx = classNames.bind(Style);

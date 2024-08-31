@@ -5,7 +5,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import 'react-quill/dist/quill.core.css';
 
-import { createNotification } from '~/services/NotificationService';
+import { createNotification } from '~/services/notificationService';
 import { formats, modules } from '~/common/editorConfig';
 import { Button } from 'antd';
 

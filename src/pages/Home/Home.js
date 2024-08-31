@@ -6,7 +6,7 @@ import CreateNotification from '~/components/Notification/CreateNotification';
 import useAuth from '~/hooks/useAuth';
 import { ROLES } from '~/common/roleConstants';
 import { useEffect, useState } from 'react';
-import { getAllNotifications } from '~/services/NotificationService';
+import { getAllNotifications } from '~/services/notificationService';
 import images from '~/assets';
 import { message } from 'antd';
 
