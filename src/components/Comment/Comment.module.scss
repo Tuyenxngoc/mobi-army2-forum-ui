@@ -29,3 +29,17 @@
     align-items: center;
     border-bottom: 1px solid #e1e1e1;
 }
+
+.content {
+    word-break: break-all;
+}
+
+.emoji-picker {
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    z-index: 1000;
+    border-radius: 10px;
+    max-width: 300px;
+    overflow: auto;
+}

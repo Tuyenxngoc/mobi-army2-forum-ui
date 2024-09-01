@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 
 import TextArea from 'antd/es/input/TextArea';
-import { Button } from 'antd';
+import { Button, Space } from 'antd';
 
 import classNames from 'classnames/bind';
 import Style from './Comment.module.scss';
@@ -11,16 +11,25 @@ import { createComment } from '~/services/commentService';
 import { RESOURCE_URL } from '~/common/commonConstants';
 import useAuth from '~/hooks/useAuth';
 
+import data from '@emoji-mart/data';
+import Picker from '@emoji-mart/react';
+
 const cx = classNames.bind(Style);
 
 function NewComment({ postId, onCommentSubmit, message }) {
     const [newComment, setNewComment] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
     const { player } = useAuth();
 
     const handleCommentChange = (e) => {
         setNewComment(e.target.value);
+    };
+
+    const handleEmojiSelect = (emoji) => {
+        setNewComment(newComment + emoji.native);
+        setShowEmojiPicker(false);
     };
 
     const handleCommentSubmit = async (e) => {
@@ -41,23 +50,36 @@ function NewComment({ postId, onCommentSubmit, message }) {
 
     return (
         <div className={cx('item')}>
-            <div className={cx('player')}>
+            <div>
                 <img src={RESOURCE_URL + player.avatar} className="pixel-art" alt="avt" />
             </div>
 
             <form className={cx('container')} onSubmit={handleCommentSubmit}>
                 <TextArea
-                    name="newComment"
+                    name="content"
                     required
                     rows={2}
-                    maxLength={255}
+                    minLength={3}
+                    maxLength={100}
                     disabled={isLoading}
                     value={newComment}
                     onChange={handleCommentChange}
                 />
-                <Button size="small" htmlType="submit" type="primary" className="mt-2" loading={isLoading}>
-                    Gửi
-                </Button>
+
+                <Space className="mt-2">
+                    <Button size="small" htmlType="submit" type="primary" loading={isLoading}>
+                        Gửi
+                    </Button>
+                    <Button size="small" type="default" onClick={() => setShowEmojiPicker(!showEmojiPicker)}>
+                        😊
+                    </Button>
+                </Space>
+
+                {showEmojiPicker && (
+                    <div className={cx('emoji-picker')}>
+                        <Picker data={data} onEmojiSelect={handleEmojiSelect} />
+                    </div>
+                )}
             </form>
         </div>
     );

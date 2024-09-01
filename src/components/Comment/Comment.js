@@ -127,9 +127,11 @@ function Comment({ data, onUpdateComment, onDeleteComment, message }) {
                 <div className={cx('content')}>
                     {isEditing ? (
                         <TextArea
+                            name="content"
                             required
                             rows={2}
-                            maxLength={255}
+                            minLength={3}
+                            maxLength={100}
                             disabled={isLoading}
                             value={editedContent}
                             onChange={handleInputChange}

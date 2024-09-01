@@ -161,6 +161,7 @@ function PostDetail() {
                                     <div className="fw-bold">{post.title}</div>
                                     <div
                                         className="ql-snow ql-editor p-0"
+                                        style={{ wordBreak: 'break-all' }}
                                         dangerouslySetInnerHTML={{ __html: post.content }}
                                     />
                                     <br />
@@ -191,7 +192,7 @@ function PostDetail() {
                         </div>
                         <div className={cx('ads')}>
                             <img src={images.newGif} alt="new" />
-                            <Link to="/">Avatar Bùm</Link>
+                            <Link to="/">Thông báo</Link>
                             <img src={images.newGif} alt="new" />
                         </div>
                     </>
