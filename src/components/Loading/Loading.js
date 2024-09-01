@@ -1,4 +1,4 @@
-import images from '~/assets';
+import { Spin } from 'antd';
 
 function Loading() {
     return (
@@ -11,7 +11,7 @@ function Loading() {
                 backgroundColor: '#fdfdfd',
             }}
         >
-            <img src={images.loading} alt="loading" />
+            <Spin size="large" />
         </div>
     );
 }
