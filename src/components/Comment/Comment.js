@@ -7,7 +7,7 @@ import Style from './Comment.module.scss';
 import classNames from 'classnames/bind';
 
 import useAuth from '~/hooks/useAuth';
-import { BASE_URL } from '~/common/commonConstants';
+import { RESOURCE_URL } from '~/common/commonConstants';
 import { ROLES } from '~/common/roleConstants';
 import { deleteComment, updateComment } from '~/services/commentService';
 import DateFormatter from '../DateFormatter/DateFormatter';
@@ -80,7 +80,7 @@ function Comment({ data, onUpdateComment, onDeleteComment, message }) {
     return (
         <div className={cx('item')}>
             <div className="text-center">
-                <img src={BASE_URL + data.player.avatar} className="pixel-art" alt="avt" />
+                <img src={RESOURCE_URL + data.player.avatar} className="pixel-art" alt="avt" />
                 <div>Bài: {data.player.points}</div>
             </div>
 

@@ -7,7 +7,7 @@ import { handleError } from '~/utils/errorHandler';
 import { checkIdIsNumber } from '~/utils/helper';
 import { getGiftCodeById, updateGiftCode } from '~/services/giftCodeService';
 import NumberToString from '~/components/NumberFormatter/NumberToString';
-import { BASE_URL } from '~/common/commonConstants';
+import { RESOURCE_URL } from '~/common/commonConstants';
 import NumberFormatter from '~/components/NumberFormatter/NumberFormatter';
 
 const defaultValue = {
@@ -147,7 +147,7 @@ function UpdateGiftCode() {
                                 <tr key={index}>
                                     <th scope="row">{item.id}</th>
                                     <td>
-                                        <img src={BASE_URL + item.imageUrl} className="pixel-art" alt="item" />
+                                        <img src={RESOURCE_URL + item.imageUrl} className="pixel-art" alt="item" />
                                         <span>&nbsp;{item.name}</span>
                                     </td>
                                     <td>{item.detail}</td>
@@ -179,7 +179,7 @@ function UpdateGiftCode() {
                                 <tr key={index}>
                                     <td>{index + 1}</td>
                                     <td>
-                                        <img src={BASE_URL + equip.imageUrl} className="pixel-art" alt="equip" />
+                                        <img src={RESOURCE_URL + equip.imageUrl} className="pixel-art" alt="equip" />
                                         <span>&nbsp;{equip.name}</span>
                                     </td>
                                     <td>

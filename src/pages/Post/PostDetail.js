@@ -15,7 +15,7 @@ import { toggleLike } from '~/services/likeService';
 import useAuth from '~/hooks/useAuth';
 import DateFormatter from '~/components/DateFormatter/DateFormatter';
 import CommentsSection from './CommentsSection';
-import { BASE_URL } from '~/common/commonConstants';
+import { RESOURCE_URL } from '~/common/commonConstants';
 import { checkIdIsNumber } from '~/utils/helper';
 import Player from '~/components/Player/Player';
 
@@ -120,7 +120,7 @@ function PostDetail() {
                     <>
                         <div className="d-flex align-items-start p-2">
                             <div className="text-center">
-                                <img src={BASE_URL + post.player.avatar} className="pixel-art" alt="avt" />
+                                <img src={RESOURCE_URL + post.player.avatar} className="pixel-art" alt="avt" />
                                 <div>Bài: {post.player.points}</div>
                             </div>
 

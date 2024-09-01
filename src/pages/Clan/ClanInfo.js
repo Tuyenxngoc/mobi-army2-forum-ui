@@ -7,7 +7,7 @@ import queryString from 'query-string';
 import useAuth from '~/hooks/useAuth';
 import Pagination from '~/components/Pagination/Pagination';
 import { checkIdIsNumber } from '~/utils/helper';
-import { BASE_URL, INITIAL_FILTERS, INITIAL_META } from '~/common/commonConstants';
+import { RESOURCE_URL, INITIAL_FILTERS, INITIAL_META } from '~/common/commonConstants';
 import { getClanById, getClanMembers, joinClan, leaveClan } from '~/services/clanService';
 
 const getTagColor = (categoryName) => {
@@ -203,7 +203,7 @@ function ClanInfo() {
                             <li>Ngày tạo: {clan.createdDate}</li>
                             <li>Tên đội trưởng: {clan.masterName}</li>
                             <li>
-                                Biểu tượng: <img src={BASE_URL + clan.icon} className="pixel-art" alt="icon" />
+                                Biểu tượng: <img src={RESOURCE_URL + clan.icon} className="pixel-art" alt="icon" />
                             </li>
                             <li>Cúp: {clan.cup}</li>
                             <li>Kinh nghiệm: {clan.xp}</li>

@@ -1,7 +1,7 @@
 import { Spin } from 'antd';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { BASE_URL } from '~/common/commonConstants';
+import { RESOURCE_URL } from '~/common/commonConstants';
 import useAuth from '~/hooks/useAuth';
 import { getPlayerInventory } from '~/services/playerService';
 
@@ -68,7 +68,7 @@ function Inventory() {
                                 <tr key={index}>
                                     <th scope="row">{item.id}</th>
                                     <td>
-                                        <img src={BASE_URL + item.imageUrl} className="pixel-art" alt="item" />
+                                        <img src={RESOURCE_URL + item.imageUrl} className="pixel-art" alt="item" />
                                         <span>&nbsp;{item.name}</span>
                                     </td>
                                     <td>{item.detail}</td>
@@ -101,7 +101,7 @@ function Inventory() {
                                 <tr key={index}>
                                     <td>{index + 1}</td>
                                     <td>
-                                        <img src={BASE_URL + equip.imageUrl} className="pixel-art" alt="equip" />
+                                        <img src={RESOURCE_URL + equip.imageUrl} className="pixel-art" alt="equip" />
                                         <span>&nbsp;{equip.name}</span>
                                     </td>
                                     <td>
@@ -115,7 +115,7 @@ function Inventory() {
                                             slot ? (
                                                 <img
                                                     key={index}
-                                                    src={`${BASE_URL}${slot}`}
+                                                    src={`${RESOURCE_URL}${slot}`}
                                                     className="pixel-art"
                                                     alt={`Slot ${index}`}
                                                 />

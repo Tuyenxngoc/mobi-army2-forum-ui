@@ -1,7 +1,7 @@
 import { Badge, Button, message, Spin, Space } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { BASE_URL } from '~/common/commonConstants';
+import { RESOURCE_URL } from '~/common/commonConstants';
 import useAuth from '~/hooks/useAuth';
 
 import { getPlayerById, toggleEquipmentChestLock, toggleInvitationLock } from '~/services/playerService';
@@ -121,7 +121,7 @@ function PlayerProfile() {
             characters,
         } = playerProfile;
 
-        const avatarUrl = BASE_URL + avatar;
+        const avatarUrl = RESOURCE_URL + avatar;
         const roleColor = ROLE_COLORS[roleName] || 'black';
         const roleLabel = roleName !== ROLES.User ? ` - ${ROLE_LABELS[roleName]}` : '';
 
@@ -158,7 +158,7 @@ function PlayerProfile() {
                         {clan ? (
                             <>
                                 <Link to={`/clan/${clan.id}`}>{clan.name}</Link>
-                                [<img src={BASE_URL + clan.icon} className="pixel-art" alt="icon" />]
+                                [<img src={RESOURCE_URL + clan.icon} className="pixel-art" alt="icon" />]
                             </>
                         ) : (
                             'Chưa tham gia biệt đội'
@@ -185,7 +185,7 @@ function PlayerProfile() {
                             {characters.map((character, index) => (
                                 <tr key={index}>
                                     <th scope="row">
-                                        <img src={BASE_URL + character.avatar} className="pixel-art" alt="avt" />
+                                        <img src={RESOURCE_URL + character.avatar} className="pixel-art" alt="avt" />
                                     </th>
                                     <td>{character.name}</td>
                                     <td>{character.level}</td>

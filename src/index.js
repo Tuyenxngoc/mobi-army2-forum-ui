@@ -11,12 +11,12 @@ import { ConfigProvider } from 'antd';
 import viVN from 'antd/es/locale/vi_VN';
 
 import { GoogleOAuthProvider } from '@react-oauth/google';
-const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+import { CLIENT_ID } from './common/commonConstants';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
-        <GoogleOAuthProvider clientId={clientId}>
+        <GoogleOAuthProvider clientId={CLIENT_ID}>
             <ConfigProvider locale={viVN}>
                 <AuthProvider>
                     <App />

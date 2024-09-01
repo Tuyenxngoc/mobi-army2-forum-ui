@@ -4,7 +4,7 @@ import * as yup from 'yup';
 import { Button, message } from 'antd';
 
 import { createClan, getclanIcons } from '~/services/clanService';
-import { BASE_URL } from '~/common/commonConstants';
+import { RESOURCE_URL } from '~/common/commonConstants';
 import { Link } from 'react-router-dom';
 import { handleError } from '~/utils/errorHandler';
 
@@ -198,7 +198,7 @@ function CreateClan() {
                                             <td key={icon.id}>
                                                 <label className="form-check-label me-2" htmlFor={`icon${icon.id}`}>
                                                     <img
-                                                        src={BASE_URL + icon.src}
+                                                        src={RESOURCE_URL + icon.src}
                                                         className="pixel-art"
                                                         alt={`Icon ${icon.id}`}
                                                     />
