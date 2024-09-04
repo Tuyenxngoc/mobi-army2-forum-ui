@@ -161,7 +161,7 @@ function PostDetail() {
                                     <div className="fw-bold">{post.title}</div>
                                     <div
                                         className="ql-snow ql-editor p-0"
-                                        style={{ wordBreak: 'break-all' }}
+                                        style={{ whiteSpace: 'normal', overflowWrap: 'anywhere' }}
                                         dangerouslySetInnerHTML={{ __html: post.content }}
                                     />
                                     <br />

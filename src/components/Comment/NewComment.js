@@ -77,7 +77,7 @@ function NewComment({ postId, onCommentSubmit, message }) {
 
                 {showEmojiPicker && (
                     <div className={cx('emoji-picker')}>
-                        <Picker data={data} onEmojiSelect={handleEmojiSelect} />
+                        <Picker data={data} onEmojiSelect={handleEmojiSelect} locale="vi" />
                     </div>
                 )}
             </form>
