@@ -68,7 +68,7 @@ function Comment({ data, onUpdateComment, onDeleteComment, message }) {
         setIsLoading(true);
         try {
             const response = await deleteComment(data.id);
-            if (response.status === 204) {
+            if (response.status === 200) {
                 onDeleteComment(data.id);
                 message.success(`Đã xóa bình luận có id: ${data.id}`);
             }

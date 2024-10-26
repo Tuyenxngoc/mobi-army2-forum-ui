@@ -72,7 +72,7 @@ function GiftCodeManagement() {
                 setLoadingAction(true);
                 try {
                     const response = await deleteGiftCode(giftCodeId);
-                    if (response.status === 204) {
+                    if (response.status === 200) {
                         setGiftCodes((prevCodes) => prevCodes.filter((code) => code.id !== giftCodeId));
                         messageApi.success(response.data.data.message);
                     }

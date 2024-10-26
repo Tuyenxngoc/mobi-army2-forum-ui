@@ -82,7 +82,7 @@ function ClanMembers() {
     const handleKick = async (memberId) => {
         try {
             const response = await kickClanMember(clanId, memberId);
-            if (response.status === 204) {
+            if (response.status === 200) {
                 messageApi.success(response.data.data.message);
 
                 // Tải lại danh sách thành viên

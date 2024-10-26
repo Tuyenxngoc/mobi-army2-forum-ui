@@ -68,7 +68,7 @@ function Notification() {
         setIsDeleteLoading(true);
         try {
             const response = await deletePlayerNotificationById(id);
-            if (response.status === 204) {
+            if (response.status === 200) {
                 messageApi.success(response.data.data.message);
                 setNotifications((prev) => prev.filter((n) => n.id !== id));
             }

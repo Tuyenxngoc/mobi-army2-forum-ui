@@ -76,7 +76,7 @@ const Notification = ({ data, onNotificationUpdate, onNotificationDelete, canEdi
 
         try {
             const response = await deleteNotification(data.id);
-            if (response.status === 204) {
+            if (response.status === 200) {
                 messageApi.success('Xoá thông báo thành công');
                 setShowDeleteDialog(false);
                 setDeleteLoading(false);

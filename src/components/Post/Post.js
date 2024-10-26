@@ -16,8 +16,8 @@ function Post({ data }) {
                 <img src={RESOURCE_URL + data.player.avatar} className="pixel-art" alt="avt" />
             </div>
             <div>
-                <div class="d-flex align-items-center">
-                    {data.locked && <img src={images.lock} alt="lock" class="me-2" />}
+                <div className="d-flex align-items-center">
+                    {data.locked && <img src={images.lock} alt="lock" className="me-2" />}
                     <Link to={`/post/${data.id}`}>{data.title}</Link>
                 </div>
                 <div className={cx('post-metadata')}>
