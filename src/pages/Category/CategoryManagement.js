@@ -69,7 +69,7 @@ function CategoryManagement() {
         setLoadingAction(true);
         try {
             const response = await deleteCategory(categoryId);
-            if (response.status === 200) {
+            if (response.status === 204) {
                 setCategories((prevCates) => prevCates.filter((cate) => cate.id !== categoryId));
                 messageApi.success(response.data.data.message);
             }

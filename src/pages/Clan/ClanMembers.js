@@ -82,11 +82,12 @@ function ClanMembers() {
     const handleKick = async (memberId) => {
         try {
             const response = await kickClanMember(clanId, memberId);
+            if (response.status === 204) {
+                messageApi.success(response.data.data.message);
 
-            messageApi.success(response.data.data.message);
-
-            // Tải lại danh sách thành viên
-            setFilters((prev) => ({ ...prev, pageNum: 1 }));
+                // Tải lại danh sách thành viên
+                setFilters((prev) => ({ ...prev, pageNum: 1 }));
+            }
         } catch (error) {
             messageApi.error(error.message);
         }

@@ -28,6 +28,10 @@ export const updateClan = (clanId, values) => {
     return axiosPrivate.put(`clans/${clanId}`, values);
 };
 
+export const increaseClanMembers = (clanId) => {
+    return axiosPrivate.patch(`clans/${clanId}/increase-members`);
+};
+
 export const joinClan = (clanId) => {
     return axiosPrivate.post(`clans/${clanId}/members/join`);
 };

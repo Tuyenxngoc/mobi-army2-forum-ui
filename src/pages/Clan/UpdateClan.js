@@ -10,6 +10,11 @@ import { handleError } from '~/utils/errorHandler';
 import useAuth from '~/hooks/useAuth';
 import { checkIdIsNumber } from '~/utils/helper';
 
+import Style from './ClanForm.module.scss';
+import classNames from 'classnames/bind';
+
+const cx = classNames.bind(Style);
+
 const defaultValue = {
     description: '',
     notification: '',
@@ -39,14 +44,6 @@ function UpdateClan() {
             player.clanMember.clan.id === Number.parseInt(clanId),
         [clanId, player.clanMember],
     );
-
-    const rows = useMemo(() => {
-        const organizedRows = [];
-        for (let i = 0; i < icons.length; i += 10) {
-            organizedRows.push(icons.slice(i, i + 10));
-        }
-        return organizedRows;
-    }, [icons]);
 
     const handleSubmit = async (values, { setSubmitting }) => {
         try {
@@ -189,35 +186,20 @@ function UpdateClan() {
 
                     <div className="form-group mb-2">
                         <span>Hãy lựa chọn ảnh đại diện cho đội:</span>
-                        <div className="table-responsive">
-                            <table className="table table-bordered align-middle bg-white">
-                                <tbody>
-                                    {rows.map((row, rowIndex) => (
-                                        <tr key={rowIndex}>
-                                            {row.map((icon) => (
-                                                <td key={icon.id}>
-                                                    <label className="form-check-label me-2" htmlFor={`icon${icon.id}`}>
-                                                        <img
-                                                            src={RESOURCE_URL + icon.src}
-                                                            className="pixel-art"
-                                                            alt={`Icon ${icon.id}`}
-                                                        />
-                                                    </label>
-                                                    <input
-                                                        type="radio"
-                                                        name="icon"
-                                                        id={`icon${icon.id}`}
-                                                        value={icon.id}
-                                                        // eslint-disable-next-line eqeqeq
-                                                        checked={formik.values.icon == icon.id}
-                                                        onChange={formik.handleChange}
-                                                    />
-                                                </td>
-                                            ))}
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                        <div className={cx('icon-grid-container')}>
+                            {icons.map((icon) => (
+                                <div
+                                    key={icon.id}
+                                    className={cx('icon-item', { selected: formik.values.icon === icon.id })}
+                                    onClick={() => formik.setFieldValue('icon', icon.id)}
+                                >
+                                    <img
+                                        src={RESOURCE_URL + icon.src}
+                                        alt={`Icon ${icon.id}`}
+                                        className={cx('icon-image')}
+                                    />
+                                </div>
+                            ))}
                         </div>
                     </div>
 

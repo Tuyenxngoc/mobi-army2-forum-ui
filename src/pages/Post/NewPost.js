@@ -60,7 +60,7 @@ function NewPost() {
     async function handleSubmit(values, { setSubmitting, resetForm }) {
         try {
             const response = await createPost(values);
-            if (response.status === 200) {
+            if (response.status === 201) {
                 messageApi.success(response.data.data.message);
             }
             resetForm();

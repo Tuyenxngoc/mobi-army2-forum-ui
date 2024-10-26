@@ -67,9 +67,11 @@ function Comment({ data, onUpdateComment, onDeleteComment, message }) {
     const handleDeleteComment = async () => {
         setIsLoading(true);
         try {
-            await deleteComment(data.id);
-            onDeleteComment(data.id);
-            message.success(`Đã xóa bình luận có id: ${data.id}`);
+            const response = await deleteComment(data.id);
+            if (response.status === 204) {
+                onDeleteComment(data.id);
+                message.success(`Đã xóa bình luận có id: ${data.id}`);
+            }
         } catch (error) {
             message.error(`Lỗi khi xóa bình luận: ${error.message}`);
         } finally {

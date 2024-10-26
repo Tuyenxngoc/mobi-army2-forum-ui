@@ -34,9 +34,11 @@ function CreateNotification({ onAddNotification, messageApi }) {
     const handleNotificationCreate = async (values, { setSubmitting, resetForm }) => {
         try {
             const response = await createNotification(values);
-            onAddNotification(response.data.data);
-            resetForm();
-            messageApi.success('Thêm thông báo thành công');
+            if (response.status === 201) {
+                onAddNotification(response.data.data);
+                resetForm();
+                messageApi.success('Thêm thông báo thành công');
+            }
         } catch (error) {
             messageApi.error('Thêm thông báo thất bại: ' + error.message);
         } finally {

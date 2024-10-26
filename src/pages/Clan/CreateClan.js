@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Button, message } from 'antd';
@@ -7,6 +7,11 @@ import { createClan, getclanIcons } from '~/services/clanService';
 import { RESOURCE_URL } from '~/common/commonConstants';
 import { Link } from 'react-router-dom';
 import { handleError } from '~/utils/errorHandler';
+
+import Style from './ClanForm.module.scss';
+import classNames from 'classnames/bind';
+
+const cx = classNames.bind(Style);
 
 const defaultValue = {
     name: '',
@@ -37,21 +42,12 @@ const validationSchema = yup.object({
 
 function CreateClan() {
     const [icons, setIcons] = useState([]);
-
     const [messageApi, contextHolder] = message.useMessage();
-
-    const rows = useMemo(() => {
-        const organizedRows = [];
-        for (let i = 0; i < icons.length; i += 10) {
-            organizedRows.push(icons.slice(i, i + 10));
-        }
-        return organizedRows;
-    }, [icons]);
 
     const handleSubmit = async (values, { setSubmitting, resetForm }) => {
         try {
             const response = await createClan(values);
-            if (response.status === 200) {
+            if (response.status === 201) {
                 messageApi.success(response.data.data.message);
             }
             resetForm();
@@ -79,7 +75,6 @@ function CreateClan() {
         };
 
         fetchIcons();
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -189,35 +184,20 @@ function CreateClan() {
 
                 <div className="form-group mb-2">
                     <span>Hãy lựa chọn ảnh đại diện cho đội:</span>
-                    <div className="table-responsive">
-                        <table className="table table-bordered align-middle bg-white">
-                            <tbody>
-                                {rows.map((row, rowIndex) => (
-                                    <tr key={rowIndex}>
-                                        {row.map((icon) => (
-                                            <td key={icon.id}>
-                                                <label className="form-check-label me-2" htmlFor={`icon${icon.id}`}>
-                                                    <img
-                                                        src={RESOURCE_URL + icon.src}
-                                                        className="pixel-art"
-                                                        alt={`Icon ${icon.id}`}
-                                                    />
-                                                </label>
-                                                <input
-                                                    type="radio"
-                                                    name="icon"
-                                                    id={`icon${icon.id}`}
-                                                    value={icon.id}
-                                                    // eslint-disable-next-line eqeqeq
-                                                    checked={formik.values.icon == icon.id}
-                                                    onChange={formik.handleChange}
-                                                />
-                                            </td>
-                                        ))}
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                    <div className={cx('icon-grid-container')}>
+                        {icons.map((icon) => (
+                            <div
+                                key={icon.id}
+                                className={cx('icon-item', { selected: formik.values.icon === icon.id })}
+                                onClick={() => formik.setFieldValue('icon', icon.id)}
+                            >
+                                <img
+                                    src={RESOURCE_URL + icon.src}
+                                    alt={`Icon ${icon.id}`}
+                                    className={cx('icon-image')}
+                                />
+                            </div>
+                        ))}
                     </div>
                 </div>
 

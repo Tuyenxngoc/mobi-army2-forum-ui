@@ -76,7 +76,7 @@ function CreateGiftCode() {
         formik.setSubmitting(true);
         try {
             const response = await createGiftCode(completeData);
-            if (response.status === 200) {
+            if (response.status === 201) {
                 messageApi.success(response.data.data.message);
                 formik.resetForm();
                 setEquips([]);

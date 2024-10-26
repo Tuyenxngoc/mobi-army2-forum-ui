@@ -41,7 +41,7 @@ function NewNotification() {
     async function handleSubmit(values, { setSubmitting, resetForm }) {
         try {
             const response = await createPlayerNotification(values);
-            if (response.status === 200) {
+            if (response.status === 201) {
                 messageApi.success(response.data.data.message);
             }
             resetForm();

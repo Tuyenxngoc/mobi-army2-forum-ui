@@ -68,8 +68,10 @@ function Notification() {
         setIsDeleteLoading(true);
         try {
             const response = await deletePlayerNotificationById(id);
-            messageApi.success(response.data.data.message);
-            setNotifications((prev) => prev.filter((n) => n.id !== id));
+            if (response.status === 204) {
+                messageApi.success(response.data.data.message);
+                setNotifications((prev) => prev.filter((n) => n.id !== id));
+            }
         } catch (error) {
             messageApi.error('Có lỗi xảy ra khi xóa thông báo');
         } finally {

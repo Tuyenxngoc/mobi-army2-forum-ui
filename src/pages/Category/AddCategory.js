@@ -27,7 +27,7 @@ function AddCategory() {
     const handleSubmit = async (values, { setSubmitting, resetForm }) => {
         try {
             const response = await createCategory(values);
-            if (response.status === 200) {
+            if (response.status === 201) {
                 messageApi.success(response.data.data.message);
             }
             resetForm();

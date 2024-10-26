@@ -8,7 +8,7 @@ import useAuth from '~/hooks/useAuth';
 import Pagination from '~/components/Pagination/Pagination';
 import { checkIdIsNumber } from '~/utils/helper';
 import { RESOURCE_URL, INITIAL_FILTERS, INITIAL_META } from '~/common/commonConstants';
-import { getClanById, getClanMembers, joinClan, leaveClan } from '~/services/clanService';
+import { getClanById, getClanMembers, increaseClanMembers, joinClan, leaveClan } from '~/services/clanService';
 
 const getTagColor = (categoryName) => {
     switch (categoryName) {
@@ -91,6 +91,20 @@ function ClanInfo() {
             const response = await leaveClan(clanId);
             if (response.status === 200) {
                 loadUserInfo();
+            }
+        } catch (error) {
+            messageApi.error(`Lỗi: ${error.response?.data?.message || error.message}`);
+        }
+    };
+
+    const handleIncreaseClanMembers = async () => {
+        try {
+            const response = await increaseClanMembers(clanId);
+            if (response.status === 200) {
+                const { message, data } = response.data.data;
+                setClan((prev) => ({ ...prev, luong: data.luong, memberMax: data.memberMax }));
+
+                messageApi.success(message);
             }
         } catch (error) {
             messageApi.error(`Lỗi: ${error.response?.data?.message || error.message}`);
@@ -207,6 +221,8 @@ function ClanInfo() {
                             </li>
                             <li>Cúp: {clan.cup}</li>
                             <li>Kinh nghiệm: {clan.xp}</li>
+                            <li>Xu: {clan.xu}</li>
+                            <li>Lượng: {clan.luong}</li>
                             <li>Mô tả: {clan.description}</li>
                         </ul>
 
@@ -239,6 +255,13 @@ function ClanInfo() {
                                                             }
                                                         >
                                                             Cập nhật thông tin
+                                                        </Button>
+                                                        <Button
+                                                            type="primary"
+                                                            size="small"
+                                                            onClick={handleIncreaseClanMembers}
+                                                        >
+                                                            Nâng cấp số lượng thành viên
                                                         </Button>
                                                     </>
                                                 )}

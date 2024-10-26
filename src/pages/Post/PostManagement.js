@@ -125,7 +125,7 @@ function PostManagement() {
         setLoadingAction(true);
         try {
             const response = await deletePost(postId);
-            if (response.status === 200) {
+            if (response.status === 204) {
                 setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
 
                 messageApi.success(response.data.data.message);

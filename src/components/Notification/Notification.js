@@ -75,11 +75,13 @@ const Notification = ({ data, onNotificationUpdate, onNotificationDelete, canEdi
         setDeleteDialogText('Đang xóa...');
 
         try {
-            await deleteNotification(data.id);
-            messageApi.success('Xoá thông báo thành công');
-            setShowDeleteDialog(false);
-            setDeleteLoading(false);
-            onNotificationDelete(data.id);
+            const response = await deleteNotification(data.id);
+            if (response.status === 204) {
+                messageApi.success('Xoá thông báo thành công');
+                setShowDeleteDialog(false);
+                setDeleteLoading(false);
+                onNotificationDelete(data.id);
+            }
         } catch (error) {
             setDeleteDialogText('Xóa thất bại. Vui lòng thử lại.');
         } finally {
