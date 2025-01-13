@@ -28,7 +28,6 @@ const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         validateToken();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const validateToken = async () => {
@@ -58,22 +57,26 @@ const AuthProvider = ({ children }) => {
     };
 
     const login = ({ accessToken, refreshToken }) => {
-        localStorage.setItem(ACCESS_TOKEN, accessToken);
-        localStorage.setItem(REFRESH_TOKEN, refreshToken);
+        if (accessToken) {
+            localStorage.setItem(ACCESS_TOKEN, accessToken);
+        }
+        if (refreshToken) {
+            localStorage.setItem(REFRESH_TOKEN, refreshToken);
+        }
         validateToken();
     };
 
-    const logout = async (isLogoutToken = true) => {
-        if (isLogoutToken) {
-            try {
-                await logoutToken();
-            } catch (error) {
-                console.log(error);
+    const logout = async () => {
+        try {
+            const refreshToken = localStorage.getItem(REFRESH_TOKEN);
+            const response = await logoutToken(refreshToken);
+            if (response.status === 200) {
+                setAuthData(defaultAuth);
+
+                localStorage.removeItem(ACCESS_TOKEN);
+                localStorage.removeItem(REFRESH_TOKEN);
             }
-        }
-        setAuthData(defaultAuth);
-        localStorage.removeItem(ACCESS_TOKEN);
-        localStorage.removeItem(REFRESH_TOKEN);
+        } catch (e) {}
     };
 
     const loadUserInfo = () => {

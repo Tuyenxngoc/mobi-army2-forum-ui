@@ -24,8 +24,20 @@ export const checkEmailConfirmed = (email) => {
     return axios.get(`auth/check-email?email=${email}`);
 };
 
-export const logoutToken = () => {
-    return axiosPrivate.post('auth/logout');
+export const refreshTokenAPI = (values) => {
+    return httpRequest.post('auth/refresh-token', values);
+};
+
+export const logoutToken = (refreshToken) => {
+    return axiosPrivate.post(
+        'auth/logout',
+        {},
+        {
+            headers: {
+                'X-Refresh-Token': refreshToken,
+            },
+        },
+    );
 };
 
 export const forgetPassword = (values) => {
